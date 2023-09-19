@@ -5,6 +5,9 @@ public class Medicamento : BaseEntity
     public double Precio { get; set; }
     public int Stock { get; set; }
     public DateTime FechaExpiracion { get; set; }
-    public int ProveedorIdFk  { get; set; }
-    public Proveedor Proveedor { get; set; }
+    public int PersonaIdFk  { get; set; }
+    public Persona Persona { get; set; }
+    public ICollection<MedicamentoComprado> MedicamentoComprados { get; set; }
+    public ICollection<MedicamentoVendido> MedicamentoVendidos { get; set; }
+
 }

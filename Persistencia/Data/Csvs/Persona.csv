@@ -1,0 +1,9 @@
+Id,Nombre,Contacto,Direccion,TipoPersonaIdFk
+1,Juan,,Calle 123,3
+2,Maria,,Calle 456,3
+3,Luis,,Calle 789,3
+4,Elena,,Calle 101,3
+5,Sofia,,Calle 112,3
+6,ProveedorA,contacto@proveedora.com,Calle Proveedor 456,2
+7,ProveedorB,contacto@proveedorb.com,Calle Proveedor 789,2
+8,ProveedorC,contacto@proveedorc.com,Calle Proveedor 123,2
