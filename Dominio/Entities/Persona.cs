@@ -14,4 +14,6 @@ public class Persona : BaseEntity
     public ICollection<Venta> Ventas { get; set; }
     public ICollection<RecetaMedica> RecetaMedicas { get; set; }
     public ICollection<TipoPersona> TipoPersonas { get; set; }
+    public ICollection<Telefono> Telefonos { get; set; }
+    public ICollection<Email> Emails { get; set; }
 }
