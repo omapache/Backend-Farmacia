@@ -26,7 +26,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(Assembly.GetEntryAssembly());
 builder.Services.ConfigureCors();
 builder.Services.AddAplicacionServices();
-builder.Services.AddJwt(builder.Configuration);//////////////////////////
+builder.Services.AddJwt(builder.Configuration);
 
 builder.Services.AddDbContext<ApiContext>(options =>
 {
