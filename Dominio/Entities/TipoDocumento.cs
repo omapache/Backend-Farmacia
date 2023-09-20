@@ -1,12 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Dominio.Entities
+namespace Dominio.Entities;
+public class TipoDocumento : BaseEntity
 {
-    public class TipoDocumento
-    {
-        
-    }
+    public string descripcion { get; set; }
+    public ICollection<Persona> Persona { get; set; }
 }

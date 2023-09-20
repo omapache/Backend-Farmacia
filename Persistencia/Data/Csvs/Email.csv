@@ -1,0 +1,4 @@
+Id,Direccion,TipoEmailIdFk,PersonaIdFk
+1,juan@example.com,1,1
+2,maria@example.com,2,2
+3,carlos@example.com,3,3

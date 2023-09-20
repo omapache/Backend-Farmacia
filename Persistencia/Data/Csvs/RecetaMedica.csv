@@ -1,0 +1,4 @@
+Id,DoctorIdFk,PacienteIdFk,FechaCaducidad,Descripcion,FechaCreacion
+1,1,1,12/2023,Receta 1,01/02/2023
+2,2,2,11/2023,Receta 2,02/02/2023
+3,3,3,10/2023,Receta 3,03/02/2023

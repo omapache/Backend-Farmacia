@@ -1,0 +1,4 @@
+Id,CiudadIdFk,CallePrincipal,CalleSecundaria,Numero,Descripcion,PersonaIdFk
+1,1,Calle A,Calle B,123,Dir. 1,1
+2,2,Calle X,Calle Y,456,Dir. 2,2
+3,3,Calle M,Calle N,789,Dir. 3,3

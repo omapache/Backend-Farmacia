@@ -1,4 +1,4 @@
-/* using System.Globalization;
+using System.Globalization;
 using System.Reflection;
 using CsvHelper;
 using Dominio.Entities;
@@ -14,6 +14,18 @@ public static async Task SeedAsync(ApiContext context, ILoggerFactory loggerFact
         {
             var ruta = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
+            if (!context.TipoPersonas.Any())
+            {
+                using (var readerTipoPersonas = new StreamReader(ruta + @"/Data/Csvs/TipoPersona.csv"))
+                {
+                    using (var csvTipoPersona = new CsvReader(readerTipoPersonas, CultureInfo.InvariantCulture))
+                    {
+                        var TipoPersonas = csvTipoPersona.GetRecords<TipoPersona>();
+                        context.TipoPersonas.AddRange(TipoPersonas);
+                        await context.SaveChangesAsync();
+                    }
+                }
+            }
             if (!context.TipoPersonas.Any())
             {
                 using (var readerTipoPersonas = new StreamReader(ruta + @"/Data/Csvs/TipoPersona.csv"))
@@ -160,4 +172,4 @@ public static async Task SeedAsync(ApiContext context, ILoggerFactory loggerFact
             logger.LogError(ex.Message);
         }
     }
-} */
+}
