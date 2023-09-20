@@ -26,7 +26,7 @@ public class ApiContextSeed
                     }
                 }
             }
-            /* if (!context.TipoPresentaciones.Any())
+             if (!context.TipoPresentaciones.Any())
             {
                 using (var readerTipoPersonas = new StreamReader(ruta + @"/Data/Csvs/TipoPresentacion.csv"))
                 {
@@ -37,7 +37,7 @@ public class ApiContextSeed
                         await context.SaveChangesAsync();
                     }
                 }
-            } */
+            } 
             if (!context.TiposEmails.Any())
             {
                 using (var reader = new StreamReader(ruta + @"/Data/Csvs/TipoEmail.csv"))
@@ -86,7 +86,7 @@ public class ApiContextSeed
                     }
                 }
             }
-            /* if (!context.Marcas.Any())
+             if (!context.Marcas.Any())
             {
                 using (var readerTipoPersonas = new StreamReader(ruta + @"/Data/Csvs/Marca.csv"))
                 {
@@ -97,7 +97,7 @@ public class ApiContextSeed
                         await context.SaveChangesAsync();
                     }
                 }
-            } */
+            } 
             if (!context.Paises.Any())
             {
                 using (var readerTipoPersonas = new StreamReader(ruta + @"/Data/Csvs/Pais.csv"))
@@ -158,7 +158,7 @@ public class ApiContextSeed
                     }
                 }
             }
-            /* if (!context.TipoMovimientoInventarios.Any())
+             if (!context.TipoMovimientoInventarios.Any())
             {
                 using (var readerTipoPersonas = new StreamReader(ruta + @"/Data/Csvs/TipoMovimientoInventario.csv"))
                 {
@@ -169,7 +169,7 @@ public class ApiContextSeed
                         await context.SaveChangesAsync();
                     }
                 }
-            } */
+            } 
             if (!context.Personas.Any())
             {
                 using (var reader = new StreamReader(ruta + @"/Data/Csvs/Persona.csv"))
@@ -344,7 +344,7 @@ public class ApiContextSeed
                     }
                 }
             }
-            /*  if (!context.InventarioMedicamentos.Any())
+              if (!context.InventarioMedicamentos.Any())
              {
                  using (var reader = new StreamReader(ruta + @"/Data/Csvs/InventarioMedicamento.csv"))
                  {
@@ -370,7 +370,7 @@ public class ApiContextSeed
                          await context.SaveChangesAsync();
                      }
                  }
-             }*/
+             }
             if (!context.MedicamentoRecetas.Any())
             {
                 using (var reader = new StreamReader(ruta + @"/Data/Csvs/MedicamentoReceta.csv"))
@@ -421,7 +421,7 @@ public class ApiContextSeed
                     }
                 }
             }
-            /* if (!context.Productos.Any())
+             if (!context.Productos.Any())
             {
                 using (var reader = new StreamReader(ruta + @"/Data/Csvs/Producto.csv"))
                 {
@@ -446,8 +446,8 @@ public class ApiContextSeed
                         await context.SaveChangesAsync();
                     }
                 }
-            } */
-            /* if (!context.ProductoProveedores.Any())
+            } 
+             if (!context.ProductoProveedores.Any())
             {
                 using (var reader = new StreamReader(ruta + @"/Data/Csvs/ProductoProveedor.csv"))
                 {
@@ -470,7 +470,7 @@ public class ApiContextSeed
                         await context.SaveChangesAsync();
                     }
                 }
-            } */
+            } 
             if (!context.RecetaMedicas.Any())
             {
                 using (var reader = new StreamReader(ruta + @"/Data/Csvs/RecetaMedica.csv"))
@@ -571,7 +571,7 @@ public class ApiContextSeed
                     }
                 }
             }
-            /* if (!context.DetalleMovimientos.Any())
+             if (!context.DetalleMovimientos.Any())
             {
                 using (var reader = new StreamReader(ruta + @"/Data/Csvs/DetalleMovimiento.csv"))
                 {
@@ -596,8 +596,8 @@ public class ApiContextSeed
                         await context.SaveChangesAsync();
                     }
                 }
-            } */
-            /* if (!context.MovimientoInventarios.Any())
+            } 
+             if (!context.MovimientoInventarios.Any())
             {
                 using (var reader = new StreamReader(ruta + @"/Data/Csvs/MovimientoInventario.csv"))
                 {
@@ -625,7 +625,7 @@ public class ApiContextSeed
                         await context.SaveChangesAsync();
                     }
                 }
-            } */
+            } 
 
         }
         catch (Exception ex)
