@@ -1,0 +1,4 @@
+Id,Precio,Cantidad,InventMedicamentoIdFk,MarcaIdFk
+1,5.00,50,1,1
+2,10.00,30,2,2
+3,7.50,40,3,3

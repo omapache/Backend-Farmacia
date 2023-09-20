@@ -1,0 +1,4 @@
+Id,RecetaIdFk,IventMedicamentoIdFk,Descripcion
+1,1,1,1 tableta cada 8 horas
+2,2,2,2 cápsulas al día
+3,3,3,1 cucharada cada 6 horas
