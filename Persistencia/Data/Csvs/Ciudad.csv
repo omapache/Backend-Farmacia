@@ -1,4 +1,4 @@
-Id,Nombre,DepIdFk
+Id,NombreCiudad,DepartamentoIdFk
 1,Ciudad 1,1
 2,Ciudad 2,2
 3,Ciudad 3,3

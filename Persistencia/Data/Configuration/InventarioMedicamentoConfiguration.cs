@@ -1,5 +1,5 @@
 namespace Persistencia.Data.Configuration;
-public class VentaConfiguration
+public class InventarioMedicamentoConfiguration
 {
 
 }

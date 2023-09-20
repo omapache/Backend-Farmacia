@@ -1,4 +1,4 @@
-Id,UserName,Password,PersonaIdFk
+Id,Username,Password,PersonaIdFk
 1,user1,password1,1
 2,user2,password2,2
 3,user3,password3,3

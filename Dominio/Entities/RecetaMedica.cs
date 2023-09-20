@@ -5,7 +5,7 @@ public class RecetaMedica : BaseEntity
     public Persona Doctor { get; set; }
     public int PacienteIdFk { get; set; }
     public Persona Paciente { get; set; }
-    public DateTime FechaCadudicad { get; set; }
+    public DateTime FechaCaducidad { get; set; }
     public DateTime FechaCreacion { get; set; }
     public string Descripcion { get; set; }
 }
