@@ -10,4 +10,5 @@ public class Direccion : BaseEntity
     public Ciudad Ciudad { get; set; }
     public int PersonaIdFk { get; set; }
     public Persona Persona { get; set; }
+    public ICollection<Persona> Personas { get; set; }
 }
