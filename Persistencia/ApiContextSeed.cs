@@ -1,4 +1,4 @@
-using System.Globalization;
+/* using System.Globalization;
 using System.Reflection;
 using CsvHelper;
 using Dominio.Entities;
@@ -146,7 +146,7 @@ public static async Task SeedAsync(ApiContext context, ILoggerFactory loggerFact
             {
                 var roles = new List<Rol>()
                         {
-                            new Rol{Id=1, Nombre="Aministrator"},
+                            new Rol{Id=1, Nombre="Administrador"},
                             new Rol{Id=2, Nombre="Customer"},
                             new Rol{Id=3, Nombre="Empleado"},
                         };
@@ -160,4 +160,4 @@ public static async Task SeedAsync(ApiContext context, ILoggerFactory loggerFact
             logger.LogError(ex.Message);
         }
     }
-}
+} */
