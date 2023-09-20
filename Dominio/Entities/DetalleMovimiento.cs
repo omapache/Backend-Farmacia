@@ -1,12 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace Dominio.Entities
+
+namespace Dominio.Entities;
+
+public class DetalleMovimiento : BaseEntity
 {
-    public class DetalleMovimiento
-    {
-        
-    }
+    public int Cantidad { get; set; }
+    public double Precio { get; set; }
+    public int InventMedicamentoIdFk { get; set; }
+    public InventarioMedicamento InventarioMedicamento { get; set; }
+    public int MovInventarioIdFk { get; set; }
+    public MovimientoInventario MovimientoInventario { get; set; }
+
 }

@@ -6,8 +6,8 @@ namespace Persistencia;
 public class ApiContext : DbContext
 {
     public ApiContext(DbContextOptions options) : base(options)
-    {}
-    public DbSet<Ciudad> Ciudades { get; set; }    
+    { }
+    public DbSet<Ciudad> Ciudades { get; set; }
     public DbSet<Departamento> Departamentos { get; set; }
     public DbSet<DetalleMovimiento> DetalleMovimientos { get; set; }
     public DbSet<Direccion> Direcciones { get; set; }
@@ -21,6 +21,7 @@ public class ApiContext : DbContext
     public DbSet<Persona> Personas { get; set; }
     public DbSet<Producto> Productos { get; set; }
     public DbSet<ProductoProveedor> ProductoProveedores { get; set; }
+
     public DbSet<RecetaMedica> RecetaMedicas { get; set; }
     public DbSet<Rol> Rols { get; set; }
     public DbSet<Telefono> Telefonos { get; set; }
@@ -33,7 +34,8 @@ public class ApiContext : DbContext
     public DbSet<User> Users { get; set; }
     public DbSet<UserRol> UsersRols { get; set; }
 
-    
+
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
