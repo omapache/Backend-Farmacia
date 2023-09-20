@@ -26,7 +26,7 @@ public class ApiContextSeed
                     }
                 }
             }
-            if (!context.TipoPresentaciones.Any())
+            /* if (!context.TipoPresentaciones.Any())
             {
                 using (var readerTipoPersonas = new StreamReader(ruta + @"/Data/Csvs/TipoPresentacion.csv"))
                 {
@@ -37,7 +37,7 @@ public class ApiContextSeed
                         await context.SaveChangesAsync();
                     }
                 }
-            }
+            } */
             if (!context.TiposEmails.Any())
             {
                 using (var reader = new StreamReader(ruta + @"/Data/Csvs/TipoEmail.csv"))
@@ -86,7 +86,7 @@ public class ApiContextSeed
                     }
                 }
             }
-            if (!context.Marcas.Any())
+            /* if (!context.Marcas.Any())
             {
                 using (var readerTipoPersonas = new StreamReader(ruta + @"/Data/Csvs/Marca.csv"))
                 {
@@ -97,7 +97,7 @@ public class ApiContextSeed
                         await context.SaveChangesAsync();
                     }
                 }
-            }
+            } */
             if (!context.Paises.Any())
             {
                 using (var readerTipoPersonas = new StreamReader(ruta + @"/Data/Csvs/Pais.csv"))
@@ -158,6 +158,18 @@ public class ApiContextSeed
                     }
                 }
             }
+            /* if (!context.TipoMovimientoInventarios.Any())
+            {
+                using (var readerTipoPersonas = new StreamReader(ruta + @"/Data/Csvs/TipoMovimientoInventario.csv"))
+                {
+                    using (var csv = new CsvReader(readerTipoPersonas, CultureInfo.InvariantCulture))
+                    {
+                        var list = csv.GetRecords<TipoMovimientoInventario>();
+                        context.TipoMovimientoInventarios.AddRange(list);
+                        await context.SaveChangesAsync();
+                    }
+                }
+            } */
             if (!context.Personas.Any())
             {
                 using (var reader = new StreamReader(ruta + @"/Data/Csvs/Persona.csv"))
@@ -559,6 +571,61 @@ public class ApiContextSeed
                     }
                 }
             }
+            /* if (!context.DetalleMovimientos.Any())
+            {
+                using (var reader = new StreamReader(ruta + @"/Data/Csvs/DetalleMovimiento.csv"))
+                {
+                    using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
+                    {
+                        var list = csv.GetRecords<DetalleMovimiento>();
+
+                        List<DetalleMovimiento> entidad = new List<DetalleMovimiento>();
+                        foreach (var item in list)
+                        {
+                            entidad.Add(new DetalleMovimiento
+                            {
+                                Id = item.Id,
+                                Cantidad = item.Cantidad,
+                                Precio = item.Precio,
+                                IventMedicamentoIdFk = item.IventMedicamentoIdFk,
+                                MovInventarioIdFk = item.MovInventarioIdFk,
+                            });
+                        }
+
+                        context.DetalleMovimientos.AddRange(entidad);
+                        await context.SaveChangesAsync();
+                    }
+                }
+            } */
+            /* if (!context.MovimientoInventarios.Any())
+            {
+                using (var reader = new StreamReader(ruta + @"/Data/Csvs/MovimientoInventario.csv"))
+                {
+                    using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
+                    {
+                        var list = csv.GetRecords<MovimientoInventario>();
+
+                        List<MovimientoInventario> entidad = new List<MovimientoInventario>();
+                        foreach (var item in list)
+                        {
+                            entidad.Add(new MovimientoInventario
+                            {
+                                Id = item.Id,
+                                FechaMovimiento = item.FechaMovimiento,
+                                FechaVencimiento = item.FechaVencimiento,
+                                FormaPagoIdFk = item.FormaPagoIdFk,
+                                TipoMovInventIdFk = item.TipoMovInventIdFk,
+                                ResponsableIdFk = item.ResponsableIdFk,
+                                ReceptorIdFk = item.ReceptorIdFk,
+                                RecetaMedicaIdFk = item.RecetaMedicaIdFk,
+                            });
+                        }
+
+                        context.MovimientoInventarios.AddRange(entidad);
+                        await context.SaveChangesAsync();
+                    }
+                }
+            } */
 
         }
         catch (Exception ex)
