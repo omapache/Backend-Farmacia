@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Persistencia.Data.Configuration
 {
-    public class PacienteConfiguration
+    public class DetalleMovimientoConfiguration
     {
         
     }

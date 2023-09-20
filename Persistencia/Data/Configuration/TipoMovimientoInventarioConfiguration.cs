@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Persistencia.Data.Configuration
 {
-    public class MedicamentoVendido
+    public class TipoMovimientoInventarioConfiguration
     {
         
     }
