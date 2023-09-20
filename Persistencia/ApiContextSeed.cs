@@ -460,7 +460,6 @@ public class ApiContextSeed
                         {
                             entidad.Add(new ProductoProveedor
                             {
-                                Id = item.Id,
                                 ProductoIdFk = item.ProductoIdFk,
                                 ProveedorIdFk = item.ProveedorIdFk,
                             });
@@ -587,7 +586,7 @@ public class ApiContextSeed
                                 Id = item.Id,
                                 Cantidad = item.Cantidad,
                                 Precio = item.Precio,
-                                IventMedicamentoIdFk = item.IventMedicamentoIdFk,
+                                InventMedicamentoIdFk = item.InventMedicamentoIdFk,
                                 MovInventarioIdFk = item.MovInventarioIdFk,
                             });
                         }
