@@ -28,11 +28,11 @@ namespace Persistencia.Data.Configuration
             .IsRequired();
 
             builder.HasOne(p => p.Paciente)
-            .WithMany(p => p.RecetaMedicas)
+            .WithMany(p => p.RecetaMedicaPaciente)
             .HasForeignKey(p => p.PacienteIdFk);
 
             builder.HasOne(p => p.Doctor)
-            .WithMany(p => p.RecetaMedicas)
+            .WithMany(p => p.RecetaMedicaDoctor)
             .HasForeignKey(p => p.DoctorIdFk);
 
             builder.HasOne(p => p.MovimientoInventario)

@@ -33,13 +33,21 @@ public class MovimientoInventarioConfiguration : IEntityTypeConfiguration<Movimi
         .WithMany(p => p.MovimientoInventarios)
         .HasForeignKey(p => p.TipoMovInventIdFk);
         
-        builder.HasOne(p => p.Responsable)
+        /* builder.HasOne(p => p.Responsable)
         .WithMany(p => p.MovimientoInventarios)
         .HasForeignKey(p => p.ResponsableIdFk);
         
         builder.HasOne(p => p.Receptor)
         .WithMany(p => p.MovimientoInventarios)
-        .HasForeignKey(p => p.ReceptorIdFk);
+        .HasForeignKey(p => p.ReceptorIdFk); */
+
+        builder.HasOne(mi => mi.Responsable)
+        .WithMany(p => p.MovimientoInventariosResponsable)
+        .HasForeignKey(mi => mi.ResponsableIdFk);
+
+        builder.HasOne(mi => mi.Receptor)
+        .WithMany(p => p.MovimientoInventariosReceptor)
+        .HasForeignKey(mi => mi.ReceptorIdFk);
         
     }
 }
