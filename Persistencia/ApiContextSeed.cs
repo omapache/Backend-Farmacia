@@ -8,6 +8,28 @@ namespace Persistencia;
 
 public class ApiContextSeed
 {
+    public static async Task SeedRolesAsync(ApiContext context, ILoggerFactory loggerFactory)
+    {
+        try
+        {
+            if (!context.Rols.Any())
+            {
+                var roles = new List<Rol>()
+                        {
+                            new Rol{Id=1, Nombre="Administrador"},
+                            new Rol{Id=2, Nombre="Empleado"},
+                            new Rol{Id=3, Nombre="Cliente"},
+                        };
+                context.Rols.AddRange(roles);
+                await context.SaveChangesAsync();
+            }
+        }
+        catch (Exception ex)
+        {
+            var logger = loggerFactory.CreateLogger<ApiContext>();
+            logger.LogError(ex.Message);
+        }
+    }
     public static async Task SeedAsync(ApiContext context, ILoggerFactory loggerFactory)
     {
         try
@@ -38,7 +60,7 @@ public class ApiContextSeed
                     }
                 }
             } 
-            if (!context.TiposEmails.Any())
+           /*  if (!context.TiposEmails.Any())
             {
                 using (var reader = new StreamReader(ruta + @"/Data/Csvs/TipoEmail.csv"))
                 {
@@ -49,7 +71,7 @@ public class ApiContextSeed
                         await context.SaveChangesAsync();
                     }
                 }
-            }
+            } */
             if (!context.TiposTelefonos.Any())
             {
                 using (var reader = new StreamReader(ruta + @"/Data/Csvs/TipoTelefono.csv"))
@@ -122,7 +144,7 @@ public class ApiContextSeed
                     }
                 }
             }
-            if (!context.TipoPersonas.Any())
+           /*  if (!context.TipoPersonas.Any())
             {
                 using (var readerTipoPersonas = new StreamReader(ruta + @"/Data/Csvs/TipoPersona.csv"))
                 {
@@ -157,7 +179,7 @@ public class ApiContextSeed
                         await context.SaveChangesAsync();
                     }
                 }
-            }
+            } */
              if (!context.TipoMovimientoInventarios.Any())
             {
                 using (var readerTipoPersonas = new StreamReader(ruta + @"/Data/Csvs/TipoMovimientoInventario.csv"))
@@ -195,7 +217,7 @@ public class ApiContextSeed
                     }
                 }
             }
-            if (!context.Ciudades.Any())
+            /* if (!context.Ciudades.Any())
             {
                 using (var reader = new StreamReader(ruta + @"/Data/Csvs/Ciudad.csv"))
                 {
@@ -218,31 +240,7 @@ public class ApiContextSeed
                         await context.SaveChangesAsync();
                     }
                 }
-            }
-            if (!context.Ciudades.Any())
-            {
-                using (var reader = new StreamReader(ruta + @"/Data/Csvs/Ciudad.csv"))
-                {
-                    using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
-                    {
-                        var list = csv.GetRecords<Ciudad>();
-
-                        List<Ciudad> entidad = new List<Ciudad>();
-                        foreach (var item in list)
-                        {
-                            entidad.Add(new Ciudad
-                            {
-                                Id = item.Id,
-                                NombreCiudad = item.NombreCiudad,
-                                DepartamentoIdFk = item.DepartamentoIdFk,
-                            });
-                        }
-
-                        context.Ciudades.AddRange(entidad);
-                        await context.SaveChangesAsync();
-                    }
-                }
-            }
+            } */
             if (!context.Departamentos.Any())
             {
                 using (var reader = new StreamReader(ruta + @"/Data/Csvs/Departamento.csv"))
@@ -267,26 +265,26 @@ public class ApiContextSeed
                     }
                 }
             }
-            if (!context.Departamentos.Any())
+            if (!context.Ciudades.Any())
             {
-                using (var reader = new StreamReader(ruta + @"/Data/Csvs/Departamento.csv"))
+                using (var reader = new StreamReader(ruta + @"/Data/Csvs/Ciudad.csv"))
                 {
                     using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
                     {
-                        var list = csv.GetRecords<Departamento>();
+                        var list = csv.GetRecords<Ciudad>();
 
-                        List<Departamento> entidad = new List<Departamento>();
+                        List<Ciudad> entidad = new List<Ciudad>();
                         foreach (var item in list)
                         {
-                            entidad.Add(new Departamento
+                            entidad.Add(new Ciudad
                             {
                                 Id = item.Id,
-                                NombreDepartamento = item.NombreDepartamento,
-                                PaisIdFk = item.PaisIdFk,
+                                NombreCiudad = item.NombreCiudad,
+                                DepartamentoIdFk = item.DepartamentoIdFk,
                             });
                         }
 
-                        context.Departamentos.AddRange(entidad);
+                        context.Ciudades.AddRange(entidad);
                         await context.SaveChangesAsync();
                     }
                 }
@@ -396,7 +394,7 @@ public class ApiContextSeed
                     }
                 }
             }
-            if (!context.Personas.Any())
+            /* if (!context.Personas.Any())
             {
                 using (var reader = new StreamReader(ruta + @"/Data/Csvs/Persona.csv"))
                 {
@@ -420,7 +418,7 @@ public class ApiContextSeed
                         await context.SaveChangesAsync();
                     }
                 }
-            }
+            } */
              if (!context.Productos.Any())
             {
                 using (var reader = new StreamReader(ruta + @"/Data/Csvs/Producto.csv"))
@@ -634,26 +632,5 @@ public class ApiContextSeed
         }
     }
 
-    public static async Task SeedRolesAsync(ApiContext context, ILoggerFactory loggerFactory)
-    {
-        try
-        {
-            if (!context.Rols.Any())
-            {
-                var roles = new List<Rol>()
-                        {
-                            new Rol{Id=1, Nombre="Administrador"},
-                            new Rol{Id=2, Nombre="Empleado"},
-                            new Rol{Id=3, Nombre="Cliente"},
-                        };
-                context.Rols.AddRange(roles);
-                await context.SaveChangesAsync();
-            }
-        }
-        catch (Exception ex)
-        {
-            var logger = loggerFactory.CreateLogger<ApiContext>();
-            logger.LogError(ex.Message);
-        }
-    }
+    
 }
