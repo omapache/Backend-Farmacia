@@ -1,4 +1,0 @@
-Id,FechaVenta,PacienteIdFk,EmpleadoIdFk,RecetaIdFk,FormaPagoIdFk
-1,01/03/2023,1,1,1,1
-2,02/03/2023,2,2,2,2
-3,03/03/2023,3,3,3,3

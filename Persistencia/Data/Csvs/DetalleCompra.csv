@@ -1,4 +1,0 @@
-Id,CompraIdFk,InventMedicamentoIdFk,CantComprada,PrecioCompra
-1,1,1,100,500.00
-2,2,2,50,300.00
-3,3,3,75,700.00

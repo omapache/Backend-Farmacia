@@ -183,56 +183,6 @@ public class ApiContextSeed
                     }
                 }
             }
-            /* if (!context.Compras.Any())
-            {
-                using (var readerCompras = new StreamReader(ruta + @"/Data/Csvs/Compra.csv"))
-                {
-                    using (var csvCompras = new CsvReader(readerCompras, CultureInfo.InvariantCulture))
-                    {
-                        var listComprascsv = csvCompras.GetRecords<Compra>();
-
-                        List<Compra> compras = new List<Compra>();
-                        foreach (var item in listComprascsv)
-                        {
-                            compras.Add(new Compra
-                            {
-                                Id = item.Id,
-                                FechaCompra = item.FechaCompra,
-                                PersonaIdFk = item.PersonaIdFk,
-                                ProveedorIdFk = item.ProveedorIdFk,
-                            });
-                        }
-
-                        context.Compras.AddRange(compras);
-                        await context.SaveChangesAsync();
-                    }
-                }
-            } */
-            /* if (!context.Ventas.Any())
-            {
-                using (var readerVentas = new StreamReader(ruta + @"/Data/Csvs/Venta.csv"))
-                {
-                    using (var csvVentas = new CsvReader(readerVentas, CultureInfo.InvariantCulture))
-                    {
-                        var listVentasscv = csvVentas.GetRecords<Venta>();
-
-                        List<Venta> ventas = new List<Venta>();
-                        foreach (var item in listVentasscv)
-                        {
-                            ventas.Add(new Venta
-                            {
-                                Id = item.Id,
-                                FechaVenta = item.FechaVenta,
-                                PacienteIdFk = item.PacienteIdFk,
-                                EmpleadoIdFk = item.EmpleadoIdFk,
-                            });
-                        }
-
-                        context.Ventas.AddRange(ventas);
-                        await context.SaveChangesAsync();
-                    }
-                }
-            } */
             if (!context.Ciudades.Any())
             {
                 using (var reader = new StreamReader(ruta + @"/Data/Csvs/Ciudad.csv"))
@@ -329,58 +279,6 @@ public class ApiContextSeed
                     }
                 }
             }
-            /*  if (!context.DetalleCompras.Any())
-             {
-                 using (var reader = new StreamReader(ruta + @"/Data/Csvs/DetalleCompra.csv"))
-                 {
-                     using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
-                     {
-                         var list = csv.GetRecords<DetalleCompra>();
-
-                         List<DetalleCompra> entidad = new List<DetalleCompra>();
-                         foreach (var item in list)
-                         {
-                             entidad.Add(new DetalleCompra
-                             {
-                                 Id = item.Id,
-                                 CompraIdFk = item.CompraIdFk,
-                                 InventMedicamentoIdFk = item.InventMedicamentoIdFk,
-                                 CantComprada = item.CantComprada,
-                                 PrecioCompra = item.PrecioCompra,
-                             });
-                         }
-
-                         context.DetalleCompras.AddRange(entidad);
-                         await context.SaveChangesAsync();
-                     }
-                 }
-             } */
-            /* if (!context.DetalleVentas.Any())
-            {
-                using (var reader = new StreamReader(ruta + @"/Data/Csvs/DetalleVenta.csv"))
-                {
-                    using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
-                    {
-                        var list = csv.GetRecords<DetalleVenta>();
-
-                        List<DetalleVenta> entidad = new List<DetalleVenta>();
-                        foreach (var item in list)
-                        {
-                            entidad.Add(new DetalleVenta
-                            {
-                                Id = item.Id,
-                                VentaIdFk = item.VentaIdFk,
-                                ProductoIdFk = item.ProductoIdFk,
-                                CantVendida = item.CantVendida,
-                                PrecioVenta = item.PrecioVenta,
-                            });
-                        }
-
-                        context.DetalleVentas.AddRange(entidad);
-                        await context.SaveChangesAsync();
-                    }
-                }
-            }  */
             if (!context.Direcciones.Any())
             {
                 using (var reader = new StreamReader(ruta + @"/Data/Csvs/Direccion.csv"))
