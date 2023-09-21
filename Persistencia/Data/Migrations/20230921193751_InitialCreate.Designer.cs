@@ -11,7 +11,7 @@ using Persistencia;
 namespace Persistencia.Data.Migrations
 {
     [DbContext(typeof(ApiContext))]
-    [Migration("20230921024922_InitialCreate")]
+    [Migration("20230921193751_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -344,12 +344,6 @@ namespace Persistencia.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int?>("DireccionId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("EmailId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -357,9 +351,6 @@ namespace Persistencia.Data.Migrations
                         .HasColumnName("nombre");
 
                     b.Property<int>("RolIdFk")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("TelefonoId")
                         .HasColumnType("int");
 
                     b.Property<int>("TipoDocumentoIdFk")
@@ -370,13 +361,7 @@ namespace Persistencia.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DireccionId");
-
-                    b.HasIndex("EmailId");
-
                     b.HasIndex("RolIdFk");
-
-                    b.HasIndex("TelefonoId");
 
                     b.HasIndex("TipoDocumentoIdFk");
 
@@ -856,23 +841,11 @@ namespace Persistencia.Data.Migrations
 
             modelBuilder.Entity("Dominio.Entities.Persona", b =>
                 {
-                    b.HasOne("Dominio.Entities.Direccion", null)
-                        .WithMany("Personas")
-                        .HasForeignKey("DireccionId");
-
-                    b.HasOne("Dominio.Entities.Email", null)
-                        .WithMany("Personas")
-                        .HasForeignKey("EmailId");
-
                     b.HasOne("Dominio.Entities.Rol", "Rol")
                         .WithMany("Personas")
                         .HasForeignKey("RolIdFk")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Dominio.Entities.Telefono", null)
-                        .WithMany("Personas")
-                        .HasForeignKey("TelefonoId");
 
                     b.HasOne("Dominio.Entities.TipoDocumento", "TipoDocumento")
                         .WithMany("Personas")
@@ -1025,16 +998,6 @@ namespace Persistencia.Data.Migrations
                     b.Navigation("Ciudades");
                 });
 
-            modelBuilder.Entity("Dominio.Entities.Direccion", b =>
-                {
-                    b.Navigation("Personas");
-                });
-
-            modelBuilder.Entity("Dominio.Entities.Email", b =>
-                {
-                    b.Navigation("Personas");
-                });
-
             modelBuilder.Entity("Dominio.Entities.FormaPago", b =>
                 {
                     b.Navigation("MovimientoInventarios");
@@ -1102,11 +1065,6 @@ namespace Persistencia.Data.Migrations
                     b.Navigation("Personas");
 
                     b.Navigation("UsersRols");
-                });
-
-            modelBuilder.Entity("Dominio.Entities.Telefono", b =>
-                {
-                    b.Navigation("Personas");
                 });
 
             modelBuilder.Entity("Dominio.Entities.TipoDocumento", b =>
