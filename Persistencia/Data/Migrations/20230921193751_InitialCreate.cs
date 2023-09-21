@@ -383,24 +383,11 @@ namespace Persistencia.Data.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     TipoPersonaIdFk = table.Column<int>(type: "int", nullable: false),
                     TipoDocumentoIdFk = table.Column<int>(type: "int", nullable: false),
-                    RolIdFk = table.Column<int>(type: "int", nullable: false),
-                    DireccionId = table.Column<int>(type: "int", nullable: true),
-                    EmailId = table.Column<int>(type: "int", nullable: true),
-                    TelefonoId = table.Column<int>(type: "int", nullable: true)
+                    RolIdFk = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_persona", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_persona_direccion_DireccionId",
-                        column: x => x.DireccionId,
-                        principalTable: "direccion",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_persona_email_EmailId",
-                        column: x => x.EmailId,
-                        principalTable: "email",
-                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_persona_rol_RolIdFk",
                         column: x => x.RolIdFk,
@@ -685,24 +672,9 @@ namespace Persistencia.Data.Migrations
                 column: "TipoMovInventIdFk");
 
             migrationBuilder.CreateIndex(
-                name: "IX_persona_DireccionId",
-                table: "persona",
-                column: "DireccionId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_persona_EmailId",
-                table: "persona",
-                column: "EmailId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_persona_RolIdFk",
                 table: "persona",
                 column: "RolIdFk");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_persona_TelefonoId",
-                table: "persona",
-                column: "TelefonoId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_persona_TipoDocumentoIdFk",
@@ -841,13 +813,6 @@ namespace Persistencia.Data.Migrations
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_persona_telefono_TelefonoId",
-                table: "persona",
-                column: "TelefonoId",
-                principalTable: "telefono",
-                principalColumn: "Id");
-
-            migrationBuilder.AddForeignKey(
                 name: "FK_persona_tipoPersona_TipoPersonaIdFk",
                 table: "persona",
                 column: "TipoPersonaIdFk",
@@ -860,31 +825,17 @@ namespace Persistencia.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_ciudad_departamento_DepartamentoIdFk",
-                table: "ciudad");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_direccion_ciudad_CiudadIdFk",
-                table: "direccion");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_direccion_persona_PersonaIdFk",
-                table: "direccion");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_email_persona_PersonaIdFk",
-                table: "email");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_telefono_persona_PersonaIdFk",
-                table: "telefono");
-
-            migrationBuilder.DropForeignKey(
                 name: "FK_tipoPersona_persona_PersonaId",
                 table: "tipoPersona");
 
             migrationBuilder.DropTable(
                 name: "detalleMovimiento");
+
+            migrationBuilder.DropTable(
+                name: "direccion");
+
+            migrationBuilder.DropTable(
+                name: "email");
 
             migrationBuilder.DropTable(
                 name: "medicamentoReceta");
@@ -896,13 +847,25 @@ namespace Persistencia.Data.Migrations
                 name: "RefreshToken");
 
             migrationBuilder.DropTable(
+                name: "telefono");
+
+            migrationBuilder.DropTable(
                 name: "userRol");
 
             migrationBuilder.DropTable(
                 name: "movimientoInventario");
 
             migrationBuilder.DropTable(
+                name: "ciudad");
+
+            migrationBuilder.DropTable(
+                name: "tipoEmail");
+
+            migrationBuilder.DropTable(
                 name: "producto");
+
+            migrationBuilder.DropTable(
+                name: "tipoTelefono");
 
             migrationBuilder.DropTable(
                 name: "user");
@@ -917,49 +880,31 @@ namespace Persistencia.Data.Migrations
                 name: "tipoMovimientoInventario");
 
             migrationBuilder.DropTable(
+                name: "departamento");
+
+            migrationBuilder.DropTable(
                 name: "inventarioMedicamento");
 
             migrationBuilder.DropTable(
                 name: "marca");
 
             migrationBuilder.DropTable(
-                name: "tipoPresentacion");
-
-            migrationBuilder.DropTable(
-                name: "departamento");
-
-            migrationBuilder.DropTable(
                 name: "pais");
 
             migrationBuilder.DropTable(
-                name: "ciudad");
+                name: "tipoPresentacion");
 
             migrationBuilder.DropTable(
                 name: "persona");
 
             migrationBuilder.DropTable(
-                name: "direccion");
-
-            migrationBuilder.DropTable(
-                name: "email");
-
-            migrationBuilder.DropTable(
                 name: "rol");
-
-            migrationBuilder.DropTable(
-                name: "telefono");
 
             migrationBuilder.DropTable(
                 name: "tipoDocumento");
 
             migrationBuilder.DropTable(
                 name: "tipoPersona");
-
-            migrationBuilder.DropTable(
-                name: "tipoEmail");
-
-            migrationBuilder.DropTable(
-                name: "tipoTelefono");
         }
     }
 }
