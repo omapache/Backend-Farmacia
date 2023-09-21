@@ -3,20 +3,18 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Persistencia.Data.Configuration;
-public class TipoPresentacionConfiguration : IEntityTypeConfiguration<TipoPresentacion>
+public class TipoTelefonoConfiguration : IEntityTypeConfiguration<TipoTelefono>
 {
-    public void Configure(EntityTypeBuilder<TipoPresentacion> builder)
+    public void Configure(EntityTypeBuilder<TipoTelefono> builder)
     {
-        builder.ToTable("tipoPresentacion");
+        builder.ToTable("tipoTelefono");
 
         builder.HasKey(e => e.Id);
-        builder.Property(e => e.Id)
-        .HasMaxLength(3);
 
         builder.Property(e => e.Descripcion)
         .HasColumnName("descripcion")
         .HasColumnType("varchar")
-        .HasMaxLength(256)
+        .HasMaxLength(250)
         .IsRequired();
     }
 }

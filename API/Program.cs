@@ -72,3 +72,6 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+/*dotnet ef database update --project ./Persistencia/ --startup-project ./API/
+ */

@@ -7,13 +7,13 @@ public class CiudadConfiguration : IEntityTypeConfiguration<Ciudad>
 {
     public void Configure(EntityTypeBuilder<Ciudad> builder)
     {
-        builder.ToTable("Ciudad");
+        builder.ToTable("ciudad");
 
         builder.HasKey(d => d.Id);
         builder.Property(d => d.Id);
 
         builder.Property(d => d.NombreCiudad)
-        .HasColumnName("NombreCiudad")
+        .HasColumnName("nombreCiudad")
         .HasColumnType("varchar")
         .IsRequired()
         .HasMaxLength(250);
