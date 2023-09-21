@@ -8,28 +8,7 @@ namespace Persistencia;
 
 public class ApiContextSeed
 {
-    public static async Task SeedRolesAsync(ApiContext context, ILoggerFactory loggerFactory)
-    {
-        try
-        {
-            if (!context.Rols.Any())
-            {
-                var roles = new List<Rol>()
-                        {
-                            new Rol{Id=1, Nombre="Administrador"},
-                            new Rol{Id=2, Nombre="Empleado"},
-                            new Rol{Id=3, Nombre="Cliente"},
-                        };
-                context.Rols.AddRange(roles);
-                await context.SaveChangesAsync();
-            }
-        }
-        catch (Exception ex)
-        {
-            var logger = loggerFactory.CreateLogger<ApiContext>();
-            logger.LogError(ex.Message);
-        }
-    }
+    
     public static async Task SeedAsync(ApiContext context, ILoggerFactory loggerFactory)
     {
         try
@@ -48,30 +27,6 @@ public class ApiContextSeed
                     }
                 }
             }
-             if (!context.TipoPresentaciones.Any())
-            {
-                using (var readerTipoPersonas = new StreamReader(ruta + @"/Data/Csvs/TipoPresentacion.csv"))
-                {
-                    using (var csv = new CsvReader(readerTipoPersonas, CultureInfo.InvariantCulture))
-                    {
-                        var tipos = csv.GetRecords<TipoPresentacion>();
-                        context.TipoPresentaciones.AddRange(tipos);
-                        await context.SaveChangesAsync();
-                    }
-                }
-            } 
-           /*  if (!context.TiposEmails.Any())
-            {
-                using (var reader = new StreamReader(ruta + @"/Data/Csvs/TipoEmail.csv"))
-                {
-                    using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
-                    {
-                        var tipos = csv.GetRecords<TipoEmail>();
-                        context.TiposEmails.AddRange(tipos);
-                        await context.SaveChangesAsync();
-                    }
-                }
-            } */
             if (!context.TiposTelefonos.Any())
             {
                 using (var reader = new StreamReader(ruta + @"/Data/Csvs/TipoTelefono.csv"))
@@ -86,7 +41,7 @@ public class ApiContextSeed
             }
             if (!context.TipoDocumentos.Any())
             {
-                using (var reader = new StreamReader(ruta + @"/Data/Csvs/TipoPresentaciones.csv"))
+                using (var reader = new StreamReader(ruta + @"/Data/Csvs/TipoDocumento.csv"))
                 {
                     using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
                     {
@@ -108,54 +63,6 @@ public class ApiContextSeed
                     }
                 }
             }
-             if (!context.Marcas.Any())
-            {
-                using (var readerTipoPersonas = new StreamReader(ruta + @"/Data/Csvs/Marca.csv"))
-                {
-                    using (var csv = new CsvReader(readerTipoPersonas, CultureInfo.InvariantCulture))
-                    {
-                        var list = csv.GetRecords<Marca>();
-                        context.Marcas.AddRange(list);
-                        await context.SaveChangesAsync();
-                    }
-                }
-            } 
-            if (!context.Paises.Any())
-            {
-                using (var readerTipoPersonas = new StreamReader(ruta + @"/Data/Csvs/Pais.csv"))
-                {
-                    using (var csv = new CsvReader(readerTipoPersonas, CultureInfo.InvariantCulture))
-                    {
-                        var list = csv.GetRecords<Pais>();
-                        context.Paises.AddRange(list);
-                        await context.SaveChangesAsync();
-                    }
-                }
-            }
-            if (!context.TiposEmails.Any())
-            {
-                using (var readerTipoPersonas = new StreamReader(ruta + @"/Data/Csvs/TipoEmail.csv"))
-                {
-                    using (var csv = new CsvReader(readerTipoPersonas, CultureInfo.InvariantCulture))
-                    {
-                        var list = csv.GetRecords<TipoEmail>();
-                        context.TiposEmails.AddRange(list);
-                        await context.SaveChangesAsync();
-                    }
-                }
-            }
-           /*  if (!context.TipoPersonas.Any())
-            {
-                using (var readerTipoPersonas = new StreamReader(ruta + @"/Data/Csvs/TipoPersona.csv"))
-                {
-                    using (var csv = new CsvReader(readerTipoPersonas, CultureInfo.InvariantCulture))
-                    {
-                        var list = csv.GetRecords<TipoPersona>();
-                        context.TipoPersonas.AddRange(list);
-                        await context.SaveChangesAsync();
-                    }
-                }
-            }
             if (!context.TipoPresentaciones.Any())
             {
                 using (var readerTipoPersonas = new StreamReader(ruta + @"/Data/Csvs/TipoPresentacion.csv"))
@@ -168,18 +75,55 @@ public class ApiContextSeed
                     }
                 }
             }
-            if (!context.TiposTelefonos.Any())
+             if (!context.Marcas.Any())
             {
-                using (var readerTipoPersonas = new StreamReader(ruta + @"/Data/Csvs/TipoTelefono.csv"))
+                using (var readerTipoPersonas = new StreamReader(ruta + @"/Data/Csvs/Marca.csv"))
                 {
                     using (var csv = new CsvReader(readerTipoPersonas, CultureInfo.InvariantCulture))
                     {
-                        var list = csv.GetRecords<TipoTelefono>();
-                        context.TiposTelefonos.AddRange(list);
+                        var list = csv.GetRecords<Marca>();
+                        context.Marcas.AddRange(list);
                         await context.SaveChangesAsync();
                     }
                 }
-            } */
+            } 
+           if (!context.Paises.Any())
+            {
+                using (var reader = new StreamReader(ruta + @"/Data/Csvs/Pais.csv"))
+                {
+                    using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
+                    {
+                        var list = csv.GetRecords<Pais>();
+
+                        List<Pais> entidad = new List<Pais>();
+                        foreach (var item in list)
+                        {
+                            entidad.Add(new Pais
+                            {
+                                Id = item.Id,
+                                NombrePais = item.NombrePais,
+                            });
+                        }
+
+                        context.Paises.AddRange(entidad);
+                        await context.SaveChangesAsync();
+                    }
+                }
+            }
+
+            if (!context.TiposEmails.Any())
+            {
+                using (var readerTipoPersonas = new StreamReader(ruta + @"/Data/Csvs/TipoEmail.csv"))
+                {
+                    using (var csv = new CsvReader(readerTipoPersonas, CultureInfo.InvariantCulture))
+                    {
+                        var list = csv.GetRecords<TipoEmail>();
+                        context.TiposEmails.AddRange(list);
+                        await context.SaveChangesAsync();
+                    }
+                }
+            }
+
              if (!context.TipoMovimientoInventarios.Any())
             {
                 using (var readerTipoPersonas = new StreamReader(ruta + @"/Data/Csvs/TipoMovimientoInventario.csv"))
@@ -192,55 +136,7 @@ public class ApiContextSeed
                     }
                 }
             } 
-            if (!context.Personas.Any())
-            {
-                using (var reader = new StreamReader(ruta + @"/Data/Csvs/Persona.csv"))
-                {
-                    using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
-                    {
-                        var list = csv.GetRecords<Persona>();
-
-                        List<Persona> personas = new List<Persona>();
-                        foreach (var item in list)
-                        {
-                            personas.Add(new Persona
-                            {
-                                Id = item.Id,
-                                Nombre = item.Nombre,
-                                TipoPersonaIdFk = item.TipoPersonaIdFk,
-                                TipoDocumentoIdFk = item.TipoDocumentoIdFk,
-                            });
-                        }
-
-                        context.Personas.AddRange(personas);
-                        await context.SaveChangesAsync();
-                    }
-                }
-            }
-            /* if (!context.Ciudades.Any())
-            {
-                using (var reader = new StreamReader(ruta + @"/Data/Csvs/Ciudad.csv"))
-                {
-                    using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
-                    {
-                        var list = csv.GetRecords<Ciudad>();
-
-                        List<Ciudad> entidad = new List<Ciudad>();
-                        foreach (var item in list)
-                        {
-                            entidad.Add(new Ciudad
-                            {
-                                Id = item.Id,
-                                NombreCiudad = item.NombreCiudad,
-                                DepartamentoIdFk = item.DepartamentoIdFk,
-                            });
-                        }
-
-                        context.Ciudades.AddRange(entidad);
-                        await context.SaveChangesAsync();
-                    }
-                }
-            } */
+            
             if (!context.Departamentos.Any())
             {
                 using (var reader = new StreamReader(ruta + @"/Data/Csvs/Departamento.csv"))
@@ -265,6 +161,7 @@ public class ApiContextSeed
                     }
                 }
             }
+
             if (!context.Ciudades.Any())
             {
                 using (var reader = new StreamReader(ruta + @"/Data/Csvs/Ciudad.csv"))
@@ -289,6 +186,33 @@ public class ApiContextSeed
                     }
                 }
             }
+            if (!context.Personas.Any())
+            {
+                using (var reader = new StreamReader(ruta + @"/Data/Csvs/Persona.csv"))
+                {
+                    using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
+                    {
+                        var list = csv.GetRecords<Persona>();
+
+                        List<Persona> entidad = new List<Persona>();
+                        foreach (var item in list)
+                        {
+                            entidad.Add(new Persona
+                            {
+                                Id = item.Id,
+                                Nombre = item.Nombre,
+                                TipoPersonaIdFk = item.TipoPersonaIdFk,
+                                TipoDocumentoIdFk = item.TipoDocumentoIdFk,
+                                RolIdFk = item.RolIdFk,
+                            });
+                        }
+
+                        context.Personas.AddRange(entidad);
+                        await context.SaveChangesAsync();
+                    }
+                }
+            }
+
             if (!context.Direcciones.Any())
             {
                 using (var reader = new StreamReader(ruta + @"/Data/Csvs/Direccion.csv"))
@@ -342,6 +266,7 @@ public class ApiContextSeed
                     }
                 }
             }
+
               if (!context.InventarioMedicamentos.Any())
              {
                  using (var reader = new StreamReader(ruta + @"/Data/Csvs/InventarioMedicamento.csv"))
@@ -394,31 +319,6 @@ public class ApiContextSeed
                     }
                 }
             }
-            /* if (!context.Personas.Any())
-            {
-                using (var reader = new StreamReader(ruta + @"/Data/Csvs/Persona.csv"))
-                {
-                    using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
-                    {
-                        var list = csv.GetRecords<Persona>();
-
-                        List<Persona> entidad = new List<Persona>();
-                        foreach (var item in list)
-                        {
-                            entidad.Add(new Persona
-                            {
-                                Id = item.Id,
-                                Nombre = item.Nombre,
-                                TipoPersonaIdFk = item.TipoPersonaIdFk,
-                                TipoDocumentoIdFk = item.TipoDocumentoIdFk,
-                            });
-                        }
-
-                        context.Personas.AddRange(entidad);
-                        await context.SaveChangesAsync();
-                    }
-                }
-            } */
              if (!context.Productos.Any())
             {
                 using (var reader = new StreamReader(ruta + @"/Data/Csvs/Producto.csv"))
@@ -622,7 +522,7 @@ public class ApiContextSeed
                         await context.SaveChangesAsync();
                     }
                 }
-            } 
+            }  
 
         }
         catch (Exception ex)
@@ -631,6 +531,27 @@ public class ApiContextSeed
             logger.LogError(ex.Message);
         }
     }
-
+    public static async Task SeedRolesAsync(ApiContext context, ILoggerFactory loggerFactory)
+    {
+        try
+        {
+            if (!context.Rols.Any())
+            {
+                var roles = new List<Rol>()
+                        {
+                            new Rol{Id=1, Nombre="Administrador"},
+                            new Rol{Id=2, Nombre="Empleado"},
+                            new Rol{Id=3, Nombre="Cliente"},
+                        };
+                context.Rols.AddRange(roles);
+                await context.SaveChangesAsync();
+            }
+        }
+        catch (Exception ex)
+        {
+            var logger = loggerFactory.CreateLogger<ApiContext>();
+            logger.LogError(ex.Message);
+        }
+    }
     
 }

@@ -8,32 +8,32 @@ public class DireccionConfiguration : IEntityTypeConfiguration<Direccion>
 {
     public void Configure(EntityTypeBuilder<Direccion> builder)
     {
-        builder.ToTable("Direccion");
+        builder.ToTable("direccion");
 
         builder.HasKey(p => p.Id);
 
         builder.Property(p => p.Id);
 
         builder.Property(d => d.CallePrincipal)
-        .HasColumnName("CallePrincipal")
+        .HasColumnName("callePrincipal")
         .HasColumnType("varchar")
         .IsRequired()
         .HasMaxLength(250);
 
         builder.Property(d => d.CalleSecundaria)
-        .HasColumnName("CalleSecundaria")
+        .HasColumnName("calleSecundaria")
         .HasColumnType("varchar")
         .IsRequired()
         .HasMaxLength(250);
 
         builder.Property(d => d.Numero)
-        .HasColumnName("Numero")
+        .HasColumnName("numero")
         .HasColumnType("varchar")
         .IsRequired()
         .HasMaxLength(150);
 
         builder.Property(d => d.Descripcion)
-        .HasColumnName("Descripcion")
+        .HasColumnName("descripcion")
         .HasColumnType("varchar")
         .IsRequired()
         .HasMaxLength(250);

@@ -11,7 +11,7 @@ using Persistencia;
 namespace Persistencia.Data.Migrations
 {
     [DbContext(typeof(ApiContext))]
-    [Migration("20230920221844_InitialCreate")]
+    [Migration("20230921024922_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -35,13 +35,13 @@ namespace Persistencia.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(250)
                         .HasColumnType("varchar")
-                        .HasColumnName("NombreCiudad");
+                        .HasColumnName("nombreCiudad");
 
                     b.HasKey("Id");
 
                     b.HasIndex("DepartamentoIdFk");
 
-                    b.ToTable("Ciudad", (string)null);
+                    b.ToTable("ciudad", (string)null);
                 });
 
             modelBuilder.Entity("Dominio.Entities.Departamento", b =>
@@ -54,7 +54,7 @@ namespace Persistencia.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(250)
                         .HasColumnType("varchar")
-                        .HasColumnName("NombreDepartamento");
+                        .HasColumnName("nombreDepartamento");
 
                     b.Property<int>("PaisIdFk")
                         .HasColumnType("int");
@@ -63,7 +63,7 @@ namespace Persistencia.Data.Migrations
 
                     b.HasIndex("PaisIdFk");
 
-                    b.ToTable("Departamento", (string)null);
+                    b.ToTable("departamento", (string)null);
                 });
 
             modelBuilder.Entity("Dominio.Entities.DetalleMovimiento", b =>
@@ -107,13 +107,13 @@ namespace Persistencia.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(250)
                         .HasColumnType("varchar")
-                        .HasColumnName("CallePrincipal");
+                        .HasColumnName("callePrincipal");
 
                     b.Property<string>("CalleSecundaria")
                         .IsRequired()
                         .HasMaxLength(250)
                         .HasColumnType("varchar")
-                        .HasColumnName("CalleSecundaria");
+                        .HasColumnName("calleSecundaria");
 
                     b.Property<int>("CiudadIdFk")
                         .HasColumnType("int");
@@ -122,13 +122,13 @@ namespace Persistencia.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(250)
                         .HasColumnType("varchar")
-                        .HasColumnName("Descripcion");
+                        .HasColumnName("descripcion");
 
                     b.Property<string>("Numero")
                         .IsRequired()
                         .HasMaxLength(150)
                         .HasColumnType("varchar")
-                        .HasColumnName("Numero");
+                        .HasColumnName("numero");
 
                     b.Property<int>("PersonaIdFk")
                         .HasColumnType("int");
@@ -139,7 +139,7 @@ namespace Persistencia.Data.Migrations
 
                     b.HasIndex("PersonaIdFk");
 
-                    b.ToTable("Direccion", (string)null);
+                    b.ToTable("direccion", (string)null);
                 });
 
             modelBuilder.Entity("Dominio.Entities.Email", b =>
@@ -152,7 +152,7 @@ namespace Persistencia.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(250)
                         .HasColumnType("varchar")
-                        .HasColumnName("Direccion");
+                        .HasColumnName("direccion");
 
                     b.Property<int>("PersonaIdFk")
                         .HasColumnType("int");
@@ -166,7 +166,7 @@ namespace Persistencia.Data.Migrations
 
                     b.HasIndex("TipoEmailIdFk");
 
-                    b.ToTable("Email", (string)null);
+                    b.ToTable("email", (string)null);
                 });
 
             modelBuilder.Entity("Dominio.Entities.FormaPago", b =>
@@ -331,11 +331,11 @@ namespace Persistencia.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(250)
                         .HasColumnType("varchar")
-                        .HasColumnName("NombrePais");
+                        .HasColumnName("nombrePais");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Pais", (string)null);
+                    b.ToTable("pais", (string)null);
                 });
 
             modelBuilder.Entity("Dominio.Entities.Persona", b =>
@@ -521,7 +521,7 @@ namespace Persistencia.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(250)
                         .HasColumnType("varchar")
-                        .HasColumnName("Numero");
+                        .HasColumnName("numero");
 
                     b.Property<int>("PersonaIdFk")
                         .HasColumnType("int");
@@ -535,7 +535,7 @@ namespace Persistencia.Data.Migrations
 
                     b.HasIndex("TipoTelefonoIdFk");
 
-                    b.ToTable("Telefono", (string)null);
+                    b.ToTable("telefono", (string)null);
                 });
 
             modelBuilder.Entity("Dominio.Entities.TipoDocumento", b =>
@@ -569,7 +569,7 @@ namespace Persistencia.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TipoEmail", (string)null);
+                    b.ToTable("tipoEmail", (string)null);
                 });
 
             modelBuilder.Entity("Dominio.Entities.TipoMovimientoInventario", b =>
@@ -643,7 +643,7 @@ namespace Persistencia.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TipoTelefono", (string)null);
+                    b.ToTable("tipoTelefono", (string)null);
                 });
 
             modelBuilder.Entity("Dominio.Entities.User", b =>

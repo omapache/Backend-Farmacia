@@ -7,7 +7,7 @@ public class TipoTelefonoConfiguration : IEntityTypeConfiguration<TipoTelefono>
 {
     public void Configure(EntityTypeBuilder<TipoTelefono> builder)
     {
-        builder.ToTable("TipoTelefono");
+        builder.ToTable("tipoTelefono");
 
         builder.HasKey(e => e.Id);
 

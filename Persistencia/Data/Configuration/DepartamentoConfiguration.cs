@@ -7,13 +7,13 @@ public class DepartamentoConfiguration : IEntityTypeConfiguration<Departamento>
 {
     public void Configure(EntityTypeBuilder<Departamento> builder)
     {
-        builder.ToTable("Departamento");
+        builder.ToTable("departamento");
 
         builder.HasKey(d => d.Id);
         builder.Property(d => d.Id);
 
         builder.Property(d => d.NombreDepartamento)
-        .HasColumnName("NombreDepartamento")
+        .HasColumnName("nombreDepartamento")
         .HasColumnType("varchar")
         .IsRequired()
         .HasMaxLength(250);
