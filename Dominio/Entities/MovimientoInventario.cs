@@ -6,7 +6,7 @@ public class MovimientoInventario : BaseEntity
     public DateOnly FechaVencimiento { get; set; }
     public int FormaPagoIdFk { get; set; }
     public FormaPago FormaPago { get; set; }
-    public int TipoMovimientoIdFk { get; set; }
+    public int TipoMovInventIdFk { get; set; }
     public TipoMovimientoInventario TipoMovimientoInventario { get; set; }
     public int ResponsableIdFk { get; set; }
     public Persona Responsable { get; set; }

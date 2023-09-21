@@ -33,14 +33,17 @@ public class ApiContext : DbContext
     public DbSet<TipoTelefono> TiposTelefonos { get; set; }
     public DbSet<User> Users { get; set; }
     public DbSet<UserRol> UsersRols { get; set; }
-
-
+    public DbSet<MovimientoInventario> MovimientoInventariosResponsable { get; set; }
+    public DbSet<MovimientoInventario> MovimientoInventariosReceptor { get; set; }
+    public DbSet<RecetaMedica> RecetaMedicaDoctor { get; set; }
+    public DbSet<RecetaMedica> RecetaMedicaPaciente { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-
+        
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
     }
 
 }
