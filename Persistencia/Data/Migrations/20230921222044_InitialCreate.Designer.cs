@@ -11,7 +11,7 @@ using Persistencia;
 namespace Persistencia.Data.Migrations
 {
     [DbContext(typeof(ApiContext))]
-    [Migration("20230921193751_InitialCreate")]
+    [Migration("20230921222044_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -586,12 +586,7 @@ namespace Persistencia.Data.Migrations
                         .HasColumnType("varchar")
                         .HasColumnName("descripcion");
 
-                    b.Property<int?>("PersonaId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("PersonaId");
 
                     b.ToTable("tipoPersona", (string)null);
                 });
@@ -953,13 +948,6 @@ namespace Persistencia.Data.Migrations
                     b.Navigation("TipoTelefono");
                 });
 
-            modelBuilder.Entity("Dominio.Entities.TipoPersona", b =>
-                {
-                    b.HasOne("Dominio.Entities.Persona", null)
-                        .WithMany("TipoPersonas")
-                        .HasForeignKey("PersonaId");
-                });
-
             modelBuilder.Entity("Dominio.Entities.User", b =>
                 {
                     b.HasOne("Dominio.Entities.Persona", "Persona")
@@ -1046,8 +1034,6 @@ namespace Persistencia.Data.Migrations
                     b.Navigation("RecetaMedicaPaciente");
 
                     b.Navigation("Telefonos");
-
-                    b.Navigation("TipoPersonas");
                 });
 
             modelBuilder.Entity("Dominio.Entities.Producto", b =>
