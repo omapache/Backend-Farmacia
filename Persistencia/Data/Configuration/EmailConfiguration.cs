@@ -8,10 +8,10 @@ public class EmailConfiguration : IEntityTypeConfiguration<Email>
 {
     public void Configure(EntityTypeBuilder<Email> builder)
     {
-        builder.ToTable("Email");
+        builder.ToTable("email");
 
         builder.Property(d => d.Direccion)
-        .HasColumnName("Direccion")
+        .HasColumnName("direccion")
         .HasColumnType("varchar")
         .IsRequired()
         .HasMaxLength(250);

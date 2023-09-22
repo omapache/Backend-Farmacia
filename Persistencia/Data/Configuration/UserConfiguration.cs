@@ -26,12 +26,6 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
            .HasMaxLength(255)
            .IsRequired();
 
-            builder.Property(p => p.Email)
-            .HasColumnName("email")
-            .HasColumnType("varchar")
-            .HasMaxLength(100)
-            .IsRequired();
-
             builder
            .HasMany(p => p.Rols)
            .WithMany(r => r.Users)
@@ -58,6 +52,8 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             builder.HasMany(p => p.RefreshTokens)
             .WithOne(p => p.User)
             .HasForeignKey(p => p.UserId);
+
+            
         }
 
     }

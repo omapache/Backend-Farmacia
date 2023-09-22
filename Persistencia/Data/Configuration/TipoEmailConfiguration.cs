@@ -7,7 +7,7 @@ public class TipoEmailConfiguration : IEntityTypeConfiguration<TipoEmail>
 {
     public void Configure(EntityTypeBuilder<TipoEmail> builder)
     {
-        builder.ToTable("TipoEmail");
+        builder.ToTable("tipoEmail");
 
         builder.HasKey(e => e.Id);
 
