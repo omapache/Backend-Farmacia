@@ -15,14 +15,12 @@ public class TipoEmailRepository : GenericRepository<TipoEmail>, ITipoEmail
     public override async Task<IEnumerable<TipoEmail>> GetAllAsync()
     {
         return await _context.TiposEmails
-            .Include(p => p.Descripcion)
             .ToListAsync();
     }
 
     public override async Task<TipoEmail> GetByIdAsync(int id)
     {
         return await _context.TiposEmails
-        .Include(p => p.Descripcion)
         .FirstOrDefaultAsync(p =>  p.Id == id);
     }
 }

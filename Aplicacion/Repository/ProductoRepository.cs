@@ -16,14 +16,16 @@ public class ProductoRepository : GenericRepository<Producto>, IProducto
     public override async Task<IEnumerable<Producto>> GetAllAsync()
     {
         return await _context.Productos
-            .Include(p => p.ProductoProveedores)
+            .Include(p => p.InventarioMedicamento)
+            .Include(p => p.Marca)
             .ToListAsync();
     }
 
     public override async Task<Producto> GetByIdAsync(int id)
     {
         return await _context.Productos
-        .Include(p => p.ProductoProveedores)
+        .Include(p => p.InventarioMedicamento)
+        .Include(p => p.Marca)
         .FirstOrDefaultAsync(p =>  p.Id == id);
     }
 }

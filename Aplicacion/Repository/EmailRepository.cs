@@ -17,12 +17,14 @@ public class EmailRepository : GenericRepository<Email>, IEmail
     public override async Task<IEnumerable<Email>> GetAllAsync()
     {
         return await _context.Emails
-            .ToListAsync();
+        .Include(p => p.Persona)
+        .ToListAsync();
     }
 
     public override async Task<Email> GetByIdAsync(int id)
     {
         return await _context.Emails
+        .Include(p => p.Persona)
         .FirstOrDefaultAsync(p =>  p.Id == id);
     }
 }

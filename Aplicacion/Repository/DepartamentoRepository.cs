@@ -17,14 +17,14 @@ public class DepartamentoRepository : GenericRepository<Departamento>, IDepartam
     public override async Task<IEnumerable<Departamento>> GetAllAsync()
     {
         return await _context.Departamentos
-            .Include(p => p.Ciudades)
+            .Include(p => p.Pais)
             .ToListAsync();
     }
 
     public override async Task<Departamento> GetByIdAsync(int id)
     {
         return await _context.Departamentos
-        .Include(p => p.Ciudades)
+        .Include(p => p.Pais)
         .FirstOrDefaultAsync(p =>  p.Id == id);
     }
 }

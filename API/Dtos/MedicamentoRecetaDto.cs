@@ -3,6 +3,6 @@ namespace API.Dtos;
     {
         public int Id { get; set; }
         public int RecetaIdFk { get; set; }
-        public int IventMedicamentoIdFk { get; set; }
+        public InventarioMedicamentoDto InventarioMedicamento { get; set; }
         public string Descripcion { get; set; }
     }

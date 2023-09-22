@@ -17,14 +17,12 @@ public class PaisRepository : GenericRepository<Pais>, IPais
     public override async Task<IEnumerable<Pais>> GetAllAsync()
     {
         return await _context.Paises
-            .Include(p => p.Departamentos)
             .ToListAsync();
     }
 
     public override async Task<Pais> GetByIdAsync(int id)
     {
         return await _context.Paises
-        .Include(p => p.Departamentos)
         .FirstOrDefaultAsync(p =>  p.Id == id);
     }
 }
