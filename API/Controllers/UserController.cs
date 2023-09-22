@@ -26,18 +26,6 @@ public class UserController : BaseApiController
         var entidad = await unitofwork.Users.GetAllAsync();
         return mapper.Map<List<UserDto>>(entidad);
     }
-    /* [HttpGet]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-
-    public async Task<ActionResult<Pager<PaisxDepDto>>> Get11([FromQuery] Params paisParams)
-    {
-        var pais = await unitofwork.Paises.GetAllAsync(paisParams.PageIndex, paisParams.PageSize, paisParams.Search);
-        var lstPaisesDto = mapper.Map<List<PaisxDepDto>>(pais.registros);
-        return new Pager<PaisxDepDto>(lstPaisesDto, pais.totalRegistros, paisParams.PageIndex, paisParams.PageSize, paisParams.Search);
-    } */
-
-
     [HttpGet("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -89,15 +77,15 @@ public class UserController : BaseApiController
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
 
-    public async Task<ActionResult<UserDto>> Put(int id, [FromBody]UserDto UserDto){
-        if(UserDto == null)
+    public async Task<ActionResult<UserDto>> Put(int id, [FromBody]UserDto entidadDto){
+        if(entidadDto == null)
         {
             return NotFound();
         }
-        var entidad = this.mapper.Map<User>(UserDto);
+        var entidad = this.mapper.Map<User>(entidadDto);
         unitofwork.Users.Update(entidad);
         await unitofwork.SaveAsync();
-        return UserDto;
+        return entidadDto;
     }
     [HttpDelete("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]

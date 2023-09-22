@@ -29,4 +29,15 @@ public class UserRepository : GenericRepository<User>, IUser
             .Include(u => u.Persona)
             .FirstOrDefaultAsync(u => u.Username.ToLower() == username.ToLower());
     }
+    public override async Task<IEnumerable<User>> GetAllAsync()
+    {
+        return await _context.Users
+            .ToListAsync();
+    }
+
+    public override async Task<User> GetByIdAsync(int id)
+    {
+        return await _context.Users
+        .FirstOrDefaultAsync(p =>  p.Id == id);
+    }
 }
