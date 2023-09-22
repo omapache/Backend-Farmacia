@@ -7,6 +7,7 @@ public class Persona : BaseEntity
     public TipoPersona TipoPersona { get; set; }
     public int TipoDocumentoIdFk { get; set; }
     public TipoDocumento TipoDocumento { get; set; }
+    public string NumeroDocumento { get; set; }
     public int RolIdFk { get; set; }
     public Rol Rol { get; set; }
     public ICollection<Producto> Productos { get; set; } = new HashSet<Producto>();

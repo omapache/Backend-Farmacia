@@ -197,6 +197,8 @@ namespace Persistencia.Data.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     TipoPersonaIdFk = table.Column<int>(type: "int", nullable: false),
                     TipoDocumentoIdFk = table.Column<int>(type: "int", nullable: false),
+                    numeroDocumento = table.Column<string>(type: "varchar(150)", maxLength: 150, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
                     RolIdFk = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>

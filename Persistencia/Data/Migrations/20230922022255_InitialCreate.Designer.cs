@@ -11,7 +11,7 @@ using Persistencia;
 namespace Persistencia.Data.Migrations
 {
     [DbContext(typeof(ApiContext))]
-    [Migration("20230922020904_InitialCreate")]
+    [Migration("20230922022255_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -349,6 +349,12 @@ namespace Persistencia.Data.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("varchar")
                         .HasColumnName("nombre");
+
+                    b.Property<string>("NumeroDocumento")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("varchar")
+                        .HasColumnName("numeroDocumento");
 
                     b.Property<int>("RolIdFk")
                         .HasColumnType("int");

@@ -347,6 +347,12 @@ namespace Persistencia.Data.Migrations
                         .HasColumnType("varchar")
                         .HasColumnName("nombre");
 
+                    b.Property<string>("NumeroDocumento")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("varchar")
+                        .HasColumnName("numeroDocumento");
+
                     b.Property<int>("RolIdFk")
                         .HasColumnType("int");
 
