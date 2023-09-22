@@ -7,5 +7,4 @@ public class Telefono : BaseEntity
     public TipoTelefono TipoTelefono { get; set; }
     public int PersonaIdFk { get; set; }
     public Persona Persona { get; set; }
-    public ICollection<Persona> Personas { get; set; }
 }
