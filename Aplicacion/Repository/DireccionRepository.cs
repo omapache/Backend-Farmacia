@@ -17,12 +17,17 @@ public class DireccionRepository : GenericRepository<Direccion>, IDireccion
     public override async Task<IEnumerable<Direccion>> GetAllAsync()
     {
         return await _context.Direcciones
+        .Include(p => p.Ciudad)
+        .Include(p => p.Persona)
             .ToListAsync();
     }
 
     public override async Task<Direccion> GetByIdAsync(int id)
     {
         return await _context.Direcciones
+        .Include(p => p.Ciudad)
+        .Include(p => p.Persona)
+
         .FirstOrDefaultAsync(p =>  p.Id == id);
     }
 }

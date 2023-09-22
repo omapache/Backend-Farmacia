@@ -15,14 +15,12 @@ public class TipoMovimientoInventarioRepository : GenericRepository<TipoMovimien
     public override async Task<IEnumerable<TipoMovimientoInventario>> GetAllAsync()
     {
         return await _context.TipoMovimientoInventarios
-            .Include(p => p.MovimientoInventarios)
             .ToListAsync();
     }
 
     public override async Task<TipoMovimientoInventario> GetByIdAsync(int id)
     {
         return await _context.TipoMovimientoInventarios
-        .Include(p => p.MovimientoInventarios)
         .FirstOrDefaultAsync(p =>  p.Id == id);
     }
 }

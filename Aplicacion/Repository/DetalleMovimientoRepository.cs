@@ -16,12 +16,16 @@ public class DetalleMovimientoRepository : GenericRepository<DetalleMovimiento>,
     public override async Task<IEnumerable<DetalleMovimiento>> GetAllAsync()
     {
         return await _context.DetalleMovimientos
+            .Include(p => p.InventarioMedicamento)
+            .Include(p => p.MovimientoInventario)
             .ToListAsync();
     }
 
     public override async Task<DetalleMovimiento> GetByIdAsync(int id)
     {
         return await _context.DetalleMovimientos
+        .Include(p => p.InventarioMedicamento)
+        .Include(p => p.MovimientoInventario)
         .FirstOrDefaultAsync(p =>  p.Id == id);
     }
 }

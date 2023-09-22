@@ -15,14 +15,12 @@ public class TipoPresentacionRepository : GenericRepository<TipoPresentacion>, I
     public override async Task<IEnumerable<TipoPresentacion>> GetAllAsync()
     {
         return await _context.TipoPresentaciones
-            .Include(p => p.DescripcionMedicamentos)
             .ToListAsync();
     }
 
     public override async Task<TipoPresentacion> GetByIdAsync(int id)
     {
         return await _context.TipoPresentaciones
-        .Include(p => p.DescripcionMedicamentos)
         .FirstOrDefaultAsync(p =>  p.Id == id);
     }
 }

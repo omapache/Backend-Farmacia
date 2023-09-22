@@ -7,6 +7,6 @@ public class DireccionDto
     public string CalleSecundaria { get; set; }
     public string Numero { get; set; }
     public string Descripcion { get; set; }
-    public int CiudadIdFk { get; set; }
-    public int PersonaIdFk { get; set; }
+    public CiudadDto Ciudad { get; set; }
+    public PersonaDto Persona{ get; set; }
 }

@@ -16,14 +16,12 @@ public class MarcaRepository : GenericRepository<Marca>, IMarca
     public override async Task<IEnumerable<Marca>> GetAllAsync()
     {
         return await _context.Marcas
-            .Include(p => p.Productos)
             .ToListAsync();
     }
 
     public override async Task<Marca> GetByIdAsync(int id)
     {
         return await _context.Marcas
-        .Include(p => p.Productos)
         .FirstOrDefaultAsync(p =>  p.Id == id);
     }
 }

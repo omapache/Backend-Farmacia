@@ -16,14 +16,16 @@ public class RecetaMedicaRepository: GenericRepository<RecetaMedica>, IRecetaMed
     public override async Task<IEnumerable<RecetaMedica>> GetAllAsync()
     {
         return await _context.RecetaMedicas
-            .Include(p => p.MovimientoInventario)
+            .Include(p => p.Doctor)
+            .Include(p => p.Paciente)
             .ToListAsync();
     }
 
     public override async Task<RecetaMedica> GetByIdAsync(int id)
     {
         return await _context.RecetaMedicas
-        .Include(p => p.MovimientoInventario)
+        .Include(p => p.Doctor)
+        .Include(p => p.Paciente)
         .FirstOrDefaultAsync(p =>  p.Id == id);
     }
 }

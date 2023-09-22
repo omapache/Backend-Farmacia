@@ -15,14 +15,12 @@ public class TipoTelefonoRepository : GenericRepository<TipoTelefono>, ITipoTele
     public override async Task<IEnumerable<TipoTelefono>> GetAllAsync()
     {
         return await _context.TiposTelefonos
-            .Include(p => p.Telefonos)
             .ToListAsync();
     }
 
     public override async Task<TipoTelefono> GetByIdAsync(int id)
     {
         return await _context.TiposTelefonos
-        .Include(p => p.Telefonos)
         .FirstOrDefaultAsync(p =>  p.Id == id);
     }
 }
