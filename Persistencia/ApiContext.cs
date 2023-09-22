@@ -19,9 +19,8 @@ public class ApiContext : DbContext
     public DbSet<MovimientoInventario> MovimientoInventarios { get; set; }
     public DbSet<Pais> Paises { get; set; }
     public DbSet<Persona> Personas { get; set; }
-    public DbSet<Producto> Productos { get; set; }
     public DbSet<ProductoProveedor> ProductoProveedores { get; set; }
-
+    public DbSet<Producto> Productos { get; set; }
     public DbSet<RecetaMedica> RecetaMedicas { get; set; }
     public DbSet<Rol> Rols { get; set; }
     public DbSet<Telefono> Telefonos { get; set; }

@@ -9,4 +9,5 @@ public class RecetaMedica : BaseEntity
     public DateOnly FechaCreacion { get; set; }
     public string Descripcion { get; set; }
     public virtual MovimientoInventario MovimientoInventario { get; set; }
+    public ICollection<MedicamentoReceta> MedicamentoRecetas { get; set; }
 }
