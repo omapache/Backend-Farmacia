@@ -1,4 +1,4 @@
-Id,Nombre,Stock,FechaExpiracion,PersonaIdFk,TipoPresentacionIdFk
-1,Aspirina,1000,10/2023,1,1
-2,Ibuprofeno,500,09/2023,2,2
-3,Paracetamol,800,11/2023,3,3
+Id,Stock,FechaExpiracion,PersonaIdFk,DescripcionMedicamentoIdFk
+1,1000,10/2023,1,1
+2,500,09/2023,2,2
+3,800,11/2023,3,3

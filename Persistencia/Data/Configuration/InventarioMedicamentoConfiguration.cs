@@ -13,12 +13,6 @@ public class InventarioMedicamentoConfiguration : IEntityTypeConfiguration<Inven
         builder.Property(e => e.Id)
         .HasMaxLength(3);
 
-        builder.Property(e => e.Nombre)
-        .HasColumnName("nombre")
-        .HasColumnType("varchar")
-        .HasMaxLength(256)
-        .IsRequired();
-
         builder.Property(e => e.Stock)
         .HasColumnName("stock")
         .HasColumnType("int")
@@ -35,8 +29,8 @@ public class InventarioMedicamentoConfiguration : IEntityTypeConfiguration<Inven
         .WithMany(p => p.InventarioMedicamentos)
         .HasForeignKey(p => p.PersonaIdFk);
 
-        builder.HasOne(p => p.TipoPresentacion)
+        builder.HasOne(p => p.DescripcionMedicamento)
         .WithMany(p => p.InventarioMedicamentos)
-        .HasForeignKey(p => p.TipoPresentacionIdFk);
+        .HasForeignKey(p => p.DescripcionMedicamentoIdFk);
     }
 }

@@ -1,0 +1,9 @@
+Id,Nombre,CantidadMg,Descripcion,TipoPresentacionIdFk
+1,Aspirina,500 mg,Medicamento para aliviar el dolor y la fiebre.,1
+2,Ibuprofeno,200 mg,Analgésico y antiinflamatorio.,2
+3,Paracetamol,1000 mg,Para reducir la fiebre y aliviar el dolor.,3
+4,Amoxicilina,500 mg,Un antibiótico para tratar infecciones.,1
+5,Omeprazol,20 mg,Medicamento para reducir la acidez estomacal.,2
+6,Vitamina C,1000 mg,Suplemento vitamínico para fortalecer el sistema inmunológico.,3
+7,Loratadina,10 mg,Antihistamínico para aliviar alergias.,1
+8,Pastillas de menta,,Pastillas de menta para refrescar el aliento.,2

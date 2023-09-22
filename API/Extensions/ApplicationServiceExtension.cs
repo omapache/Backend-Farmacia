@@ -1,7 +1,9 @@
 using System.Text;
 using API.Helpers;
+using API.Services;
 using Aplicacion.UnitOfWork;
 using AspNetCoreRateLimit;
+using Dominio.Entities;
 using Dominio.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -23,8 +25,8 @@ public static class ApplicationServiceExtension
 
     public static void AddAplicacionServices(this IServiceCollection services)
         {
-/*             services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
-            services.AddScoped<IUserService, UserService>(); */
+            services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
+            services.AddScoped<IUserService, UserService>(); 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
         }
 

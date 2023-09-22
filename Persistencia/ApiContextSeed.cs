@@ -114,7 +114,32 @@ public class ApiContextSeed
                     }
                 }
             } 
-            
+            if (!context.DescripcionMedicamentos.Any())
+            {
+                using (var reader = new StreamReader(ruta + @"/Data/Csvs/DescripcionMedicamento.csv"))
+                {
+                    using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
+                    {
+                        var list = csv.GetRecords<DescripcionMedicamento>();
+
+                        List<DescripcionMedicamento> entidad = new List<DescripcionMedicamento>();
+                        foreach (var item in list)
+                        {
+                            entidad.Add(new DescripcionMedicamento
+                            {
+                                Id = item.Id,
+                                Nombre = item.Nombre,
+                                CantidadMg = item.CantidadMg,
+                                Descripcion = item.Descripcion,
+                                TipoPresentacionIdFk = item.TipoPresentacionIdFk,
+                            });
+                        }
+
+                        context.DescripcionMedicamentos.AddRange(entidad);
+                        await context.SaveChangesAsync();
+                    }
+                }
+            }
             if (!context.Paises.Any())
             {
                 using (var reader = new StreamReader(ruta + @"/Data/Csvs/Pais.csv"))
@@ -308,12 +333,11 @@ public class ApiContextSeed
                         {
                             entidad.Add(new InventarioMedicamento
                             {
-                               Id = item.Id,
-                                 Nombre = item.Nombre,
+                                Id = item.Id,
                                  Stock = item.Stock,
                                  FechaExpiracion = item.FechaExpiracion,
                                  PersonaIdFk = item.PersonaIdFk,
-                                 TipoPresentacionIdFk = item.TipoPresentacionIdFk,
+                                 DescripcionMedicamentoIdFk = item.DescripcionMedicamentoIdFk,
                             });
                         }
 
@@ -323,36 +347,7 @@ public class ApiContextSeed
 
                 }
             }
-            if (!context.MedicamentoRecetas.Any())
-            {
-                using (var reader = new StreamReader(ruta + @"/Data/Csvs/MedicamentoReceta.csv"))
-                {
-                    using (var csv = new CsvReader(reader, new CsvConfiguration(CultureInfo.InvariantCulture)
-                    {
-                        HeaderValidated = null, // Esto deshabilita la validación de encabezados
-                        MissingFieldFound = null
-                    }))
-                    {
-                        // Resto de tu código para leer y procesar el archivo CSV
-                        var list = csv.GetRecords<MedicamentoReceta>();
-                        List<MedicamentoReceta> entidad = new List<MedicamentoReceta>();
-                        foreach (var item in list)
-                        {
-                            entidad.Add(new MedicamentoReceta
-                            {
-                               Id = item.Id,
-                                RecetaIdFk = item.RecetaIdFk,
-                                IventMedicamentoIdFk = item.IventMedicamentoIdFk,
-                                Descripcion = item.Descripcion,
-                            });
-                        }
-
-                        context.MedicamentoRecetas.AddRange(entidad);
-                        await context.SaveChangesAsync();
-                    }
-
-                }
-            }
+            
             if (!context.Productos.Any())
             {
                 using (var reader = new StreamReader(ruta + @"/Data/Csvs/Producto.csv"))
@@ -599,7 +594,38 @@ public class ApiContextSeed
 
                 }
             }
+            if (!context.MedicamentoRecetas.Any())
+            {
+                using (var reader = new StreamReader(ruta + @"/Data/Csvs/MedicamentoReceta.csv"))
+                {
+                    using (var csv = new CsvReader(reader, new CsvConfiguration(CultureInfo.InvariantCulture)
+                    {
+                        HeaderValidated = null, // Esto deshabilita la validación de encabezados
+                        MissingFieldFound = null
+                    }))
+                    {
+                        // Resto de tu código para leer y procesar el archivo CSV
+                        var list = csv.GetRecords<MedicamentoReceta>();
+                        List<MedicamentoReceta> entidad = new List<MedicamentoReceta>();
+                        foreach (var item in list)
+                        {
+                            entidad.Add(new MedicamentoReceta
+                            {
+                               Id = item.Id,
+                                RecetaIdFk = item.RecetaIdFk,
+                                IventMedicamentoIdFk = item.IventMedicamentoIdFk,
+                                Descripcion = item.Descripcion,
+                            });
+                        }
+
+                        context.MedicamentoRecetas.AddRange(entidad);
+                        await context.SaveChangesAsync();
+                    }
+
+                }
+            }
         }
+        
         catch (Exception ex)
         {
             var logger = loggerFactory.CreateLogger<ApiContext>();
@@ -616,7 +642,10 @@ public class ApiContextSeed
                         {
                             new Rol{Id=1, Nombre="Administrador"},
                             new Rol{Id=2, Nombre="Empleado"},
-                            new Rol{Id=3, Nombre="Cliente"},
+                            new Rol{Id=3, Nombre="Proveedor"},
+                            new Rol{Id=4, Nombre="Doctor"},
+                            new Rol{Id=5, Nombre="Paciente"},
+                            new Rol{Id=6, Nombre="Vendedor"}
                         };
                 context.Rols.AddRange(roles);
                 await context.SaveChangesAsync();

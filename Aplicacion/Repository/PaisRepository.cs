@@ -1,5 +1,6 @@
 using Dominio.Entities;
 using Dominio.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using Persistencia;
 
 namespace Aplicacion.Repository;
@@ -13,17 +14,15 @@ public class PaisRepository : GenericRepository<Pais>, IPais
         _context = context;
     }
 
-    /* public override async Task<IEnumerable<Pais>> GetAllAsync()
+    public override async Task<IEnumerable<Pais>> GetAllAsync()
     {
-        return await _context.
-            .Include(p => p.)
+        return await _context.Paises
             .ToListAsync();
     }
 
     public override async Task<Pais> GetByIdAsync(int id)
     {
-        return await _context.
-        .Include(p => p.)
+        return await _context.Paises
         .FirstOrDefaultAsync(p =>  p.Id == id);
-    } */
+    }
 }
