@@ -11,7 +11,7 @@ using Persistencia;
 namespace Persistencia.Data.Migrations
 {
     [DbContext(typeof(ApiContext))]
-    [Migration("20230921222044_InitialCreate")]
+    [Migration("20230922020904_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -632,20 +632,11 @@ namespace Persistencia.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar")
-                        .HasColumnName("email");
-
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("varchar")
                         .HasColumnName("password");
-
-                    b.Property<int?>("PersonaId")
-                        .HasColumnType("int");
 
                     b.Property<int>("PersonaIdFk")
                         .HasColumnType("int");
@@ -658,7 +649,8 @@ namespace Persistencia.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PersonaId");
+                    b.HasIndex("PersonaIdFk")
+                        .IsUnique();
 
                     b.ToTable("user", (string)null);
                 });
@@ -951,8 +943,10 @@ namespace Persistencia.Data.Migrations
             modelBuilder.Entity("Dominio.Entities.User", b =>
                 {
                     b.HasOne("Dominio.Entities.Persona", "Persona")
-                        .WithMany()
-                        .HasForeignKey("PersonaId");
+                        .WithOne("User")
+                        .HasForeignKey("Dominio.Entities.User", "PersonaIdFk")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Persona");
                 });
@@ -1034,6 +1028,8 @@ namespace Persistencia.Data.Migrations
                     b.Navigation("RecetaMedicaPaciente");
 
                     b.Navigation("Telefonos");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Dominio.Entities.Producto", b =>

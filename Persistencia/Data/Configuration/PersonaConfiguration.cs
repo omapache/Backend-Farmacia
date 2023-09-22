@@ -46,5 +46,9 @@ public class PersonaConfiguration : IEntityTypeConfiguration<Persona>
             {
               j.HasKey(t => new {t.ProveedorIdFk, t.ProductoIdFk});
             });
+
+        builder.HasOne(e => e.User)
+        .WithOne(p => p.Persona)
+        .HasForeignKey<User>(p => p.PersonaIdFk);
     }
 }

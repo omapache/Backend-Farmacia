@@ -21,4 +21,6 @@ public class Persona : BaseEntity
     public ICollection<RecetaMedica> RecetaMedicaDoctor { get; set; }
     public ICollection<RecetaMedica> RecetaMedicaPaciente { get; set; }
 
+    public virtual User User{ get; set; }
+
 }

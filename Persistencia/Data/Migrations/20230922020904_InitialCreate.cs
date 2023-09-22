@@ -375,19 +375,17 @@ namespace Persistencia.Data.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     password = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    email = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    PersonaIdFk = table.Column<int>(type: "int", nullable: false),
-                    PersonaId = table.Column<int>(type: "int", nullable: true)
+                    PersonaIdFk = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_user", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_user_persona_PersonaId",
-                        column: x => x.PersonaId,
+                        name: "FK_user_persona_PersonaIdFk",
+                        column: x => x.PersonaIdFk,
                         principalTable: "persona",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -780,9 +778,10 @@ namespace Persistencia.Data.Migrations
                 column: "TipoTelefonoIdFk");
 
             migrationBuilder.CreateIndex(
-                name: "IX_user_PersonaId",
+                name: "IX_user_PersonaIdFk",
                 table: "user",
-                column: "PersonaId");
+                column: "PersonaIdFk",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_userRol_RolIdFk",
