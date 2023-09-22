@@ -16,7 +16,5 @@ public class TipoPersonaConfiguration : IEntityTypeConfiguration<TipoPersona>
         .HasColumnType("varchar")
         .HasMaxLength(256)
         .IsRequired();
-
-
     }
 }

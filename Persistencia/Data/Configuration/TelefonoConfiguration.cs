@@ -8,10 +8,10 @@ public class TelefonoConfiguration : IEntityTypeConfiguration<Telefono>
 {
     public void Configure(EntityTypeBuilder<Telefono> builder)
     {
-        builder.ToTable("Telefono");
+        builder.ToTable("telefono");
 
         builder.Property(d => d.Numero)
-        .HasColumnName("Numero")
+        .HasColumnName("numero")
         .HasColumnType("varchar")
         .IsRequired()
         .HasMaxLength(250);
