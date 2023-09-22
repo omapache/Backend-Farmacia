@@ -642,7 +642,10 @@ public class ApiContextSeed
                         {
                             new Rol{Id=1, Nombre="Administrador"},
                             new Rol{Id=2, Nombre="Empleado"},
-                            new Rol{Id=3, Nombre="Cliente"},
+                            new Rol{Id=3, Nombre="Proveedor"},
+                            new Rol{Id=4, Nombre="Doctor"},
+                            new Rol{Id=5, Nombre="Paciente"},
+                            new Rol{Id=6, Nombre="Vendedor"}
                         };
                 context.Rols.AddRange(roles);
                 await context.SaveChangesAsync();
