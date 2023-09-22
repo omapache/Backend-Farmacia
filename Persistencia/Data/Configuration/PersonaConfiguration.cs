@@ -18,6 +18,12 @@ public class PersonaConfiguration : IEntityTypeConfiguration<Persona>
         .HasMaxLength(100)
         .IsRequired();
 
+        builder.Property(e => e.NumeroDocumento)
+        .HasColumnName("numeroDocumento")
+        .HasColumnType("varchar")
+        .HasMaxLength(150)
+        .IsRequired();
+
         builder.HasOne(p => p.TipoDocumento)
         .WithMany(p => p.Personas)
         .HasForeignKey(p => p.TipoDocumentoIdFk);
@@ -46,5 +52,9 @@ public class PersonaConfiguration : IEntityTypeConfiguration<Persona>
             {
               j.HasKey(t => new {t.ProveedorIdFk, t.ProductoIdFk});
             });
+
+        builder.HasOne(e => e.User)
+        .WithOne(p => p.Persona)
+        .HasForeignKey<User>(p => p.PersonaIdFk);
     }
 }
