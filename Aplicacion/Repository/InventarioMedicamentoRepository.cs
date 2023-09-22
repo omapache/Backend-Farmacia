@@ -16,16 +16,16 @@ public class InventarioMedicamentoRepository : GenericRepository<InventarioMedic
     public override async Task<IEnumerable<InventarioMedicamento>> GetAllAsync()
     {
         return await _context.InventarioMedicamentos
-            .Include(p => p.DetalleMovimientos)
-            .Include(p => p.Productos)
+            .Include(p => p.Persona)
+            .Include(p => p.DescripcionMedicamento)
             .ToListAsync();
     }
 
     public override async Task<InventarioMedicamento> GetByIdAsync(int id)
     {
         return await _context.InventarioMedicamentos
-        .Include(p => p.DetalleMovimientos)
-        .Include(p => p.Productos)
+        .Include(p => p.Persona)
+        .Include(p => p.DescripcionMedicamento)
         .FirstOrDefaultAsync(p =>  p.Id == id);
     }
 }
