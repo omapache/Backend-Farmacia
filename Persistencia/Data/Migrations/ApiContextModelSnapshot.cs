@@ -778,7 +778,7 @@ namespace Persistencia.Data.Migrations
                         .HasForeignKey("InventarioMedicamentoId");
 
                     b.HasOne("Dominio.Entities.RecetaMedica", "RecetaMedica")
-                        .WithMany()
+                        .WithMany("MedicamentoRecetas")
                         .HasForeignKey("RecetaMedicaId");
 
                     b.Navigation("InventarioMedicamento");
@@ -1042,6 +1042,8 @@ namespace Persistencia.Data.Migrations
 
             modelBuilder.Entity("Dominio.Entities.RecetaMedica", b =>
                 {
+                    b.Navigation("MedicamentoRecetas");
+
                     b.Navigation("MovimientoInventario");
                 });
 

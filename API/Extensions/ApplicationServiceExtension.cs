@@ -4,7 +4,6 @@ using Aplicacion.UnitOfWork;
 using AspNetCoreRateLimit;
 using Dominio.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.IdentityModel.Tokens;

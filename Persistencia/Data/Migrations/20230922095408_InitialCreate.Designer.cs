@@ -11,7 +11,7 @@ using Persistencia;
 namespace Persistencia.Data.Migrations
 {
     [DbContext(typeof(ApiContext))]
-    [Migration("20230922022255_InitialCreate")]
+    [Migration("20230922095408_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -781,7 +781,7 @@ namespace Persistencia.Data.Migrations
                         .HasForeignKey("InventarioMedicamentoId");
 
                     b.HasOne("Dominio.Entities.RecetaMedica", "RecetaMedica")
-                        .WithMany()
+                        .WithMany("MedicamentoRecetas")
                         .HasForeignKey("RecetaMedicaId");
 
                     b.Navigation("InventarioMedicamento");
@@ -1045,6 +1045,8 @@ namespace Persistencia.Data.Migrations
 
             modelBuilder.Entity("Dominio.Entities.RecetaMedica", b =>
                 {
+                    b.Navigation("MedicamentoRecetas");
+
                     b.Navigation("MovimientoInventario");
                 });
 
