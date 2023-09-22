@@ -17,7 +17,6 @@ public class RecetaMedicaRepository: GenericRepository<RecetaMedica>, IRecetaMed
     {
         return await _context.RecetaMedicas
             .Include(p => p.MovimientoInventario)
-            .Include(p => p.MedicamentoRecetas)
             .ToListAsync();
     }
 
@@ -25,7 +24,6 @@ public class RecetaMedicaRepository: GenericRepository<RecetaMedica>, IRecetaMed
     {
         return await _context.RecetaMedicas
         .Include(p => p.MovimientoInventario)
-        .Include(p => p.MedicamentoRecetas)
         .FirstOrDefaultAsync(p =>  p.Id == id);
     }
 }

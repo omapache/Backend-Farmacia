@@ -8,15 +8,13 @@ using Microsoft.AspNetCore.Mvc;
 namespace API.Controllers;
 public class PersonaController : BaseApiController
 {
-    private readonly IUserService _userService;
     private readonly IUnitOfWork unitofwork;
     private readonly  IMapper mapper;
 
-    public PersonaController(IUserService userService, IUnitOfWork unitofwork, IMapper mapper)
+    public PersonaController( IUnitOfWork unitofwork, IMapper mapper)
     {
         this.unitofwork = unitofwork;
         this.mapper = mapper;
-        _userService = userService;
     }
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]

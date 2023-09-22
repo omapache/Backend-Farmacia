@@ -1,5 +1,4 @@
 using API.Dtos;
-using API.Services;
 using AutoMapper;
 using Dominio.Entities;
 using Dominio.Interfaces;
@@ -8,23 +7,21 @@ using Microsoft.AspNetCore.Mvc;
 namespace API.Controllers;
 public class FormaPagoController : BaseApiController
 {
-    private readonly IUserService _userService;
     private readonly IUnitOfWork unitofwork;
     private readonly  IMapper mapper;
 
-    public FormaPagoController(IUserService userService, IUnitOfWork unitofwork, IMapper mapper)
+    public FormaPagoController( IUnitOfWork unitofwork, IMapper mapper)
     {
         this.unitofwork = unitofwork;
         this.mapper = mapper;
-        _userService = userService;
     }
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<IEnumerable<FormaPagoDto>>> Get()
     {
-        var entidad = await unitofwork.FormaPagos.GetAllAsync();
-        return mapper.Map<List<FormaPagoDto>>(entidad);
+        var formaPagos = await unitofwork.FormaPagos.GetAllAsync();
+        return mapper.Map<List<FormaPagoDto>>(formaPagos);
     }
 
     [HttpGet("{id}")]

@@ -1,27 +1,31 @@
-using API.Dtos;
 using AutoMapper;
-using Dominio.Entities;
-using Dominio.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Dominio.Interfaces;
+using API.Dtos;
+using Dominio.Entities;
+using API.Helpers.Errors;
 
 namespace API.Controllers;
-public class RolController : BaseApiController
-{
+
+public class PaisController : BaseApiController
+{ 
     private readonly IUnitOfWork unitofwork;
     private readonly  IMapper mapper;
 
-    public RolController( IUnitOfWork unitofwork, IMapper mapper)
+    public PaisController(IUnitOfWork unitofwork, IMapper mapper)
     {
         this.unitofwork = unitofwork;
         this.mapper = mapper;
     }
+
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<IEnumerable<RolDto>>> Get()
+
+    public async Task<ActionResult<IEnumerable<PaisDto>>> Get()
     {
-        var entidad = await unitofwork.Rols.GetAllAsync();
-        return mapper.Map<List<RolDto>>(entidad);
+        var pais = await unitofwork.Paises.GetAllAsync();
+        return mapper.Map<List<PaisDto>>(pais);
     }
 
     [HttpGet("{id}")]
@@ -29,54 +33,59 @@ public class RolController : BaseApiController
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
 
-    public async Task<ActionResult<RolDto>> Get(int id)
+    public async Task<ActionResult<PaisDto>> Get(int id)
     {
-        var entidad = await unitofwork.Rols.GetByIdAsync(id);
-        if (entidad == null){
+        var pais = await unitofwork.Paises.GetByIdAsync(id);
+        if (pais == null){
             return NotFound();
         }
-        return this.mapper.Map<RolDto>(entidad);
+        return this.mapper.Map<PaisDto>(pais);
     }
+
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<Rol>> Post(RolDto entidadDto)
+
+    public async Task<ActionResult<Pais>> Post(PaisDto paisDto)
     {
-        var entidad = this.mapper.Map<Rol>(entidadDto);
-        this.unitofwork.Rols.Add(entidad);
+        var pais = this.mapper.Map<Pais>(paisDto);
+        this.unitofwork.Paises.Add(pais);
         await unitofwork.SaveAsync();
-        if(entidad == null)
+        if(pais == null)
         {
             return BadRequest();
         }
-        entidadDto.Id = entidad.Id;
-        return CreatedAtAction(nameof(Post), new {id = entidadDto.Id}, entidadDto);
+        paisDto.Id = pais.Id;
+        return CreatedAtAction(nameof(Post), new {id = paisDto.Id}, paisDto);
     }
+
     [HttpPut("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
 
-    public async Task<ActionResult<RolDto>> Put(int id, [FromBody]RolDto entidadDto){
-        if(entidadDto == null)
+    public async Task<ActionResult<PaisDto>> Put(int id, [FromBody]PaisDto paisDto){
+        if(paisDto == null)
         {
             return NotFound();
         }
-        var entidad = this.mapper.Map<Rol>(entidadDto);
-        unitofwork.Rols.Update(entidad);
+        var pais = this.mapper.Map<Pais>(paisDto);
+        unitofwork.Paises.Update(pais);
         await unitofwork.SaveAsync();
-        return entidadDto;
+        return paisDto;
     }
+
     [HttpDelete("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+
     public async Task<IActionResult> Delete(int id){
-        var entidad = await unitofwork.Rols.GetByIdAsync(id);
-        if(entidad == null)
+        var pais = await unitofwork.Paises.GetByIdAsync(id);
+        if(pais == null)
         {
             return NotFound();
         }
-        unitofwork.Rols.Remove(entidad);
+        unitofwork.Paises.Remove(pais);
         await unitofwork.SaveAsync();
         return NoContent();
     }

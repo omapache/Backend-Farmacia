@@ -1,5 +1,4 @@
 namespace Dominio.Entities;
-
 public class DetalleMovimiento : BaseEntity
 {
     public int Cantidad { get; set; }

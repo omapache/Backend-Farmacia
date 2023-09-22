@@ -1,5 +1,4 @@
 using API.Dtos;
-using API.Services;
 using AutoMapper;
 using Dominio.Entities;
 using Dominio.Interfaces;
@@ -8,15 +7,13 @@ using Microsoft.AspNetCore.Mvc;
 namespace API.Controllers;
 public class MedicamentoRecetaController : BaseApiController
 {
-    private readonly IUserService _userService;
     private readonly IUnitOfWork unitofwork;
     private readonly  IMapper mapper;
 
-    public MedicamentoRecetaController(IUserService userService, IUnitOfWork unitofwork, IMapper mapper)
+    public MedicamentoRecetaController( IUnitOfWork unitofwork, IMapper mapper)
     {
         this.unitofwork = unitofwork;
         this.mapper = mapper;
-        _userService = userService;
     }
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]

@@ -9,6 +9,7 @@ using Dominio.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+
 namespace API.Services;
 public class UserService : IUserService
 {

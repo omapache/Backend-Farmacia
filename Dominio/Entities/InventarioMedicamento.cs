@@ -9,6 +9,5 @@ public class InventarioMedicamento : BaseEntity
     public int TipoPresentacionIdFk { get; set; }
     public TipoPresentacion TipoPresentacion { get; set; }
     public ICollection<DetalleMovimiento> DetalleMovimientos { get; set; }
-    public ICollection<MedicamentoReceta> MedicamentoRecetas { get; set; }
     public ICollection<Producto> Productos { get; set; }
 }

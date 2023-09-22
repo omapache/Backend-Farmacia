@@ -16,7 +16,6 @@ public class InventarioMedicamentoRepository : GenericRepository<InventarioMedic
     public override async Task<IEnumerable<InventarioMedicamento>> GetAllAsync()
     {
         return await _context.InventarioMedicamentos
-            .Include(p => p.MedicamentoRecetas)
             .Include(p => p.DetalleMovimientos)
             .Include(p => p.Productos)
             .ToListAsync();
@@ -25,7 +24,6 @@ public class InventarioMedicamentoRepository : GenericRepository<InventarioMedic
     public override async Task<InventarioMedicamento> GetByIdAsync(int id)
     {
         return await _context.InventarioMedicamentos
-        .Include(p => p.MedicamentoRecetas)
         .Include(p => p.DetalleMovimientos)
         .Include(p => p.Productos)
         .FirstOrDefaultAsync(p =>  p.Id == id);
