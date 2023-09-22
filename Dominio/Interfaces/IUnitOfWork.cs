@@ -1,7 +1,8 @@
 namespace Dominio.Interfaces;
 public interface IUnitOfWork
 {
-    /* IUser Users { get; }
-    IRol Rols { get; } */
+    IPais Paises { get; }
+    IDepartamento Departamentos { get; }
+    ICiudad Ciudades { get; }
     Task<int> SaveAsync();
 }

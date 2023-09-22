@@ -1,3 +1,4 @@
+using Aplicacion.Repository;
 using Dominio.Interfaces;
 using Persistencia;
 
@@ -5,20 +6,41 @@ namespace Aplicacion.UnitOfWork;
 public class UnitOfWork : IUnitOfWork, IDisposable
 {
     private readonly ApiContext context;
-    /* private  ; */
+    private PaisRepository _paises;
+    private DepartamentoRepository _departamentos;
+    private CiudadRepository _ciudades;
     public UnitOfWork(ApiContext _context)
     {
         context = _context;
     }
-    /* public  
+    public IPais Paises
     {
         get{
-            if(== null){
-                = new (context);
+            if(_paises == null){
+                _paises = new PaisRepository(context);
             }
-            return ;
+            return _paises;
         }
-    } */
+    }
+    public IDepartamento Departamentos
+    {
+        get{
+            if(_departamentos == null){
+                _departamentos = new DepartamentoRepository(context);
+            }
+            return _departamentos;
+        }
+    }
+
+    public ICiudad Ciudades
+    {
+        get{
+            if(_ciudades == null){
+                _ciudades = new CiudadRepository(context);
+            }
+            return _ciudades;
+        }
+    }
     public void Dispose()
     {
         context.Dispose();
