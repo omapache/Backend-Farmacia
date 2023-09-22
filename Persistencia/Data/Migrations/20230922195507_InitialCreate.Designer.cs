@@ -11,7 +11,7 @@ using Persistencia;
 namespace Persistencia.Data.Migrations
 {
     [DbContext(typeof(ApiContext))]
-    [Migration("20230922185005_InitialCreate")]
+    [Migration("20230922195507_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -64,6 +64,41 @@ namespace Persistencia.Data.Migrations
                     b.HasIndex("PaisIdFk");
 
                     b.ToTable("departamento", (string)null);
+                });
+
+            modelBuilder.Entity("Dominio.Entities.DescripcionMedicamento", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(3)
+                        .HasColumnType("int");
+
+                    b.Property<string>("CantidadMg")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar")
+                        .HasColumnName("cantidadMg");
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar")
+                        .HasColumnName("descripcion");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar")
+                        .HasColumnName("nombre");
+
+                    b.Property<int>("TipoPresentacionIdFk")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TipoPresentacionIdFk");
+
+                    b.ToTable("descripcionMedicamento", (string)null);
                 });
 
             modelBuilder.Entity("Dominio.Entities.DetalleMovimiento", b =>
@@ -193,16 +228,13 @@ namespace Persistencia.Data.Migrations
                         .HasMaxLength(3)
                         .HasColumnType("int");
 
+                    b.Property<int>("DescripcionMedicamentoIdFk")
+                        .HasColumnType("int");
+
                     b.Property<DateOnly>("FechaExpiracion")
                         .HasMaxLength(256)
                         .HasColumnType("date")
                         .HasColumnName("fechaExpiracion");
-
-                    b.Property<string>("Nombre")
-                        .IsRequired()
-                        .HasMaxLength(256)
-                        .HasColumnType("varchar")
-                        .HasColumnName("nombre");
 
                     b.Property<int>("PersonaIdFk")
                         .HasColumnType("int");
@@ -212,14 +244,11 @@ namespace Persistencia.Data.Migrations
                         .HasColumnType("int")
                         .HasColumnName("stock");
 
-                    b.Property<int>("TipoPresentacionIdFk")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("PersonaIdFk");
+                    b.HasIndex("DescripcionMedicamentoIdFk");
 
-                    b.HasIndex("TipoPresentacionIdFk");
+                    b.HasIndex("PersonaIdFk");
 
                     b.ToTable("inventarioMedicamento", (string)null);
                 });
@@ -254,23 +283,17 @@ namespace Persistencia.Data.Migrations
                         .HasColumnType("varchar")
                         .HasColumnName("descripcion");
 
-                    b.Property<int?>("InventarioMedicamentoId")
-                        .HasColumnType("int");
-
                     b.Property<int>("IventMedicamentoIdFk")
                         .HasColumnType("int");
 
                     b.Property<int>("RecetaIdFk")
                         .HasColumnType("int");
 
-                    b.Property<int?>("RecetaMedicaId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("InventarioMedicamentoId");
+                    b.HasIndex("IventMedicamentoIdFk");
 
-                    b.HasIndex("RecetaMedicaId");
+                    b.HasIndex("RecetaIdFk");
 
                     b.ToTable("medicamentoReceta", (string)null);
                 });
@@ -698,6 +721,17 @@ namespace Persistencia.Data.Migrations
                     b.Navigation("Pais");
                 });
 
+            modelBuilder.Entity("Dominio.Entities.DescripcionMedicamento", b =>
+                {
+                    b.HasOne("Dominio.Entities.TipoPresentacion", "TipoPresentacion")
+                        .WithMany("DescripcionMedicamentos")
+                        .HasForeignKey("TipoPresentacionIdFk")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TipoPresentacion");
+                });
+
             modelBuilder.Entity("Dominio.Entities.DetalleMovimiento", b =>
                 {
                     b.HasOne("Dominio.Entities.InventarioMedicamento", "InventarioMedicamento")
@@ -757,32 +791,36 @@ namespace Persistencia.Data.Migrations
 
             modelBuilder.Entity("Dominio.Entities.InventarioMedicamento", b =>
                 {
+                    b.HasOne("Dominio.Entities.DescripcionMedicamento", "DescripcionMedicamento")
+                        .WithMany("InventarioMedicamentos")
+                        .HasForeignKey("DescripcionMedicamentoIdFk")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Dominio.Entities.Persona", "Persona")
                         .WithMany("InventarioMedicamentos")
                         .HasForeignKey("PersonaIdFk")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Dominio.Entities.TipoPresentacion", "TipoPresentacion")
-                        .WithMany("InventarioMedicamentos")
-                        .HasForeignKey("TipoPresentacionIdFk")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("DescripcionMedicamento");
 
                     b.Navigation("Persona");
-
-                    b.Navigation("TipoPresentacion");
                 });
 
             modelBuilder.Entity("Dominio.Entities.MedicamentoReceta", b =>
                 {
                     b.HasOne("Dominio.Entities.InventarioMedicamento", "InventarioMedicamento")
                         .WithMany("MedicamentoRecetas")
-                        .HasForeignKey("InventarioMedicamentoId");
+                        .HasForeignKey("IventMedicamentoIdFk")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Dominio.Entities.RecetaMedica", "RecetaMedica")
-                        .WithMany()
-                        .HasForeignKey("RecetaMedicaId");
+                        .WithMany("MedicamentoRecetas")
+                        .HasForeignKey("RecetaIdFk")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("InventarioMedicamento");
 
@@ -986,6 +1024,11 @@ namespace Persistencia.Data.Migrations
                     b.Navigation("Ciudades");
                 });
 
+            modelBuilder.Entity("Dominio.Entities.DescripcionMedicamento", b =>
+                {
+                    b.Navigation("InventarioMedicamentos");
+                });
+
             modelBuilder.Entity("Dominio.Entities.FormaPago", b =>
                 {
                     b.Navigation("MovimientoInventarios");
@@ -1045,6 +1088,8 @@ namespace Persistencia.Data.Migrations
 
             modelBuilder.Entity("Dominio.Entities.RecetaMedica", b =>
                 {
+                    b.Navigation("MedicamentoRecetas");
+
                     b.Navigation("MovimientoInventario");
                 });
 
@@ -1077,7 +1122,7 @@ namespace Persistencia.Data.Migrations
 
             modelBuilder.Entity("Dominio.Entities.TipoPresentacion", b =>
                 {
-                    b.Navigation("InventarioMedicamentos");
+                    b.Navigation("DescripcionMedicamentos");
                 });
 
             modelBuilder.Entity("Dominio.Entities.TipoTelefono", b =>

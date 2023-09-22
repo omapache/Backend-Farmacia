@@ -26,7 +26,7 @@ public class UnitOfWork : IUnitOfWork, IDisposable
     private TipoEmailRepository _tipoEmails;
     private TipoMovimientoInventarioRepository _tipoMovimientoInventarios;
     private TipoPersonaRepository _tipoPersonas;
-    private TipoPresentacionRepository _tipoPresentaciones;
+    private DescripcionMedicamentoRepository _descripcionMedicamentos;
     private TipoTelefonoRepository _tipoTelefonoRepository;
     private UserRepository _users;
     public UnitOfWork(ApiContext context)
@@ -254,18 +254,18 @@ public class UnitOfWork : IUnitOfWork, IDisposable
             return _tipoPersonas;
         }
     }
-    public ITipoPresentacion TipoPresentaciones
+    public IDescripcionMedicamento DescripcionMedicamentos    
     {
         get
         {
-            if (_tipoPresentaciones == null)
+            if (_descripcionMedicamentos == null)
             {
-                _tipoPresentaciones = new TipoPresentacionRepository(_context);
+                _descripcionMedicamentos = new DescripcionMedicamentoRepository(_context);
             }
-            return _tipoPresentaciones;
+            return _descripcionMedicamentos;
         }
     }
-    public ITipoTelefono TipoTelefono
+    public ITipoTelefono TipoTelefonos
     {
         get
         {

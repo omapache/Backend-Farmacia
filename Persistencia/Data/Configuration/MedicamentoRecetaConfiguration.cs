@@ -17,6 +17,14 @@ namespace Persistencia.Data.Configuration
             .HasColumnType("varchar")
             .HasMaxLength(256)
             .IsRequired();
+
+            builder.HasOne(p => p.RecetaMedica)
+            .WithMany(p => p.MedicamentoRecetas)
+            .HasForeignKey(p => p.RecetaIdFk);
+
+             builder.HasOne(p => p.InventarioMedicamento)
+            .WithMany(p => p.MedicamentoRecetas)
+            .HasForeignKey(p => p.IventMedicamentoIdFk);
         }
     }
 

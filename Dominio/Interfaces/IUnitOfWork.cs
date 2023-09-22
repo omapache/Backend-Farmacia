@@ -21,8 +21,8 @@ public interface IUnitOfWork
     ITipoEmail TipoEmails { get; }
     ITipoMovimientoInventario TipoMovimientoInventarios { get; }
     ITipoPersona TipoPersonas { get; }
-    ITipoPresentacion TipoPresentaciones { get; }
-    ITipoTelefono TipoTelefono { get; }
+    IDescripcionMedicamento DescripcionMedicamentos { get; }
+    ITipoTelefono TipoTelefonos { get; }
     IUser Users { get; }
     Task<int> SaveAsync();
 }

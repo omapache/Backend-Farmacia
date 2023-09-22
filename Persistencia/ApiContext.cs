@@ -28,6 +28,7 @@ public class ApiContext : DbContext
     public DbSet<TipoEmail> TiposEmails { get; set; }
     public DbSet<TipoMovimientoInventario> TipoMovimientoInventarios { get; set; }
     public DbSet<TipoPersona> TipoPersonas { get; set; }
+    public DbSet<DescripcionMedicamento> DescripcionMedicamentos { get; set; }
     public DbSet<TipoPresentacion> TipoPresentaciones { get; set; }
     public DbSet<TipoTelefono> TiposTelefonos { get; set; }
     public DbSet<User> Users { get; set; }
