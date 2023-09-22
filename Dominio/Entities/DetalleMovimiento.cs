@@ -1,5 +1,3 @@
-
-
 namespace Dominio.Entities;
 
 public class DetalleMovimiento : BaseEntity
