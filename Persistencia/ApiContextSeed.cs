@@ -215,6 +215,7 @@ public class ApiContextSeed
                             {
                                 Id = item.Id,
                                 Nombre = item.Nombre,
+                                NumeroDocumento = item.NumeroDocumento,
                                 TipoPersonaIdFk = item.TipoPersonaIdFk,
                                 TipoDocumentoIdFk = item.TipoDocumentoIdFk,
                                 RolIdFk = item.RolIdFk

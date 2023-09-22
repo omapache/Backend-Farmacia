@@ -1,4 +1,4 @@
-Id,Nombre,TipoPersonaIdFk,TipoDocumentoIdFk,RolIdFk
-1,Juan Pérez,1,1,1
-2,María González,2,2,2
-3,Carlos Rodríguez,2,3,3
+Id,Nombre,NumeroDocumento,TipoPersonaIdFk,TipoDocumentoIdFk,RolIdFk
+1,Juan Pérez,1032437354,1,1,1
+2,María González,1032437352,2,2,2
+3,Carlos Rodríguez,1032437357,2,3,3
