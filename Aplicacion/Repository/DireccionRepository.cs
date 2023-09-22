@@ -1,5 +1,6 @@
 using Dominio.Entities;
 using Dominio.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using Persistencia;
 
 namespace Aplicacion.Repository;
@@ -13,17 +14,15 @@ public class DireccionRepository : GenericRepository<Direccion>, IDireccion
         _context = context;
     }
 
-    /* public override async Task<IEnumerable<Direccion>> GetAllAsync()
+    public override async Task<IEnumerable<Direccion>> GetAllAsync()
     {
-        return await _context.
-            .Include(p => p.)
+        return await _context.Direcciones
             .ToListAsync();
     }
 
     public override async Task<Direccion> GetByIdAsync(int id)
     {
-        return await _context.
-        .Include(p => p.)
+        return await _context.Direcciones
         .FirstOrDefaultAsync(p =>  p.Id == id);
-    } */
+    }
 }
