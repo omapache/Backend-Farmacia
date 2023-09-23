@@ -16,6 +16,7 @@ public class Persona : BaseEntity
     public ICollection<Email> Emails { get; set; }
     public ICollection<InventarioMedicamento> InventarioMedicamentos { get; set; }
     public ICollection<ProductoProveedor> ProductoProveedores { get; set; }
+    
     public ICollection<MovimientoInventario> MovimientoInventariosResponsable { get; set; }
     public ICollection<MovimientoInventario> MovimientoInventariosReceptor { get; set; }
 
