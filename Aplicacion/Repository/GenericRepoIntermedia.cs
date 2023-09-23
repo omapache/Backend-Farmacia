@@ -8,15 +8,14 @@ using Dominio.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Persistencia;
 
-using Dominio.Interfaces;
 
 namespace Aplicacion.Repository;
 
-public class GenericRepoIntermedia<T> : IGenericRepoIntermedia<T> where T : BaseEntity
+public class GenericRepoIntermedia<T> : IGenericRepoIntermedia<T> where T : BaseEntityIntermedia
 {
     private readonly ApiContext _context;
 
-    public GenericRepository(ApiContext context)
+    public GenericRepoIntermedia(ApiContext context)
     {
         _context = context;
     }
@@ -41,7 +40,7 @@ public class GenericRepoIntermedia<T> : IGenericRepoIntermedia<T> where T : Base
         return await _context.Set<T>().ToListAsync();
     }
 
-    public virtual async Task<T> GetByIdAsync(int id)
+    public virtual async Task<T> GetByIdAsync(int id, int id2)
     {
         return await _context.Set<T>().FindAsync(id);
     }
