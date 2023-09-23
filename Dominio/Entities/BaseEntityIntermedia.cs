@@ -1,7 +1,7 @@
 namespace Dominio.Entities;
-public class BaseEntityIntermedia
+public abstract class BaseEntityIntermedia<T1, T2>
 {
-    public int Id { get; set; }
-    public int Id2 { get; set; }
-
+    public T1 Id1 { get; set; }
+    public T2 Id2 { get; set; }
 }
+
