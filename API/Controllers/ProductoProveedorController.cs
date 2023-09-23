@@ -1,9 +1,8 @@
-/* using AutoMapper;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Dominio.Interfaces;
 using API.Dtos;
 using Dominio.Entities;
-using API.Helpers.Errors;
 
 namespace API.Controllers;
 
@@ -22,7 +21,7 @@ public class ProductoProveedorController: BaseApiController
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<IEnumerable<ProductoProveedorDto>>> Get()
     {
-        var entidad = await unitofwork.Personas.GetAllAsync();
+        var entidad = await unitofwork.ProductoProveedores.GetAllAsync();
         return mapper.Map<List<ProductoProveedorDto>>(entidad);
     }
 
@@ -33,7 +32,7 @@ public class ProductoProveedorController: BaseApiController
 
     public async Task<ActionResult<ProductoProveedorDto>> Get(int id)
     {
-        var entidad = await unitofwork.Personas.GetByIdAsync(id);
+        var entidad = await unitofwork.ProductoProveedores.GetByIdAsync(id);
         if (entidad == null){
             return NotFound();
         }
@@ -42,10 +41,10 @@ public class ProductoProveedorController: BaseApiController
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<Persona>> Post(ProductoProveedorDto entidadDto)
+    public async Task<ActionResult<ProductoProveedor>> Post(ProductoProveedorDto entidadDto)
     {
-        var entidad = this.mapper.Map<Persona>(entidadDto);
-        this.unitofwork.Personas.Add(entidad);
+        var entidad = this.mapper.Map<ProductoProveedor>(entidadDto);
+        this.unitofwork.ProductoProveedores.Add(entidad);
         await unitofwork.SaveAsync();
         if(entidad == null)
         {
@@ -64,8 +63,8 @@ public class ProductoProveedorController: BaseApiController
         {
             return NotFound();
         }
-        var entidad = this.mapper.Map<Persona>(entidadDto);
-        unitofwork.Personas.Update(entidad);
+        var entidad = this.mapper.Map<ProductoProveedor>(entidadDto);
+        unitofwork.ProductoProveedores.Update(entidad);
         await unitofwork.SaveAsync();
         return entidadDto;
     }
@@ -73,14 +72,13 @@ public class ProductoProveedorController: BaseApiController
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Delete(int id){
-        var entidad = await unitofwork.Personas.GetByIdAsync(id);
+        var entidad = await unitofwork.ProductoProveedores.GetByIdAsync(id);
         if(entidad == null)
         {
             return NotFound();
         }
-        unitofwork.Personas.Remove(entidad);
+        unitofwork.ProductoProveedores.Remove(entidad);
         await unitofwork.SaveAsync();
         return NoContent();
     }
 }
- */

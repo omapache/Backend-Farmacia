@@ -638,23 +638,50 @@ namespace Persistencia.Data.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "ProductoProveedores",
+                name: "PersonaProducto",
                 columns: table => new
                 {
+                    PersonasId = table.Column<int>(type: "int", nullable: false),
+                    ProductosId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PersonaProducto", x => new { x.PersonasId, x.ProductosId });
+                    table.ForeignKey(
+                        name: "FK_PersonaProducto_persona_PersonasId",
+                        column: x => x.PersonasId,
+                        principalTable: "persona",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PersonaProducto_producto_ProductosId",
+                        column: x => x.ProductosId,
+                        principalTable: "producto",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "productoProveedor",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", maxLength: 3, nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     ProductoIdFk = table.Column<int>(type: "int", nullable: false),
                     ProveedorIdFk = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProductoProveedores", x => new { x.ProveedorIdFk, x.ProductoIdFk });
+                    table.PrimaryKey("PK_productoProveedor", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ProductoProveedores_persona_ProveedorIdFk",
+                        name: "FK_productoProveedor_persona_ProveedorIdFk",
                         column: x => x.ProveedorIdFk,
                         principalTable: "persona",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ProductoProveedores_producto_ProductoIdFk",
+                        name: "FK_productoProveedor_producto_ProductoIdFk",
                         column: x => x.ProductoIdFk,
                         principalTable: "producto",
                         principalColumn: "Id",
@@ -769,6 +796,11 @@ namespace Persistencia.Data.Migrations
                 column: "TipoPersonaIdFk");
 
             migrationBuilder.CreateIndex(
+                name: "IX_PersonaProducto_ProductosId",
+                table: "PersonaProducto",
+                column: "ProductosId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_producto_InventMedicamentoIdFk",
                 table: "producto",
                 column: "InventMedicamentoIdFk");
@@ -779,9 +811,14 @@ namespace Persistencia.Data.Migrations
                 column: "MarcaIdFk");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductoProveedores_ProductoIdFk",
-                table: "ProductoProveedores",
+                name: "IX_productoProveedor_ProductoIdFk",
+                table: "productoProveedor",
                 column: "ProductoIdFk");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_productoProveedor_ProveedorIdFk",
+                table: "productoProveedor",
+                column: "ProveedorIdFk");
 
             migrationBuilder.CreateIndex(
                 name: "IX_recetaMedica_DoctorIdFk",
@@ -836,7 +873,10 @@ namespace Persistencia.Data.Migrations
                 name: "medicamentoReceta");
 
             migrationBuilder.DropTable(
-                name: "ProductoProveedores");
+                name: "PersonaProducto");
+
+            migrationBuilder.DropTable(
+                name: "productoProveedor");
 
             migrationBuilder.DropTable(
                 name: "RefreshToken");

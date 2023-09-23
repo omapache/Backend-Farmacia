@@ -13,6 +13,7 @@ public interface IUnitOfWork
     IMovimientoInventario MovimientoInventarios { get; }
     IPais Paises { get; }
     IPersona Personas { get; }
+    IProductoProveedor ProductoProveedores { get; }
     IProducto Productos { get; }
     IRecetaMedica RecetaMedicas { get; }
     IRol Rols { get; }
