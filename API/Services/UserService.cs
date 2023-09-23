@@ -38,13 +38,13 @@ public class UserService : IUserService
 
         if (existingUser == null)
         {
-           /*  var rolDefault = _unitOfWork.Roles
+            var rolDefault = _unitOfWork.Rols
                                     .Find(u => u.Nombre == Authorization.rol_default.ToString())
-                                    .First(); */
+                                    .First();
             try
             {
-/*                 user.Rols.Add(rolDefault);
- */             _unitOfWork.Users.Add(user);
+            user.Rols.Add(rolDefault);
+             _unitOfWork.Users.Add(user);
                 await _unitOfWork.SaveAsync();
 
                 return $"User  {registerDto.Username} has been registered successfully";
