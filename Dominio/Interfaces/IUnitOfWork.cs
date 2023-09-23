@@ -22,6 +22,7 @@ public interface IUnitOfWork
     ITipoMovimientoInventario TipoMovimientoInventarios { get; }
     ITipoPersona TipoPersonas { get; }
     IDescripcionMedicamento DescripcionMedicamentos { get; }
+    ITipoPresentacion TipoPresentaciones  { get; }
     ITipoTelefono TipoTelefonos { get; }
     IUser Users { get; }
     Task<int> SaveAsync();
