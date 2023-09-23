@@ -1,9 +1,10 @@
  using Dominio.Entities;
+using Dominio.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Persistencia;
 
 namespace Aplicacion.Repository;
-public class ProductoProveedorRepository : GenericRepository<UserRol>, IUserRol
+public class ProductoProveedorRepository : GenericRepoIntermedia<ProductoProveedor>, IProductoProveedor
 {
     private readonly ApiContext _context;
 
