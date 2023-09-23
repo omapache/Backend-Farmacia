@@ -1,9 +1,9 @@
-/* using Dominio.Entities;
+ using Dominio.Entities;
 using Microsoft.EntityFrameworkCore;
 using Persistencia;
 
 namespace Aplicacion.Repository;
-public class UserRolRepository : GenericRepository<UserRol>, IUserRol
+public class ProductoProveedorRepository : GenericRepository<UserRol>, IUserRol
 {
     private readonly ApiContext _context;
 
@@ -22,4 +22,4 @@ public class UserRolRepository : GenericRepository<UserRol>, IUserRol
         return await _context.UsersRols
         .FirstOrDefaultAsync(p =>  p.Id == id);
     }
-} */
+}

@@ -24,5 +24,6 @@ public interface IUnitOfWork
     IDescripcionMedicamento DescripcionMedicamentos { get; }
     ITipoTelefono TipoTelefonos { get; }
     IUser Users { get; }
+    IProductoProveedor ProductoProveedors { get; }
     Task<int> SaveAsync();
 }
