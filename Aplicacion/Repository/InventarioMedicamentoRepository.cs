@@ -28,4 +28,15 @@ public class InventarioMedicamentoRepository : GenericRepository<InventarioMedic
         .Include(p => p.DescripcionMedicamento)
         .FirstOrDefaultAsync(p =>  p.Id == id);
     }
+    public async Task<IEnumerable<InventarioMedicamento>> GetMedicamentosConMenosDe50Unidades(int cantidad)
+    {
+        return await _context.InventarioMedicamentos
+            .Where(m => m.Stock < 900)
+            .OrderByDescending(m => m.Id)
+            .Include(p => p.Persona)
+            .Include(p => p.DescripcionMedicamento)
+            .Take(cantidad)
+            .ToListAsync();
+    }
+
 }

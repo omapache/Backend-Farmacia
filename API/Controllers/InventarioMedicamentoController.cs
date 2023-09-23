@@ -15,12 +15,20 @@ public class InventarioMedicamentoController : BaseApiController
         this.unitofwork = unitofwork;
         this.mapper = mapper;
     }
-    [HttpGet]
+     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<IEnumerable<InventarioMedicamentoDto>>> Get()
     {
         var entidad = await unitofwork.InventarioMedicamentos.GetAllAsync();
+        return mapper.Map<List<InventarioMedicamentoDto>>(entidad);
+    } 
+    [HttpGet("consulta1")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<IEnumerable<InventarioMedicamentoDto>>> Get11()
+    {
+        var entidad = await unitofwork.InventarioMedicamentos.GetMedicamentosConMenosDe50Unidades(50);
         return mapper.Map<List<InventarioMedicamentoDto>>(entidad);
     }
 
