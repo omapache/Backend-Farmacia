@@ -128,8 +128,7 @@ public class UserService : IUserService
 
             if (rolExists != null)
             {
-                var userHasRole = user.Rols
-                                            .Any(u => u.Id == rolExists.Id);
+                var userHasRole = user.Rols.Any(u => u.Id == rolExists.Id);
 
                 if (userHasRole == false)
                 {

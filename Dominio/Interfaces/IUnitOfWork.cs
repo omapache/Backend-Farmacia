@@ -25,5 +25,6 @@ public interface IUnitOfWork
     ITipoPresentacion TipoPresentaciones  { get; }
     ITipoTelefono TipoTelefonos { get; }
     IUser Users { get; }
+    IProductoProveedor ProductoProveedors { get; }
     Task<int> SaveAsync();
 }
