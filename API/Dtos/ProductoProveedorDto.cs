@@ -1,11 +1,16 @@
-using System.ComponentModel.DataAnnotations;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Dominio.Entities;
 
-namespace API.Dtos;
-public class ProductoProveedorDto
+namespace API.Dtos
 {
+    public class ProductoProveedorDto
+    {
+        public int Id { get; set; }
+        public PersonaDto Proveedor { get; set; }
+        public ProductoDto Producto { get; set; }
 
-    [Required]
-    public ProductoDto Producto { get; set; }
-    [Required]
-    public PersonaDto Proveedor { get; set; }
+    }
 }

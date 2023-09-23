@@ -21,6 +21,7 @@ public class MappingProfiles : Profile
         CreateMap<Pais, PaisDto>().ReverseMap();
         CreateMap<Persona, PersonaDto>().ReverseMap();
         CreateMap<Producto, ProductoDto>().ReverseMap();
+        CreateMap<ProductoProveedor, ProductoProveedorDto>().ReverseMap();
         CreateMap<RecetaMedica, RecetaMedicaDto>().ReverseMap();
         CreateMap<Rol, RolDto>().ReverseMap();
         CreateMap<Telefono, TelefonoDto>().ReverseMap();
