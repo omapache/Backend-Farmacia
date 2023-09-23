@@ -36,7 +36,7 @@ public class PersonaConfiguration : IEntityTypeConfiguration<Persona>
         .WithMany(p => p.Personas)
         .HasForeignKey(p => p.RolIdFk);
 
-        builder
+/*         builder
         .HasMany(p => p.Productos)
         .WithMany(p => p.Personas)
         .UsingEntity<ProductoProveedor>(
@@ -51,7 +51,7 @@ public class PersonaConfiguration : IEntityTypeConfiguration<Persona>
           j => 
             {
               j.HasKey(t => new {t.ProveedorIdFk, t.ProductoIdFk});
-            });
+            }); */
 
         builder.HasOne(e => e.User)
         .WithOne(p => p.Persona)

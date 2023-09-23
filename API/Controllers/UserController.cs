@@ -54,6 +54,7 @@ public class UserController : BaseApiController
         SetRefreshTokenInCookie(result.RefreshToken);
         return Ok(result);
     }
+    
 
     [HttpPost("addrole")]
     public async Task<IActionResult> AddRoleAsync(AddRoleDto model)
@@ -72,6 +73,7 @@ public class UserController : BaseApiController
         return Ok(response);
     }
 
+
     [HttpPut("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -87,6 +89,7 @@ public class UserController : BaseApiController
         await unitofwork.SaveAsync();
         return entidadDto;
     }
+
     [HttpDelete("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

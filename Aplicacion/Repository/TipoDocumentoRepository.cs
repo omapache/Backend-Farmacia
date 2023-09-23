@@ -19,14 +19,12 @@ public class TipoDocumentoRepository : GenericRepository<TipoDocumento>, ITipoDo
     public override async Task<IEnumerable<TipoDocumento>> GetAllAsync()
     {
         return await _context.TipoDocumentos
-            .Include(p => p.Personas)
             .ToListAsync();
     }
 
     public override async Task<TipoDocumento> GetByIdAsync(int id)
     {
         return await _context.TipoDocumentos
-        .Include(p => p.Personas)
         .FirstOrDefaultAsync(p =>  p.Id == id);
     }
 }

@@ -16,19 +16,10 @@ public class PersonaRepository : GenericRepository<Persona>, IPersona
     public override async Task<IEnumerable<Persona>> GetAllAsync()
     {
         return await _context.Personas
-            .Include(p => p.Emails)
-            .Include(p => p.Telefonos)
-            .Include(p => p.Direcciones)
-            .Include(p => p.InventarioMedicamentos)
-            //NO SE SI ESTO ES SOLO LA INTERMEDIA O LA DEL OTRO LADO TAMBIEN SE TRAE 
-            .Include(p => p.Productos)
-            .Include(p => p.ProductoProveedores)
-            //---------------------
-            .Include(p => p.MovimientoInventariosReceptor)
-            .Include(p => p.MovimientoInventariosResponsable)
+        .Include(p => p.TipoDocumento)
+        .Include(p => p.TipoPersona)
+        .Include(p => p.Rol)
 
-            .Include(p => p.RecetaMedicaDoctor)
-            .Include(p => p.RecetaMedicaPaciente)
 
             .ToListAsync();
     }
@@ -36,20 +27,10 @@ public class PersonaRepository : GenericRepository<Persona>, IPersona
     public override async Task<Persona> GetByIdAsync(int id)
     {
         return await _context.Personas
-        .Include(p => p.Emails)
-        .Include(p => p.Telefonos)
-        .Include(p => p.Direcciones)
-        .Include(p => p.InventarioMedicamentos)
-        //NO SE SI ESTO ES SOLO LA INTERMEDIA O LA DEL OTRO LADO TAMBIEN SE TRAE 
-        .Include(p => p.Productos)
-        .Include(p => p.ProductoProveedores)
-        //---------------------
-        .Include(p => p.MovimientoInventariosReceptor)
-        .Include(p => p.MovimientoInventariosResponsable)
-
-        .Include(p => p.RecetaMedicaDoctor)
-        .Include(p => p.RecetaMedicaPaciente)
-
+        .Include(p => p.TipoDocumento)
+        .Include(p => p.TipoPersona)
+        .Include(p => p.Rol)
         .FirstOrDefaultAsync(p =>  p.Id == id);
     }
+    
 }

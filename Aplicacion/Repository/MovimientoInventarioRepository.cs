@@ -16,6 +16,10 @@ public class MovimientoInventarioRepository : GenericRepository<MovimientoInvent
     public override async Task<IEnumerable<MovimientoInventario>> GetAllAsync()
     {
         return await _context.MovimientoInventarios
+        .Include(p => p.FormaPago)
+        .Include(p => p.TipoMovimientoInventario)
+        .Include(p => p.Responsable)
+        .Include(p => p.Receptor)
         .Include(p => p.RecetaMedica)
         .ToListAsync();
     }
@@ -23,6 +27,10 @@ public class MovimientoInventarioRepository : GenericRepository<MovimientoInvent
     public override async Task<MovimientoInventario> GetByIdAsync(int id)
     {
         return await _context.MovimientoInventarios
+        .Include(p => p.FormaPago)
+        .Include(p => p.TipoMovimientoInventario)
+        .Include(p => p.Responsable)
+        .Include(p => p.Receptor)
         .Include(p => p.RecetaMedica)
         .FirstOrDefaultAsync(p =>  p.Id == id);
     }

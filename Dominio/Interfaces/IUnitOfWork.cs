@@ -13,6 +13,7 @@ public interface IUnitOfWork
     IMovimientoInventario MovimientoInventarios { get; }
     IPais Paises { get; }
     IPersona Personas { get; }
+    IProductoProveedor ProductoProveedores { get; }
     IProducto Productos { get; }
     IRecetaMedica RecetaMedicas { get; }
     IRol Rols { get; }
@@ -22,6 +23,7 @@ public interface IUnitOfWork
     ITipoMovimientoInventario TipoMovimientoInventarios { get; }
     ITipoPersona TipoPersonas { get; }
     IDescripcionMedicamento DescripcionMedicamentos { get; }
+    ITipoPresentacion TipoPresentaciones  { get; }
     ITipoTelefono TipoTelefonos { get; }
     IUser Users { get; }
     Task<int> SaveAsync();
