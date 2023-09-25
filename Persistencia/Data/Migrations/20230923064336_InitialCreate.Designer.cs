@@ -11,7 +11,7 @@ using Persistencia;
 namespace Persistencia.Data.Migrations
 {
     [DbContext(typeof(ApiContext))]
-    [Migration("20230922195507_InitialCreate")]
+    [Migration("20230923064336_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -432,17 +432,24 @@ namespace Persistencia.Data.Migrations
 
             modelBuilder.Entity("Dominio.Entities.ProductoProveedor", b =>
                 {
-                    b.Property<int>("ProveedorIdFk")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(3)
                         .HasColumnType("int");
 
                     b.Property<int>("ProductoIdFk")
                         .HasColumnType("int");
 
-                    b.HasKey("ProveedorIdFk", "ProductoIdFk");
+                    b.Property<int>("ProveedorIdFk")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("ProductoIdFk");
 
-                    b.ToTable("ProductoProveedores");
+                    b.HasIndex("ProveedorIdFk");
+
+                    b.ToTable("productoProveedor", (string)null);
                 });
 
             modelBuilder.Entity("Dominio.Entities.RecetaMedica", b =>
@@ -697,6 +704,21 @@ namespace Persistencia.Data.Migrations
                     b.HasIndex("RolIdFk");
 
                     b.ToTable("userRol", (string)null);
+                });
+
+            modelBuilder.Entity("PersonaProducto", b =>
+                {
+                    b.Property<int>("PersonasId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductosId")
+                        .HasColumnType("int");
+
+                    b.HasKey("PersonasId", "ProductosId");
+
+                    b.HasIndex("ProductosId");
+
+                    b.ToTable("PersonaProducto");
                 });
 
             modelBuilder.Entity("Dominio.Entities.Ciudad", b =>
@@ -1012,6 +1034,21 @@ namespace Persistencia.Data.Migrations
                     b.Navigation("Rol");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("PersonaProducto", b =>
+                {
+                    b.HasOne("Dominio.Entities.Persona", null)
+                        .WithMany()
+                        .HasForeignKey("PersonasId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Dominio.Entities.Producto", null)
+                        .WithMany()
+                        .HasForeignKey("ProductosId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Dominio.Entities.Ciudad", b =>

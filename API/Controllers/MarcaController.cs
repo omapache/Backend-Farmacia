@@ -1,16 +1,15 @@
-using API.Dtos;
 using AutoMapper;
-using Dominio.Entities;
-using Dominio.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-
+using Dominio.Interfaces;
+using API.Dtos;
+using Dominio.Entities;
 namespace API.Controllers;
-public class PersonaController : BaseApiController
+public class MarcaController : BaseApiController
 {
     private readonly IUnitOfWork unitofwork;
     private readonly  IMapper mapper;
 
-    public PersonaController( IUnitOfWork unitofwork, IMapper mapper)
+    public MarcaController( IUnitOfWork unitofwork, IMapper mapper)
     {
         this.unitofwork = unitofwork;
         this.mapper = mapper;
@@ -18,31 +17,32 @@ public class PersonaController : BaseApiController
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<IEnumerable<PersonaDto>>> Get()
+    public async Task<ActionResult<IEnumerable<MarcaDto>>> Get()
     {
-        var entidad = await unitofwork.Personas.GetAllAsync();
-        return mapper.Map<List<PersonaDto>>(entidad);
+        var entidad = await unitofwork.Marcas.GetAllAsync();
+        return mapper.Map<List<MarcaDto>>(entidad);
     }
+
     [HttpGet("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
 
-    public async Task<ActionResult<PersonaDto>> Get(int id)
+    public async Task<ActionResult<MarcaDto>> Get(int id)
     {
-        var entidad = await unitofwork.Personas.GetByIdAsync(id);
+        var entidad = await unitofwork.Marcas.GetByIdAsync(id);
         if (entidad == null){
             return NotFound();
         }
-        return this.mapper.Map<PersonaDto>(entidad);
+        return this.mapper.Map<MarcaDto>(entidad);
     }
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<Persona>> Post(PersonaDto entidadDto)
+    public async Task<ActionResult<Marca>> Post(MarcaDto entidadDto)
     {
-        var entidad = this.mapper.Map<Persona>(entidadDto);
-        this.unitofwork.Personas.Add(entidad);
+        var entidad = this.mapper.Map<Marca>(entidadDto);
+        this.unitofwork.Marcas.Add(entidad);
         await unitofwork.SaveAsync();
         if(entidad == null)
         {
@@ -56,13 +56,13 @@ public class PersonaController : BaseApiController
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
 
-    public async Task<ActionResult<PersonaDto>> Put(int id, [FromBody]PersonaDto entidadDto){
+    public async Task<ActionResult<MarcaDto>> Put(int id, [FromBody]MarcaDto entidadDto){
         if(entidadDto == null)
         {
             return NotFound();
         }
-        var entidad = this.mapper.Map<Persona>(entidadDto);
-        unitofwork.Personas.Update(entidad);
+        var entidad = this.mapper.Map<Marca>(entidadDto);
+        unitofwork.Marcas.Update(entidad);
         await unitofwork.SaveAsync();
         return entidadDto;
     }
@@ -70,12 +70,12 @@ public class PersonaController : BaseApiController
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Delete(int id){
-        var entidad = await unitofwork.Personas.GetByIdAsync(id);
+        var entidad = await unitofwork.Marcas.GetByIdAsync(id);
         if(entidad == null)
         {
             return NotFound();
         }
-        unitofwork.Personas.Remove(entidad);
+        unitofwork.Marcas.Remove(entidad);
         await unitofwork.SaveAsync();
         return NoContent();
     }

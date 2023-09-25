@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Persistencia;
 
 namespace Aplicacion.Repository;
-public class  DescripcionMedicamentoRepository : GenericRepository<DescripcionMedicamento>, IDescripcionMedicamento
+public class DescripcionMedicamentoRepository : GenericRepository<DescripcionMedicamento>, IDescripcionMedicamento
 {
     private readonly ApiContext _context;
 
