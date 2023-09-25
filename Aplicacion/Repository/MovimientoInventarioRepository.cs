@@ -34,4 +34,6 @@ public class MovimientoInventarioRepository : GenericRepository<MovimientoInvent
         .Include(p => p.RecetaMedica)
         .FirstOrDefaultAsync(p =>  p.Id == id);
     }
+
+
 }
