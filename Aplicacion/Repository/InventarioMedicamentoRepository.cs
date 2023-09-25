@@ -106,4 +106,40 @@ public class InventarioMedicamentoRepository : GenericRepository<InventarioMedic
 
         return medicamentosNoVendidos;
     }
+    public async Task<object> ObtenerMedicamentoMenosVendidoAsync()
+{
+    var medicamentoMenosVendido = await (
+        from dm in _context.DetalleMovimientos
+        join i in _context.InventarioMedicamentos on dm.InventMedicamentoIdFk equals i.Id
+        join p in _context.Personas on i.PersonaIdFk equals p.Id
+        join d in _context.MovimientoInventarios on dm.MovInventarioIdFk equals d.Id
+        join de in _context.DescripcionMedicamentos on i.DescripcionMedicamentoIdFk equals de.Id
+        where d.TipoMovInventIdFk == 1
+        where d.FechaVencimiento.Year == 2023  // Filtra por el año 2023
+        select new
+        {
+            Medicamento = de.Nombre,
+        }).ToListAsync();
+
+    if (medicamentoMenosVendido.Any())
+    {
+        // Agrupa por medicamento y cuenta las ventas
+        var medicamentoVentas = medicamentoMenosVendido
+            .GroupBy(x => x.Medicamento)
+            .Select(g => new
+            {
+                Medicamento = g.Key,
+                Ventas = g.Count(),
+            })
+            .OrderBy(x => x.Ventas)  // Ordena por ventas ascendentes
+            .First();  // Toma el primero (el menos vendido)
+
+        return medicamentoVentas.Medicamento;
+    }
+    else
+    {
+        return "No se encontraron ventas para el medicamento especificado en 2023.";
+    }
+}
+
 }
