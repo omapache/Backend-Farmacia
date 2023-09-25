@@ -15,13 +15,21 @@ public class ProductoController : BaseApiController
         this.unitofwork = unitofwork;
         this.mapper = mapper;
     }
-    [HttpGet]
+    /* [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<IEnumerable<ProductoDto>>> Get()
     {
         var entidad = await unitofwork.Productos.GetAllAsync();
         return mapper.Map<List<ProductoDto>>(entidad);
+    } */
+    [HttpGet]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<IEnumerable<object>>> Get()
+    {
+        var producto = await unitofwork.Productos.InformacionContacto();
+        return mapper.Map<List<object>>(producto);
     }
 
     [HttpGet("{id}")]

@@ -7,6 +7,7 @@ public class MappingProfiles : Profile
 {
     public MappingProfiles()
     {
+        
         CreateMap<Ciudad,CiudadDto>().ReverseMap();
         CreateMap<Departamento, DepartamentoDto>().ReverseMap();
         CreateMap<DescripcionMedicamento, DescripcionMedicamentoDto>().ReverseMap();
@@ -20,6 +21,7 @@ public class MappingProfiles : Profile
         CreateMap<MovimientoInventario, MovimientoInventarioDto>().ReverseMap();
         CreateMap<Pais, PaisDto>().ReverseMap();
         CreateMap<Persona, PersonaDto>().ReverseMap();
+        CreateMap<Persona, ProveedorDto>().ReverseMap();
         CreateMap<Producto, ProductoDto>().ReverseMap();
         CreateMap<ProductoProveedor, ProductoProveedorDto>().ReverseMap();
         CreateMap<RecetaMedica, RecetaMedicaDto>().ReverseMap();

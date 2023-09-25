@@ -32,4 +32,5 @@ public class PersonaRepository : GenericRepository<Persona>, IPersona
         .Include(p => p.Rol)
         .FirstOrDefaultAsync(p =>  p.Id == id);
     }
+    
 }

@@ -23,7 +23,6 @@ public class PersonaController : BaseApiController
         var entidad = await unitofwork.Personas.GetAllAsync();
         return mapper.Map<List<PersonaDto>>(entidad);
     }
-
     [HttpGet("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
