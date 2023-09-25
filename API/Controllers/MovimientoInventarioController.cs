@@ -82,12 +82,12 @@ public class MovimientoInventarioController : BaseApiController
     }
 
     
-    [HttpGet("consulta20")]
+    /* [HttpGet("consulta20")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<IEnumerable<Persona>>> Get11()
     {
         var entidad = await unitofwork.MovimientoInventarios.EmpleadoMas5Ventas();
         return mapper.Map<List<Persona>>(entidad);
-    }
+    } */
 }
