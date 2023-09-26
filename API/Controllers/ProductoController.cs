@@ -54,6 +54,26 @@ public class ProductoController : BaseApiController
         return Ok(dto);
     }
 
+    [HttpGet("consulta17/promedio")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<object>> PromedioMedicamentosPorVenta()
+    {
+        var entidad = await unitofwork.Productos.PromedioMedicamentosPorVenta();
+        var dto = mapper.Map<IEnumerable<object>>(entidad);
+        return Ok(dto);
+    }
+
+    [HttpGet("consulta26/medicamentosMes/{year}-{mes}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<object>> TotalMedicamentosVendidosPorMes(int year, int mes)
+    {
+        var entidad = await unitofwork.Productos.TotalMedicamentosVendidosPorMes(year, mes);
+        var dto = mapper.Map<int>(entidad);
+        return Ok(dto);
+    }
+
     [HttpGet("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
