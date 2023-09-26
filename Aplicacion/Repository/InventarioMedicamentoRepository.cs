@@ -159,4 +159,42 @@ public class InventarioMedicamentoRepository : GenericRepository<InventarioMedic
         return medicamentosNoVendidos;
     }
 
+
+    public async Task<int> TotalVentasMedicamento(string NombreMedicamento)
+    {
+        DateOnly fechaActual = DateOnly.FromDateTime(DateTime.Now);
+
+        var totalVentasMedicamento = await (
+            from dm in _context.DetalleMovimientos
+            join i in _context.InventarioMedicamentos on dm.InventMedicamentoIdFk equals i.Id
+            join d in _context.MovimientoInventarios on dm.MovInventarioIdFk equals d.Id
+            join de in _context.DescripcionMedicamentos on i.DescripcionMedicamentoIdFk equals de.Id
+            where d.TipoMovInventIdFk == 1 && de.Nombre == NombreMedicamento
+            where i.FechaExpiracion < fechaActual
+            select i.Stock
+        ).SumAsync();
+
+        return totalVentasMedicamento;
+    }
+
+    public async Task<IEnumerable<object>> GetMedicamentosEspecificos()
+    {
+        var medicamentosEspecificos = await (
+            from im in _context.InventarioMedicamentos
+            join m in _context.Marcas on im.Id equals m.Id
+            join p in _context.Productos on im.Id equals p.InventMedicamentoIdFk 
+            where p.Precio > 50 && im.Stock < 100
+            select new
+            {
+                Stock = im.Stock,
+                FechaExperiacion = im.FechaExpiracion,
+                Id = im.Id,
+                Precio = p.Precio,
+                NombreMedicamento = m.Nombre
+            }
+        ).Distinct().ToListAsync();
+
+        return medicamentosEspecificos;
+    }
+
 }

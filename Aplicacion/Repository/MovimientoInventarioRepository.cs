@@ -63,4 +63,19 @@ public class MovimientoInventarioRepository : GenericRepository<MovimientoInvent
     
 
 
+
+    public async Task<double> TotalDineroVentasMedicamentos()
+    {
+        DateOnly fechaActual = DateOnly.FromDateTime(DateTime.Now);
+
+        var totalDineroVentas = await (
+            from dm in _context.DetalleMovimientos
+            join i in _context.InventarioMedicamentos on dm.InventMedicamentoIdFk equals i.Id
+            join d in _context.MovimientoInventarios on dm.MovInventarioIdFk equals d.Id
+            where d.TipoMovInventIdFk == 1 && i.FechaExpiracion < fechaActual
+            select dm.Cantidad * dm.Precio
+        ).SumAsync();
+
+        return totalDineroVentas;
+    }
 }

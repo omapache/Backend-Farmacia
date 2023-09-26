@@ -15,6 +15,7 @@ public class MovimientoInventarioController : BaseApiController
         this.unitofwork = unitofwork;
         this.mapper = mapper;
     }
+
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -22,6 +23,16 @@ public class MovimientoInventarioController : BaseApiController
     {
         var entidad = await unitofwork.MovimientoInventarios.GetAllAsync();
         return mapper.Map<List<MovimientoInventarioDto>>(entidad);
+    }
+
+    [HttpGet("consulta8/totalDinero")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<object>> TotalDineroVentasMedicamentos()
+    {
+        var entidad = await unitofwork.MovimientoInventarios.TotalDineroVentasMedicamentos();
+        var dto = mapper.Map<double>(entidad);
+        return Ok(dto);
     }
 
     [HttpGet("{id}")]
