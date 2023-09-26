@@ -37,6 +37,8 @@ public class InventarioMedicamentoRepository : GenericRepository<InventarioMedic
             .Take(cantidad)
             .ToListAsync();
     }
+
+
     public async Task<IEnumerable<Object>> ObtenerMedicamentosCaducadosAsync(DateOnly fechaLimite)
     {
         var medicamentosCaducados = await (
@@ -106,4 +108,7 @@ public class InventarioMedicamentoRepository : GenericRepository<InventarioMedic
 
         return medicamentosNoVendidos;
     }
+
+    
+    
 }
