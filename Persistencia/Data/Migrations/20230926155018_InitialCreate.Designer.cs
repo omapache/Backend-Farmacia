@@ -11,7 +11,7 @@ using Persistencia;
 namespace Persistencia.Data.Migrations
 {
     [DbContext(typeof(ApiContext))]
-    [Migration("20230925055533_InitialCreate")]
+    [Migration("20230926155018_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
