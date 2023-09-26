@@ -52,7 +52,7 @@ public class InventarioMedicamentoRepository : GenericRepository<InventarioMedic
 
         return medicamentosCaducados;
     }
-    public async Task<IEnumerable<Object>> ObtenerMedicamentosSinExpirarAsync()
+    public async Task<IEnumerable<Object>> ObtenerMedicamentosSinVentaAsync()
     {
         DateOnly fechaActual = DateOnly.FromDateTime(DateTime.Now);
         var medicamentosNoVendidos = await (
@@ -106,40 +106,57 @@ public class InventarioMedicamentoRepository : GenericRepository<InventarioMedic
 
         return medicamentosNoVendidos;
     }
-    public async Task<object> ObtenerMedicamentoMenosVendidoAsync()
-{
-    var medicamentoMenosVendido = await (
-        from dm in _context.DetalleMovimientos
-        join i in _context.InventarioMedicamentos on dm.InventMedicamentoIdFk equals i.Id
-        join p in _context.Personas on i.PersonaIdFk equals p.Id
-        join d in _context.MovimientoInventarios on dm.MovInventarioIdFk equals d.Id
-        join de in _context.DescripcionMedicamentos on i.DescripcionMedicamentoIdFk equals de.Id
-        where d.TipoMovInventIdFk == 1
-        where d.FechaVencimiento.Year == 2023  // Filtra por el año 2023
-        select new
-        {
-            Medicamento = de.Nombre,
-        }).ToListAsync();
-
-    if (medicamentoMenosVendido.Any())
+    public async Task<object> ObtenerMedicamentoMenosVendidoAsync(int Año)
     {
-        // Agrupa por medicamento y cuenta las ventas
-        var medicamentoVentas = medicamentoMenosVendido
-            .GroupBy(x => x.Medicamento)
-            .Select(g => new
+        var medicamentoMenosVendido = await (
+            from dm in _context.DetalleMovimientos
+            join i in _context.InventarioMedicamentos on dm.InventMedicamentoIdFk equals i.Id
+            join p in _context.Personas on i.PersonaIdFk equals p.Id
+            join d in _context.MovimientoInventarios on dm.MovInventarioIdFk equals d.Id
+            join de in _context.DescripcionMedicamentos on i.DescripcionMedicamentoIdFk equals de.Id
+            where d.TipoMovInventIdFk == 1
+            where d.FechaVencimiento.Year == Año
+            select new
             {
-                Medicamento = g.Key,
-                Ventas = g.Count(),
-            })
-            .OrderBy(x => x.Ventas)  // Ordena por ventas ascendentes
-            .First();  // Toma el primero (el menos vendido)
+                Medicamento = de.Nombre,
+            }).ToListAsync();
 
-        return medicamentoVentas.Medicamento;
+        if (medicamentoMenosVendido.Any())
+        {
+            var medicamentoVentas = medicamentoMenosVendido
+                .GroupBy(x => x.Medicamento)
+                .Select(g => new
+                {
+                    Medicamento = g.Key,
+                    Ventas = g.Count(),
+                })
+                .OrderBy(x => x.Ventas)  
+                .First();
+            return medicamentoVentas.Medicamento;
+        }
+        else
+        {
+            return "No se encontraron ventas para el medicamento especificado en 2023.";
+        }
     }
-    else
+     public async Task<IEnumerable<Object>> ObtenerMedicamentosSinVentaNuncaAsync()
     {
-        return "No se encontraron ventas para el medicamento especificado en 2023.";
+        DateOnly fechaActual = DateOnly.FromDateTime(DateTime.Now);
+        var medicamentosNoVendidos = await (
+            from dm in _context.DetalleMovimientos
+            join i in _context.InventarioMedicamentos on dm.InventMedicamentoIdFk equals i.Id
+            join d in _context.MovimientoInventarios on dm.MovInventarioIdFk equals d.Id
+            join de in _context.DescripcionMedicamentos on i.DescripcionMedicamentoIdFk equals de.Id
+            where d.TipoMovInventIdFk == 1
+            where i.FechaExpiracion < fechaActual
+            select new 
+            {
+                Nombre = de.Nombre,
+                Stock = i.Stock,
+                FechaExpiracion = i.FechaExpiracion
+            }).ToListAsync();
+
+        return medicamentosNoVendidos;
     }
-}
 
 }

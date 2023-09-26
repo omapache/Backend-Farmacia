@@ -37,6 +37,15 @@ public class MovimientoInventarioController : BaseApiController
         }
         return this.mapper.Map<MovimientoInventarioDto>(entidad);
     }
+    [HttpGet("consulta18/{Año}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<object>> ObtenerVentasPorEmpleadoEn2023Async(int Año)
+    {
+        var entidad = await unitofwork.MovimientoInventarios.ObtenerVentasPorEmpleadoEn2023Async(Año);
+        var dto = mapper.Map<IEnumerable<object>>(entidad);
+        return Ok(dto);
+    }
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]

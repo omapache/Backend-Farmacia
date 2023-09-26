@@ -52,13 +52,13 @@ public class InventarioMedicamentoController : BaseApiController
     [HttpGet("consulta9")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<object>> ObtenerMedicamentosSinExpirarAsync(DateOnly fechaLimite)
+    public async Task<ActionResult<object>> ObtenerMedicamentosSinVentaAsync()
     {
-        var entidad = await unitofwork.InventarioMedicamentos.ObtenerMedicamentosSinExpirarAsync();
+        var entidad = await unitofwork.InventarioMedicamentos.ObtenerMedicamentosSinVentaAsync();
         var dto = mapper.Map<IEnumerable<object>>(entidad);
         return Ok(dto);
     }
-    [HttpGet("consulta12{medicina}")]
+    [HttpGet("consulta12/{medicina}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<object>> ObtenerPacienteCompradoEspecificoAsync(string medicina)
@@ -67,13 +67,22 @@ public class InventarioMedicamentoController : BaseApiController
         var dto = mapper.Map<IEnumerable<object>>(entidad);
         return Ok(dto);
     }
-    [HttpGet("consulta15")]
+    [HttpGet("consulta15/{Año}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<object>> ObtenerMedicamentoMenosVendidoAsync()
+    public async Task<ActionResult<object>> ObtenerMedicamentoMenosVendidoAsync(int Año)
     {
-        var entidad = await unitofwork.InventarioMedicamentos.ObtenerMedicamentoMenosVendidoAsync();
+        var entidad = await unitofwork.InventarioMedicamentos.ObtenerMedicamentoMenosVendidoAsync(Año);
         var dto = mapper.Map<object>(entidad);
+        return Ok(dto);
+    }
+     [HttpGet("consulta21")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<object>> ObtenerMedicamentosSinVentaNuncaAsync()
+    {
+        var entidad = await unitofwork.InventarioMedicamentos.ObtenerMedicamentosSinVentaNuncaAsync();
+        var dto = mapper.Map<IEnumerable<object>>(entidad);
         return Ok(dto);
     }
     [HttpGet("{id}")]
