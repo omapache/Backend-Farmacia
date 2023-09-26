@@ -35,25 +35,132 @@ public class MovimientoInventarioRepository : GenericRepository<MovimientoInvent
         .FirstOrDefaultAsync(p => p.Id == id);
     }
 
-    
+
+
+    public async Task<object> PacienteCompMedxAnio(int year, string medicamento)
+    {
+        DateOnly fechaInicio = DateOnly.FromDateTime(new DateTime(year, 1, 1));
+        DateOnly fechaFin = DateOnly.FromDateTime(new DateTime(year, 12, 31));
+
+        var medicamentosComprados = await (
+            from m in _context.MovimientoInventarios
+            join persona in _context.Personas on m.ReceptorIdFk equals persona.Id
+            join detalle in _context.DetalleMovimientos on m.Id equals detalle.MovInventarioIdFk
+            join invent in _context.InventarioMedicamentos on detalle.InventMedicamentoIdFk equals invent.Id
+            join descMed in _context.DescripcionMedicamentos on invent.DescripcionMedicamentoIdFk equals descMed.Id
+            where m.TipoMovInventIdFk == 1
+            where m.FechaMovimiento >= fechaInicio && m.FechaMovimiento <= fechaFin
+            where descMed.Nombre.Contains(medicamento)
+            select persona).ToListAsync();
+
+        return medicamentosComprados;
+    }
+
+    public async Task<object> PacienteMasDineroXAño(int year)
+    {
+        DateOnly fechaInicio = DateOnly.FromDateTime(new DateTime(year, 1, 1));
+        DateOnly fechaFin = DateOnly.FromDateTime(new DateTime(year, 12, 31));
+
+        var medicamentosComprados = await (
+            from m in _context.MovimientoInventarios
+            join persona in _context.Personas on m.ReceptorIdFk equals persona.Id
+            join detalle in _context.DetalleMovimientos on m.Id equals detalle.MovInventarioIdFk
+            where m.TipoMovInventIdFk == 1
+            where m.FechaMovimiento >= fechaInicio && m.FechaMovimiento <= fechaFin
+            group new { detalle.Precio, detalle.Cantidad } by persona into g
+            orderby g.Sum(x => x.Precio * x.Cantidad) descending
+            select new
+            {
+                Paciente = g.Key.Nombre,
+                TotalGastado = g.Sum(x => x.Precio * x.Cantidad)
+            }).FirstOrDefaultAsync();
+
+        return medicamentosComprados;
+    }
+
+    public async Task<object> MedicVendXMesYAnio(int year)
+    {
+        DateOnly fechaInicio = DateOnly.FromDateTime(new DateTime(year, 1, 1));
+        DateOnly fechaFin = DateOnly.FromDateTime(new DateTime(year, 12, 31));
+
+        var medicamentosComprados = await (
+            from m in _context.MovimientoInventarios
+            join persona in _context.Personas on m.ReceptorIdFk equals persona.Id
+            join detalle in _context.DetalleMovimientos on m.Id equals detalle.MovInventarioIdFk
+            join invent in _context.InventarioMedicamentos on detalle.InventMedicamentoIdFk equals invent.Id
+            join descMed in _context.DescripcionMedicamentos on invent.DescripcionMedicamentoIdFk equals descMed.Id
+            where m.TipoMovInventIdFk == 1
+            where m.FechaMovimiento >= fechaInicio && m.FechaMovimiento <= fechaFin
+            group new { m.FechaMovimiento.Month, detalle.Cantidad, descMed.Nombre } by new { m.FechaMovimiento.Month, descMed.Nombre } into g
+            orderby g.Key.Month
+            select new
+            {
+                Mes = g.Key.Month,
+                Medicamento = g.Key.Nombre,
+                Cantidad = g.Sum(x => x.Cantidad)
+            }).ToListAsync();
+
+        return medicamentosComprados;
+    }
+
+
     public async Task<IEnumerable<object>> ProvSinVentasUltAño()
-{
-    DateOnly fechaActual = DateOnly.FromDateTime(DateTime.Today);
-    DateOnly fechaHace1Año = fechaActual.AddDays(-365);
+    {
+        DateOnly fechaActual = DateOnly.FromDateTime(DateTime.Today);
+        DateOnly fechaHace1Año = fechaActual.AddDays(-365);
 
-    var query = from per in _context.Personas
-                join t in _context.Rols on per.RolIdFk equals t.Id
-                where t.Nombre == "Proveedor"
-                where !(
-                    from p in _context.MovimientoInventarios
-                    where p.TipoMovInventIdFk == 2
-                    where p.FechaMovimiento > fechaHace1Año
-                    select p.ResponsableIdFk
-                ).Contains(per.Id)
-                select per;
+        var query = from per in _context.Personas
+                    join t in _context.Rols on per.RolIdFk equals t.Id
+                    where t.Nombre == "Proveedor"
+                    where !(
+                        from p in _context.MovimientoInventarios
+                        where p.TipoMovInventIdFk == 2
+                        where p.FechaMovimiento > fechaHace1Año
+                        select p.ResponsableIdFk
+                    ).Contains(per.Id)
+                    select per;
 
-    return await query.ToListAsync();
-}
+        return await query.ToListAsync();
+    }
+
+    
+    public async Task<IEnumerable<object>> EmpleadoSinVentasMesYAnio(int year, int mes)
+    {
+        DateOnly fechaInicio = DateOnly.FromDateTime(new DateTime(year, mes, 1));
+        DateOnly fechaFin = DateOnly.FromDateTime(new DateTime(year, mes, 31));
+
+        var query = from per in _context.Personas
+                    join t in _context.Rols on per.RolIdFk equals t.Id
+                    where t.Nombre == "Employee"
+                    where !(
+                        from p in _context.MovimientoInventarios
+                        where p.TipoMovInventIdFk == 1
+                        where p.FechaMovimiento >= fechaInicio && p.FechaMovimiento <= fechaFin
+                        select p.ResponsableIdFk
+                    ).Contains(per.Id)
+                    select per;
+
+        return await query.ToListAsync();
+    }
+
+    public async Task<IEnumerable<object>> TotalProvSuministraMedicamentosxAnio(int year)
+    {
+        DateOnly fechaInicio = DateOnly.FromDateTime(new DateTime(year, 1, 1));
+        DateOnly fechaFin = DateOnly.FromDateTime(new DateTime(year, 12, 31));
+
+        var query = from per in _context.Personas
+                    join t in _context.Rols on per.RolIdFk equals t.Id
+                    where t.Nombre == "Proveedor"
+                    where (
+                        from p in _context.MovimientoInventarios
+                        where p.TipoMovInventIdFk == 2
+                        where p.FechaMovimiento >= fechaInicio && p.FechaMovimiento <= fechaFin
+                        select p.ResponsableIdFk
+                    ).Contains(per.Id)
+                    select per;
+
+        return await query.ToListAsync();
+    }
 
 
     public async Task<IEnumerable<object>> TotalVentasxProveedor()

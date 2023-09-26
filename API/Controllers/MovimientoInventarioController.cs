@@ -87,7 +87,7 @@ public class MovimientoInventarioController : BaseApiController
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<object>> TotalVentasxProveedor()
     {
-        var entidad = await unitofwork.InventarioMedicamentos.TotalVentasxProveedor();
+        var entidad = await unitofwork.MovimientoInventarios.TotalVentasxProveedor();
         var dto = mapper.Map<IEnumerable<object>>(entidad);
         return Ok(dto);
     }
@@ -98,7 +98,62 @@ public class MovimientoInventarioController : BaseApiController
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<object>> ProvSinVentasUltAño()
     {
-        var entidad = await unitofwork.InventarioMedicamentos.ProvSinVentasUltAño();
+        var entidad = await unitofwork.MovimientoInventarios.ProvSinVentasUltAño();
+        var dto = mapper.Map<IEnumerable<object>>(entidad);
+        return Ok(dto);
+    }
+
+    
+    [HttpGet("consulta22/{year}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<object>> PacienteMasDineroXAño(int year)
+    {
+        var entidad = await unitofwork.MovimientoInventarios.PacienteMasDineroXAño(year);
+        var dto = mapper.Map<IEnumerable<object>>(entidad);
+        return Ok(dto);
+    }
+
+    
+    [HttpGet("consulta25/{year}/{medicamento}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<object>> PacienteCompMedxAnio(int year, string medicamento)
+    {
+        var entidad = await unitofwork.MovimientoInventarios.PacienteCompMedxAnio(year, medicamento);
+        var dto = mapper.Map<IEnumerable<object>>(entidad);
+        return Ok(dto);
+    }
+
+    
+    [HttpGet("consulta28/{year}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<object>> TotalProvSuministraMedicamentosxAnio(int year)
+    {
+        var entidad = await unitofwork.MovimientoInventarios.TotalProvSuministraMedicamentosxAnio(year);
+        var dto = mapper.Map<IEnumerable<object>>(entidad);
+        return Ok(dto);
+    }
+
+    
+    [HttpGet("consulta31/{year}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<object>> MedicVendXMesYAnio(int year)
+    {
+        var entidad = await unitofwork.MovimientoInventarios.MedicVendXMesYAnio(year);
+        var dto = mapper.Map<IEnumerable<object>>(entidad);
+        return Ok(dto);
+    }
+
+    
+    [HttpGet("consulta37/{year}/{mes}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<object>> EmpleadoSinVentasMesYAnio(int year, int mes)
+    {
+        var entidad = await unitofwork.MovimientoInventarios.EmpleadoSinVentasMesYAnio(year, mes);
         var dto = mapper.Map<IEnumerable<object>>(entidad);
         return Ok(dto);
     }
