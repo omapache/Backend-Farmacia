@@ -86,7 +86,7 @@ public class InventarioMedicamentoController : BaseApiController
         var dto = mapper.Map<object>(entidad);
         return Ok(dto);
     }
-     [HttpGet("consulta21")]
+    [HttpGet("consulta21")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<object>> ObtenerMedicamentosSinVentaNuncaAsync()

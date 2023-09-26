@@ -36,6 +36,43 @@ public class PersonaController : BaseApiController
         }
         return this.mapper.Map<PersonaDto>(entidad);
     }
+    [HttpGet("consulta27/{Año}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<object>> ObtenerEmpleadosConMenosDe5VentasAsync(int Año)
+    {
+        var entidad = await unitofwork.Personas.ObtenerEmpleadosConMenosDe5VentasAsync(Año);
+        var dto = mapper.Map<IEnumerable<object>>(entidad);
+        return Ok(dto);
+    }
+    [HttpGet("consulta30")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<object>> ObtenerPacientesSinComprasEn2023Async()
+    {
+        var entidad = await unitofwork.Personas.ObtenerPacientesSinComprasEn2023Async();
+        var dto = mapper.Map<IEnumerable<object>>(entidad);
+        return Ok(dto);
+    }
+
+    [HttpGet("consulta33")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<object>> CalcularTotalGastadoPorPacienteEn2023Async()
+    {
+        var entidad = await unitofwork.Personas.CalcularTotalGastadoPorPacienteEn2023Async();
+        var dto = mapper.Map<IEnumerable<object>>(entidad);
+        return Ok(dto);
+    }
+    [HttpGet("consulta366")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<int>> CalcularTotalMedicamentosVendidosPrimerTrimestre2023Async()
+    {
+        var entidad = await unitofwork.Personas.CalcularTotalMedicamentosVendidosPrimerTrimestre2023Async();
+        var dto = mapper.Map<int>(entidad);
+        return Ok(dto);
+    }
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
