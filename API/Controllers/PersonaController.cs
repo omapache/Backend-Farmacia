@@ -64,7 +64,7 @@ public class PersonaController : BaseApiController
         return Ok(dto);
     }
 
-    [HttpGet("consulta32/proveedorMedi/{year}")]
+    [HttpGet("consulta35/proveedorMedi/{year}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<object>> ProveedoresMedicamentosDiferentes(int year)
