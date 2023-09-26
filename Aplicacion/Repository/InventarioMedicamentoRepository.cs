@@ -124,4 +124,24 @@ public class InventarioMedicamentoRepository : GenericRepository<InventarioMedic
         return totalVentasMedicamento;
     }
 
+    public async Task<IEnumerable<object>> GetMedicamentosEspecificos()
+    {
+        var medicamentosEspecificos = await (
+            from im in _context.InventarioMedicamentos
+            join m in _context.Marcas on im.Id equals m.Id
+            join p in _context.Productos on im.Id equals p.InventMedicamentoIdFk 
+            where p.Precio > 50 && im.Stock < 100
+            select new
+            {
+                Stock = im.Stock,
+                FechaExperiacion = im.FechaExpiracion,
+                Id = im.Id,
+                Precio = p.Precio,
+                NombreMedicamento = m.Nombre
+            }
+        ).Distinct().ToListAsync();
+
+        return medicamentosEspecificos;
+    }
+
 }

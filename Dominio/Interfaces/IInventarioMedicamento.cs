@@ -9,4 +9,5 @@ public interface IInventarioMedicamento  : IGenericRepo<InventarioMedicamento>
     Task<IEnumerable<object>> ObtenerMedicamentosVendidoEspecificoAsync(string Nombre);
     Task<IEnumerable<Object>> ObtenerPacienteCompradoEspecificoAsync(string medicina);
     Task<int> TotalVentasMedicamento(string NombreMedicamento);
+    Task<IEnumerable<object>> GetMedicamentosEspecificos();
 }
