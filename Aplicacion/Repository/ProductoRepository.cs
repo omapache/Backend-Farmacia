@@ -79,5 +79,37 @@ public class ProductoRepository : GenericRepository<Producto>, IProducto
         return totalVendidos;
     }
 
+    public async Task<IEnumerable<object>> PromedioMedicamentosPorVenta()
+    {
+        return await (
+            from dm in _context.DetalleMovimientos
+            join d in _context.MovimientoInventarios on dm.MovInventarioIdFk equals d.Id
+            where d.TipoMovInventIdFk == 1
+            group dm by dm.MovInventarioIdFk into grupoVenta
+            select new
+            {
+                MovimientoInventarioId = grupoVenta.Key,
+                PromedioMedicamentos = grupoVenta.Average(dm => dm.Cantidad)
+            }
+        ).ToListAsync();
+    }
+
+    public async Task<int> TotalMedicamentosVendidosPorMes(int year, int mes)
+    {
+        var inicioMes = new DateOnly(year, mes, 1);
+        var finMes = new DateOnly(year, mes, DateTime.DaysInMonth(year, mes));
+
+        var totalVendidos = await (
+            from dm in _context.DetalleMovimientos
+            join d in _context.MovimientoInventarios on dm.MovInventarioIdFk equals d.Id
+            where d.TipoMovInventIdFk == 1
+            && d.FechaMovimiento >= inicioMes && d.FechaMovimiento <= finMes
+            select dm.Cantidad
+        ).SumAsync();
+
+        return totalVendidos;
+    }
+
+
 
 }

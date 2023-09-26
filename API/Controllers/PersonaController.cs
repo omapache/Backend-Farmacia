@@ -23,6 +23,57 @@ public class PersonaController : BaseApiController
         var entidad = await unitofwork.Personas.GetAllAsync();
         return mapper.Map<List<PersonaDto>>(entidad);
     }
+
+    [HttpGet("consulta20/emepladoMasVentas")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<object>> EmpleadosConMasDe5Ventas()
+    {
+        var entidad = await unitofwork.Personas.EmpleadosConMasDe5Ventas();
+        var dto = mapper.Map<IEnumerable<object>>(entidad);
+        return Ok(dto);
+    }
+
+    [HttpGet("consulta23/emepladoSinVentas/{year}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<object>> EmpleadosSinVentas(int year)
+    {
+        var entidad = await unitofwork.Personas.EmpleadosSinVentas(year);
+        var dto = mapper.Map<IEnumerable<object>>(entidad);
+        return Ok(dto);
+    }
+
+    [HttpGet("consulta29/proveedoresMedi")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<object>> ProveedoresMedicamentosStockBajo()
+    {
+        var entidad = await unitofwork.Personas.ProveedoresMedicamentosStockBajo();
+        var dto = mapper.Map<IEnumerable<object>>(entidad);
+        return Ok(dto);
+    }
+
+    [HttpGet("consulta32/empleadosMaxMedi/{year}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<object>> EmpleadoMaxMedicamentosDistintos(int year)
+    {
+        var entidad = await unitofwork.Personas.EmpleadoMaxMedicamentosDistintos(year);
+        var dto = mapper.Map<object>(entidad);
+        return Ok(dto);
+    }
+
+    [HttpGet("consulta32/proveedorMedi/{year}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<object>> ProveedoresMedicamentosDiferentes(int year)
+    {
+        var entidad = await unitofwork.Personas.ProveedoresMedicamentosDiferentes(year);
+        var dto = mapper.Map<IEnumerable<object>>(entidad);
+        return Ok(dto);
+    }
+
     [HttpGet("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
