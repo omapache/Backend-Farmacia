@@ -52,9 +52,9 @@ public class InventarioMedicamentoRepository : GenericRepository<InventarioMedic
 
         return medicamentosCaducados;
     }
-    public async Task<IEnumerable<Object>> ObtenerMedicamentosSinVentaAsync()
+    public async Task<IEnumerable<Object>> ObtenerMedicamentosSinVentaAñoAsync(int Año)
     {
-        DateOnly fechaActual = DateOnly.FromDateTime(DateTime.Now);
+        DateOnly fechaActual = new DateOnly(Año, 12, 31);
         var medicamentosNoVendidos = await (
             from dm in _context.DetalleMovimientos
             join i in _context.InventarioMedicamentos on dm.InventMedicamentoIdFk equals i.Id
@@ -115,7 +115,7 @@ public class InventarioMedicamentoRepository : GenericRepository<InventarioMedic
             join d in _context.MovimientoInventarios on dm.MovInventarioIdFk equals d.Id
             join de in _context.DescripcionMedicamentos on i.DescripcionMedicamentoIdFk equals de.Id
             where d.TipoMovInventIdFk == 1
-            where d.FechaVencimiento.Year == Año
+            where d.FechaMovimiento.Year == Año
             select new
             {
                 Medicamento = de.Nombre,
