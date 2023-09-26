@@ -34,26 +34,6 @@ public class PersonaRepository : GenericRepository<Persona>, IPersona
     }
 
 
-    public async Task<IEnumerable<object>> TotalVentasxProveedor()
-    {
-        /*  return await (
-             from p in _context.Personas
-             join e in _context.InventarioMedicamentos on p.Id equals e.PersonaIdFk
-             join t in _context.TipoPersonas on p.TipoPersonaIdFk equals t.Id
-             where t.Descripcion == "Proveedor"
-            ).ToListAsync(); */
-        var query = from p in _context.Personas
-                    join e in _context.InventarioMedicamentos on p.Id equals e.PersonaIdFk
-                    join t in _context.TipoPersonas on p.TipoPersonaIdFk equals t.Id
-                    where t.Descripcion == "Proveedor"
-                    group e by p.Nombre into g
-                    select new
-                    {
-                        Proveedor = g.Key,
-                        CantidadProductos = g.Count()
-                    };
-
-        return await query.ToListAsync();
-    }
+    
 
 }

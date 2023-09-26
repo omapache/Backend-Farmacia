@@ -15,6 +15,7 @@ public class MovimientoInventarioController : BaseApiController
         this.unitofwork = unitofwork;
         this.mapper = mapper;
     }
+    
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -81,7 +82,26 @@ public class MovimientoInventarioController : BaseApiController
         return NoContent();
     }
 
+    [HttpGet("consulta7")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<object>> TotalVentasxProveedor()
+    {
+        var entidad = await unitofwork.InventarioMedicamentos.TotalVentasxProveedor();
+        var dto = mapper.Map<IEnumerable<object>>(entidad);
+        return Ok(dto);
+    }
+
     
+    [HttpGet("consulta12")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<object>> ProvSinVentasUltAño()
+    {
+        var entidad = await unitofwork.InventarioMedicamentos.ProvSinVentasUltAño();
+        var dto = mapper.Map<IEnumerable<object>>(entidad);
+        return Ok(dto);
+    }
     /* [HttpGet("consulta20")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]

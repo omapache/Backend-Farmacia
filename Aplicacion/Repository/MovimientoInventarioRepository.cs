@@ -7,8 +7,8 @@ namespace Aplicacion.Repository;
 public class MovimientoInventarioRepository : GenericRepository<MovimientoInventario>, IMovimientoInventario
 {
     protected readonly ApiContext _context;
-    
-    public MovimientoInventarioRepository(ApiContext context) : base (context)
+
+    public MovimientoInventarioRepository(ApiContext context) : base(context)
     {
         _context = context;
     }
@@ -32,10 +32,55 @@ public class MovimientoInventarioRepository : GenericRepository<MovimientoInvent
         .Include(p => p.Responsable)
         .Include(p => p.Receptor)
         .Include(p => p.RecetaMedica)
-        .FirstOrDefaultAsync(p =>  p.Id == id);
+        .FirstOrDefaultAsync(p => p.Id == id);
     }
 
-   
+    
+    public async Task<IEnumerable<object>> ProvSinVentasUltAño()
+{
+    DateOnly fechaActual = DateOnly.FromDateTime(DateTime.Today);
+    DateOnly fechaHace1Año = fechaActual.AddDays(-365);
+
+    var query = from per in _context.Personas
+                join t in _context.Rols on per.RolIdFk equals t.Id
+                where t.Nombre == "Proveedor"
+                where !(
+                    from p in _context.MovimientoInventarios
+                    where p.TipoMovInventIdFk == 2
+                    where p.FechaMovimiento > fechaHace1Año
+                    select p.ResponsableIdFk
+                ).Contains(per.Id)
+                select per;
+
+    return await query.ToListAsync();
+}
+
+
+    public async Task<IEnumerable<object>> TotalVentasxProveedor()
+    {
+        /*  return await (
+             from p in _context.Personas
+             join e in _context.InventarioMedicamentos on p.Id equals e.PersonaIdFk
+             join t in _context.TipoPersonas on p.TipoPersonaIdFk equals t.Id
+             where t.Descripcion == "Proveedor"
+            ).ToListAsync(); */
+        var query = from p in _context.MovimientoInventarios
+                    join e in _context.DetalleMovimientos on p.Id equals e.MovInventarioIdFk
+                    join per in _context.Personas on p.ResponsableIdFk equals per.Id
+                    join t in _context.Rols on per.RolIdFk equals t.Id
+                    where p.TipoMovInventIdFk == 2
+                    where t.Nombre == "Proveedor"
+                    group e.Cantidad by p into g
+                    select new
+                    {
+                        Proveedor = g.Key,
+                        CantidadProductos = g.Sum()
+                    };
+
+        return await query.ToListAsync();
+    }
+
+
 }
 
 /* 
