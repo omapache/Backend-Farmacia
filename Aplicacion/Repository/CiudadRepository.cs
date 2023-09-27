@@ -27,4 +27,4 @@ public class CiudadRepository : GenericRepository<Ciudad>, ICiudad
         .Include(p => p.Departamento)
         .FirstOrDefaultAsync(p =>  p.Id == id);
     }
-}
+} 

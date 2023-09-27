@@ -15,21 +15,63 @@ public class ProductoController : BaseApiController
         this.unitofwork = unitofwork;
         this.mapper = mapper;
     }
-    /* [HttpGet]
+
+    [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<IEnumerable<ProductoDto>>> Get()
     {
         var entidad = await unitofwork.Productos.GetAllAsync();
         return mapper.Map<List<ProductoDto>>(entidad);
-    } */
-    [HttpGet]
+    }
+
+    [HttpGet("consulta2")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<IEnumerable<object>>> Get()
+    public async Task<ActionResult<IEnumerable<object>>> Get11()
     {
         var producto = await unitofwork.Productos.InformacionContacto();
         return mapper.Map<List<object>>(producto);
+    }
+
+    [HttpGet("consulta11/medicamentosProveedor")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<object>> NumeroMedicamentosPorProveedor()
+    {
+        var entidad = await unitofwork.Productos.NumeroMedicamentosPorProveedor();
+        var dto = mapper.Map<IEnumerable<Object>>(entidad);
+        return Ok(dto);
+    }
+
+    [HttpGet("consulta14/totalVendidos")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<object>> TotalMedicamentosVendidosMarzo()
+    {
+        var entidad = await unitofwork.Productos.TotalMedicamentosVendidosMarzo();
+        var dto = mapper.Map<int>(entidad);
+        return Ok(dto);
+    }
+
+    [HttpGet("consulta17/promedio")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<object>> PromedioMedicamentosPorVenta()
+    {
+        var entidad = await unitofwork.Productos.PromedioMedicamentosPorVenta();
+        var dto = mapper.Map<IEnumerable<object>>(entidad);
+        return Ok(dto);
+    }
+
+    [HttpGet("consulta26/medicamentosMes/{year}-{mes}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<object>> TotalMedicamentosVendidosPorMes(int year, int mes)
+    {
+        var entidad = await unitofwork.Productos.TotalMedicamentosVendidosPorMes(year, mes);
+        var dto = mapper.Map<int>(entidad);
+        return Ok(dto);
     }
 
     [HttpGet("{id}")]

@@ -7,6 +7,7 @@ public class MappingProfiles : Profile
 {
     public MappingProfiles()
     {
+        
         CreateMap<Ciudad,CiudadDto>().ReverseMap();
         CreateMap<Departamento, DepartamentoDto>().ReverseMap();
         CreateMap<DescripcionMedicamento, DescripcionMedicamentoDto>().ReverseMap();

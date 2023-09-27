@@ -31,17 +31,94 @@ public class ProductoRepository : GenericRepository<Producto>, IProducto
     public async Task<IEnumerable<Object>> InformacionContacto()
     {
         return await (
-            from p in _context.Personas
+            from i in _context.InventarioMedicamentos
+            join dm in _context.DescripcionMedicamentos on i.DescripcionMedicamentoIdFk equals dm.Id
+            join p in _context.Personas on i.PersonaIdFk equals p.Id
             join e in _context.Emails on p.Id equals e.PersonaIdFk
             join t in _context.Telefonos on p.Id equals t.PersonaIdFk
             join r in _context.Rols on p.RolIdFk equals r.Id
-            where r.Nombre == "Proveedor" // Filtrar por RolIdFk igual a 3 (proveedores)
+            where r.Nombre == "Proveedor"
             select new
             {
-                Nombre = p.Nombre,
+                NombreMedicamento = dm.Nombre,
+                NombreProveedor = p.Nombre,
                 Direccion = e.Direccion,
                 Telefono = t.Numero,
             }).ToListAsync();
     }
+
+    public async Task<Producto> ObtenerMedicamentoMasCaroAsync()
+    {
+        var productoMasCaro = await _context.Productos
+        .OrderByDescending(p => p.Precio)
+        .FirstOrDefaultAsync();
+
+        return productoMasCaro;
+    }
+
+    public async Task<IEnumerable<Object>> NumeroMedicamentosPorProveedor()
+    {
+        return await (
+            from i in _context.InventarioMedicamentos
+            join dm in _context.DescripcionMedicamentos on i.DescripcionMedicamentoIdFk equals dm.Id
+            join p in _context.Personas on i.PersonaIdFk equals p.Id
+            join r in _context.Rols on p.RolIdFk equals r.Id
+            where r.Nombre == "Proveedor"
+            group i by p.Nombre into grupoProveedor
+            select new
+            {
+                NombreProveedor = grupoProveedor.Key,
+                NumeroMedicamentos = grupoProveedor.Count()
+            }).ToListAsync();
+    }
+
+    public async Task<int> TotalMedicamentosVendidosMarzo()
+    {
+        var inicioMarzo2023 = new DateOnly(2023, 3, 1);
+        var finMarzo2023 = new DateOnly(2023, 3, 31);
+
+        var totalVendidos = await (
+            from dm in _context.DetalleMovimientos
+            join d in _context.MovimientoInventarios on dm.MovInventarioIdFk equals d.Id
+            where d.TipoMovInventIdFk == 1
+            && d.FechaMovimiento >= inicioMarzo2023 && d.FechaMovimiento <= finMarzo2023
+            select dm.Cantidad
+        ).SumAsync();
+
+        return totalVendidos;
+    }
+
+    public async Task<IEnumerable<object>> PromedioMedicamentosPorVenta()
+    {
+        return await (
+            from dm in _context.DetalleMovimientos
+            join d in _context.MovimientoInventarios on dm.MovInventarioIdFk equals d.Id
+            where d.TipoMovInventIdFk == 1
+            group dm by dm.MovInventarioIdFk into grupoVenta
+            select new
+            {
+                MovimientoInventarioId = grupoVenta.Key,
+                PromedioMedicamentos = grupoVenta.Average(dm => dm.Cantidad)
+            }
+        ).ToListAsync();
+    }
+
+    public async Task<int> TotalMedicamentosVendidosPorMes(int year, int mes)
+    {
+        var inicioMes = new DateOnly(year, mes, 1);
+        var finMes = new DateOnly(year, mes, DateTime.DaysInMonth(year, mes));
+
+        var totalVendidos = await (
+            from dm in _context.DetalleMovimientos
+            join d in _context.MovimientoInventarios on dm.MovInventarioIdFk equals d.Id
+            where d.TipoMovInventIdFk == 1
+            && d.FechaMovimiento >= inicioMes && d.FechaMovimiento <= finMes
+            select dm.Cantidad
+        ).SumAsync();
+
+        return totalVendidos;
+    }
+
+
 
 }
