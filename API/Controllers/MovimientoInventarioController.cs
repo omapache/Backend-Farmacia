@@ -15,7 +15,7 @@ public class MovimientoInventarioController : BaseApiController
         this.unitofwork = unitofwork;
         this.mapper = mapper;
     }
-    
+
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -23,6 +23,16 @@ public class MovimientoInventarioController : BaseApiController
     {
         var entidad = await unitofwork.MovimientoInventarios.GetAllAsync();
         return mapper.Map<List<MovimientoInventarioDto>>(entidad);
+    }
+
+    [HttpGet("consulta8/totalDinero")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<object>> TotalDineroVentasMedicamentos()
+    {
+        var entidad = await unitofwork.MovimientoInventarios.TotalDineroVentasMedicamentos();
+        var dto = mapper.Map<double>(entidad);
+        return Ok(dto);
     }
 
     [HttpGet("{id}")]
@@ -38,6 +48,26 @@ public class MovimientoInventarioController : BaseApiController
         }
         return this.mapper.Map<MovimientoInventarioDto>(entidad);
     }
+    [HttpGet("consulta18/{Año}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<object>> ObtenerVentasPorEmpleadoEn2023Async(int Año)
+    {
+        var entidad = await unitofwork.MovimientoInventarios.ObtenerVentasPorEmpleadoEn2023Async(Año);
+        var dto = mapper.Map<IEnumerable<object>>(entidad);
+        return Ok(dto);
+    }
+    [HttpGet("consulta19/{year}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<object>> MedExpiranXAñoAsync(int year)
+    {
+        var entidad = await unitofwork.InventarioMedicamentos.MedExpiranXAñoAsync(year);
+        var dto = mapper.Map<IEnumerable<object>>(entidad);
+        return Ok(dto);
+    }
+
+    [HttpGet("consulta13/{medicina}")]
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]

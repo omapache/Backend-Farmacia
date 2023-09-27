@@ -24,6 +24,7 @@ public class DetalleMovimientoController : BaseApiController
         return mapper.Map<List<DetalleMovimientoDto>>(entidad);
     }
 
+
     [HttpGet("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -36,6 +37,15 @@ public class DetalleMovimientoController : BaseApiController
             return NotFound();
         }
         return this.mapper.Map<DetalleMovimientoDto>(entidad);
+    }
+    [HttpGet("consulta24/{Año}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<string>> ObtenerProveedorMasSuministrosAsync(int Año)
+    {
+        var entidad = await unitofwork.DetalleMovimientos.ObtenerProveedorMasSuministrosAsync(Año);
+        var dto = mapper.Map<string>(entidad);
+        return Ok(dto);
     }
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]

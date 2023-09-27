@@ -10,7 +10,7 @@ public class TipoMovimientoInventarioRepository : GenericRepository<TipoMovimien
 
     public TipoMovimientoInventarioRepository(ApiContext context) : base(context)
     {
-       _context = context;
+        _context = context;
     }
     public override async Task<IEnumerable<TipoMovimientoInventario>> GetAllAsync()
     {

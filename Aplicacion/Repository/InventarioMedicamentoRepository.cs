@@ -71,9 +71,9 @@ public class InventarioMedicamentoRepository : GenericRepository<InventarioMedic
 
         return medicamentosCaducados;
     }
-    public async Task<IEnumerable<Object>> ObtenerMedicamentosSinExpirarAsync()
+    public async Task<IEnumerable<Object>> ObtenerMedicamentosSinVentaAñoAsync(int Año)
     {
-        DateOnly fechaActual = DateOnly.FromDateTime(DateTime.Now);
+        DateOnly fechaActual = new DateOnly(Año, 12, 31);
         var medicamentosNoVendidos = await (
             from dm in _context.DetalleMovimientos
             join i in _context.InventarioMedicamentos on dm.InventMedicamentoIdFk equals i.Id
@@ -125,6 +125,97 @@ public class InventarioMedicamentoRepository : GenericRepository<InventarioMedic
 
         return medicamentosNoVendidos;
     }
+    public async Task<object> ObtenerMedicamentoMenosVendidoAsync(int Año)
+    {
+        var medicamentoMenosVendido = await (
+            from dm in _context.DetalleMovimientos
+            join i in _context.InventarioMedicamentos on dm.InventMedicamentoIdFk equals i.Id
+            join p in _context.Personas on i.PersonaIdFk equals p.Id
+            join d in _context.MovimientoInventarios on dm.MovInventarioIdFk equals d.Id
+            join de in _context.DescripcionMedicamentos on i.DescripcionMedicamentoIdFk equals de.Id
+            where d.TipoMovInventIdFk == 1
+            where d.FechaMovimiento.Year == Año
+            select new
+            {
+                Medicamento = de.Nombre,
+            }).ToListAsync();
+
+        if (medicamentoMenosVendido.Any())
+        {
+            var medicamentoVentas = medicamentoMenosVendido
+                .GroupBy(x => x.Medicamento)
+                .Select(g => new
+                {
+                    Medicamento = g.Key,
+                    Ventas = g.Count(),
+                })
+                .OrderBy(x => x.Ventas)  
+                .First();
+            return medicamentoVentas.Medicamento;
+        }
+        else
+        {
+            return "No se encontraron ventas para el medicamento especificado en 2023.";
+        }
+    }
+     public async Task<IEnumerable<Object>> ObtenerMedicamentosSinVentaNuncaAsync()
+    {
+        DateOnly fechaActual = DateOnly.FromDateTime(DateTime.Now);
+        var medicamentosNoVendidos = await (
+            from dm in _context.DetalleMovimientos
+            join i in _context.InventarioMedicamentos on dm.InventMedicamentoIdFk equals i.Id
+            join d in _context.MovimientoInventarios on dm.MovInventarioIdFk equals d.Id
+            join de in _context.DescripcionMedicamentos on i.DescripcionMedicamentoIdFk equals de.Id
+            where d.TipoMovInventIdFk == 1
+            where i.FechaExpiracion < fechaActual
+            select new 
+            {
+                Nombre = de.Nombre,
+                Stock = i.Stock,
+                FechaExpiracion = i.FechaExpiracion
+            }).ToListAsync();
+
+        return medicamentosNoVendidos;
+    }
+
+
+    public async Task<int> TotalVentasMedicamento(string NombreMedicamento)
+    {
+        DateOnly fechaActual = DateOnly.FromDateTime(DateTime.Now);
+
+        var totalVentasMedicamento = await (
+            from dm in _context.DetalleMovimientos
+            join i in _context.InventarioMedicamentos on dm.InventMedicamentoIdFk equals i.Id
+            join d in _context.MovimientoInventarios on dm.MovInventarioIdFk equals d.Id
+            join de in _context.DescripcionMedicamentos on i.DescripcionMedicamentoIdFk equals de.Id
+            where d.TipoMovInventIdFk == 1 && de.Nombre == NombreMedicamento
+            where i.FechaExpiracion < fechaActual
+            select i.Stock
+        ).SumAsync();
+
+        return totalVentasMedicamento;
+    }
+
+    public async Task<IEnumerable<object>> GetMedicamentosEspecificos()
+    {
+        var medicamentosEspecificos = await (
+            from im in _context.InventarioMedicamentos
+            join m in _context.Marcas on im.Id equals m.Id
+            join p in _context.Productos on im.Id equals p.InventMedicamentoIdFk 
+            where p.Precio > 50 && im.Stock < 100
+            select new
+            {
+                Stock = im.Stock,
+                FechaExperiacion = im.FechaExpiracion,
+                Id = im.Id,
+                Precio = p.Precio,
+                NombreMedicamento = m.Nombre
+            }
+        ).Distinct().ToListAsync();
+
+        return medicamentosEspecificos;
+    }
+
 
     
     
