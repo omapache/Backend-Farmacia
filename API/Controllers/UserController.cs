@@ -55,6 +55,22 @@ public class UserController : BaseApiController
         return Ok(result);
     }
     
+    [HttpPost("validate-credentials")]
+    public async Task<IActionResult> ValidateCredentials(LoginDto model)
+    {
+        var isValid = await _userService.ValidateCredentialsAsync(model);
+
+        if (isValid)
+        {
+            // Las credenciales son válidas, puedes devolver un código 200 OK.
+            return Ok(new { message = "Credenciales válidas" });
+        }
+        else
+        {
+            // La autenticación falló, puedes devolver un código de error 401 Unauthorized.
+            return Unauthorized(new { message = "Credenciales incorrectas" });
+        }
+    }
 
     [HttpPost("addrole")]
     public async Task<IActionResult> AddRoleAsync(AddRoleDto model)
