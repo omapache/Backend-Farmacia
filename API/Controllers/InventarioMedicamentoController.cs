@@ -59,21 +59,50 @@ public class InventarioMedicamentoController : BaseApiController
         var dto = mapper.Map<IEnumerable<object>>(entidad);
         return Ok(dto);
     }
-    [HttpGet("consulta9")]
+    [HttpGet("consulta9/{Año}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<object>> ObtenerMedicamentosSinExpirarAsync(DateOnly fechaLimite)
+    public async Task<ActionResult<object>> ObtenerMedicamentosSinVentaAñoAsync(int Año)
     {
-        var entidad = await unitofwork.InventarioMedicamentos.ObtenerMedicamentosSinExpirarAsync();
+        var entidad = await unitofwork.InventarioMedicamentos.ObtenerMedicamentosSinVentaAñoAsync(Año);
         var dto = mapper.Map<IEnumerable<object>>(entidad);
         return Ok(dto);
     }
-    [HttpGet("consulta12{medicina}")]
+    
+    [HttpGet("consulta19/{year}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<object>> MedExpiranXAñoAsync(int year)
+    {
+        var entidad = await unitofwork.InventarioMedicamentos.MedExpiranXAñoAsync(year);
+        var dto = mapper.Map<IEnumerable<object>>(entidad);
+        return Ok(dto);
+    }
+
+    [HttpGet("consulta12/{medicina}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<object>> ObtenerPacienteCompradoEspecificoAsync(string medicina)
     {
         var entidad = await unitofwork.InventarioMedicamentos.ObtenerPacienteCompradoEspecificoAsync(medicina);
+        var dto = mapper.Map<IEnumerable<object>>(entidad);
+        return Ok(dto);
+    }
+    [HttpGet("consulta15/{Año}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<object>> ObtenerMedicamentoMenosVendidoAsync(int Año)
+    {
+        var entidad = await unitofwork.InventarioMedicamentos.ObtenerMedicamentoMenosVendidoAsync(Año);
+        var dto = mapper.Map<object>(entidad);
+        return Ok(dto);
+    }
+    [HttpGet("consulta21")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<object>> ObtenerMedicamentosSinVentaNuncaAsync()
+    {
+        var entidad = await unitofwork.InventarioMedicamentos.ObtenerMedicamentosSinVentaNuncaAsync();
         var dto = mapper.Map<IEnumerable<object>>(entidad);
         return Ok(dto);
     }

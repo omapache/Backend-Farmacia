@@ -44,4 +44,8 @@ namespace Aplicacion.Repository;
         .Include(p => p.Proveedor).ThenInclude(p => p.Rol)
         .FirstOrDefaultAsync(p =>  p.Id == id);
     }
+
+    
+    
+    
 }
