@@ -78,55 +78,6 @@ public class MovimientoInventarioRepository : GenericRepository<MovimientoInvent
 
         return totalDineroVentas;
     }
-    public async Task<IEnumerable<object>> ObtenerVentasPorEmpleadoEn2023Async(int Año)
-    {
-        var ventasPorEmpleado = await (
-            from dm in _context.DetalleMovimientos
-            join i in _context.InventarioMedicamentos on dm.InventMedicamentoIdFk equals i.Id
-            join p in _context.Personas on i.PersonaIdFk equals p.Id
-            join d in _context.MovimientoInventarios on dm.MovInventarioIdFk equals d.Id
-            where d.TipoMovInventIdFk == 1 
-            where d.FechaMovimiento.Year == Año
-            select new
-            {
-                Empleado = p.Nombre,
-                CantidadVentas = 1,  
-            }).ToListAsync();
-
-        var ventasPorEmpleadoLista = ventasPorEmpleado
-            .GroupBy(x => x.Empleado)
-            .Select(g => new
-            {
-                Empleado = g.Key,
-                CantidadVentas = g.Sum(x => x.CantidadVentas),
-            })
-            .ToList();
-
-        return ventasPorEmpleadoLista;
-    }
-    
-
-
-
-    public async Task<double> TotalDineroVentasMedicamentos()
-    {
-        DateOnly fechaActual = DateOnly.FromDateTime(DateTime.Now);
-
-        var totalDineroVentas = await (
-            from dm in _context.DetalleMovimientos
-            join i in _context.InventarioMedicamentos on dm.InventMedicamentoIdFk equals i.Id
-            join d in _context.MovimientoInventarios on dm.MovInventarioIdFk equals d.Id
-            where d.TipoMovInventIdFk == 1 && i.FechaExpiracion < fechaActual
-            select dm.Cantidad * dm.Precio
-        ).SumAsync();
-
-        return totalDineroVentas;
-    }
-
-
-}
-
-
 
     public async Task<object> PacienteCompMedxAnio(int year, string medicamento)
     {
@@ -280,21 +231,3 @@ public class MovimientoInventarioRepository : GenericRepository<MovimientoInvent
 
 
 }
-
-/* 
-public async Task<IEnumerable<Object>> InformacionContacto()
-    {
-        return await (
-            from p in _context.Personas
-            join e in _context.Emails on p.Id equals e.PersonaIdFk
-            join t in _context.Telefonos on p.Id equals t.PersonaIdFk
-            join r in _context.Rols on p.RolIdFk equals r.Id
-            select new
-            {
-                Nombre = p.Nombre,
-                Direccion = e.Direccion,
-                Telefono = t.Numero,
-                rol = r.Nombre
-            }).ToListAsync();
-    }
- */

@@ -23,6 +23,15 @@ public class RecetaMedicaController : BaseApiController
         var entidad = await unitofwork.RecetaMedicas.GetAllAsync();
         return mapper.Map<List<RecetaMedicaDto>>(entidad);
     }
+     
+    [HttpGet("consulta4")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<IEnumerable<RecetaMedicaDto>>> ObtenerRecetaMedicaGenDesPrimEneroAsync()
+    {
+        var entidad = await unitofwork.RecetaMedicas.ObtenerRecetaMedicaGenDesPrimEneroAsync();
+        return mapper.Map<List<RecetaMedicaDto>>(entidad);
+    }
 
     [HttpGet("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -83,14 +92,5 @@ public class RecetaMedicaController : BaseApiController
 
 
 
-    
-    [HttpGet]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<IEnumerable<RecetaMedicaDto>>> Get11()
-    {
-        var entidad = await unitofwork.RecetaMedicas.ObtenerRecetaMedicaGenDesPrimEneroAsync();
-        return mapper.Map<List<RecetaMedicaDto>>(entidad);
-    }
-
+   
 }
