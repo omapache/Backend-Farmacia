@@ -30,13 +30,32 @@ public class InventarioMedicamentoRepository : GenericRepository<InventarioMedic
     public async Task<IEnumerable<InventarioMedicamento>> GetMedicamentosConMenosDe50Unidades(int cantidad)
     {
         return await _context.InventarioMedicamentos
-            .Where(m => m.Stock < 900)
+            .Where(m => m.Stock < 50)
             .OrderByDescending(m => m.Id)
             .Include(p => p.Persona)
             .Include(p => p.DescripcionMedicamento)
             .Take(cantidad)
             .ToListAsync();
     }
+
+    public async Task<IEnumerable<object>> MedExpiranXAñoAsync(int year)
+    {
+        DateOnly fecha2024 = DateOnly.FromDateTime(new DateTime(year, 1, 1));
+        var medicamentosCaducados = await (
+            from i in _context.InventarioMedicamentos
+            join d in _context.DescripcionMedicamentos on i.DescripcionMedicamentoIdFk equals d.Id
+            where i.FechaExpiracion.Year == fecha2024.Year
+            select new 
+            {
+                Nombre = d.Nombre,
+                Stock = i.Stock,
+                FechaExpiracion = i.FechaExpiracion,
+                Descripcion = d.Descripcion
+            }).ToListAsync();
+
+        return medicamentosCaducados;
+    }
+
     public async Task<IEnumerable<Object>> ObtenerMedicamentosCaducadosAsync(DateOnly fechaLimite)
     {
         var medicamentosCaducados = await (
@@ -197,4 +216,7 @@ public class InventarioMedicamentoRepository : GenericRepository<InventarioMedic
         return medicamentosEspecificos;
     }
 
+
+    
+    
 }

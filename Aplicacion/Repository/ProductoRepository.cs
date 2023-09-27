@@ -47,6 +47,15 @@ public class ProductoRepository : GenericRepository<Producto>, IProducto
             }).ToListAsync();
     }
 
+    public async Task<Producto> ObtenerMedicamentoMasCaroAsync()
+    {
+        var productoMasCaro = await _context.Productos
+        .OrderByDescending(p => p.Precio)
+        .FirstOrDefaultAsync();
+
+        return productoMasCaro;
+    }
+
     public async Task<IEnumerable<Object>> NumeroMedicamentosPorProveedor()
     {
         return await (

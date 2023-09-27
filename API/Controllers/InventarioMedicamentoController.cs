@@ -68,6 +68,17 @@ public class InventarioMedicamentoController : BaseApiController
         var dto = mapper.Map<IEnumerable<object>>(entidad);
         return Ok(dto);
     }
+    
+    [HttpGet("consulta19/{year}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<object>> MedExpiranXAñoAsync(int year)
+    {
+        var entidad = await unitofwork.InventarioMedicamentos.MedExpiranXAñoAsync(year);
+        var dto = mapper.Map<IEnumerable<object>>(entidad);
+        return Ok(dto);
+    }
+
     [HttpGet("consulta12/{medicina}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]

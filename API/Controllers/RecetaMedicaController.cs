@@ -80,4 +80,17 @@ public class RecetaMedicaController : BaseApiController
         await unitofwork.SaveAsync();
         return NoContent();
     }
+
+
+
+    
+    [HttpGet]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<IEnumerable<RecetaMedicaDto>>> Get11()
+    {
+        var entidad = await unitofwork.RecetaMedicas.ObtenerRecetaMedicaGenDesPrimEneroAsync();
+        return mapper.Map<List<RecetaMedicaDto>>(entidad);
+    }
+
 }
