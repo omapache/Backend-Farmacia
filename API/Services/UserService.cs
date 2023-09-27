@@ -26,8 +26,9 @@ public class UserService : IUserService
     {
         var user = new User
         {
-/*             Email = registerDto.Email,
- */            Username = registerDto.Username
+/*              Email = registerDto.Email,
+ */             Username = registerDto.Username,
+                PersonaIdFk = registerDto.PersonaIdFk
         };
 
         user.Password = _passwordHasher.HashPassword(user, registerDto.Password); //Encrypt password
@@ -226,5 +227,25 @@ public class UserService : IUserService
             signingCredentials: signingCredentials);
         return jwtSecurityToken;
     }
+    public async Task<bool> ValidateCredentialsAsync(LoginDto model)
+{
+    var user = await _unitOfWork.Users
+                .GetByUsernameAsync(model.Username);
+
+    if (user == null)
+    {
+        return false; // El usuario no existe en la base de datos.
+    }
+
+    var result = _passwordHasher.VerifyHashedPassword(user, user.Password, model.Password);
+
+    if (result == PasswordVerificationResult.Success)
+    {
+        return true; // Las credenciales son válidas.
+    }
+
+    return false; // Las credenciales son incorrectas.
+}
+
 
 }
