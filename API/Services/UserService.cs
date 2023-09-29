@@ -26,8 +26,10 @@ public class UserService : IUserService
     {
         var user = new User
         {
-/*             Email = registerDto.Email,
- */            Username = registerDto.Username
+            /*              Email = registerDto.Email,
+             */
+            Username = registerDto.Username,
+            PersonaIdFk = registerDto.PersonaIdFk
         };
 
         user.Password = _passwordHasher.HashPassword(user, registerDto.Password); //Encrypt password
@@ -43,8 +45,8 @@ public class UserService : IUserService
                                     .First();
             try
             {
-            user.Rols.Add(rolDefault);
-             _unitOfWork.Users.Add(user);
+                user.Rols.Add(rolDefault);
+                _unitOfWork.Users.Add(user);
                 await _unitOfWork.SaveAsync();
 
                 return $"User  {registerDto.Username} has been registered successfully";
@@ -176,8 +178,9 @@ public class UserService : IUserService
         dataUserDto.IsAuthenticated = true;
         JwtSecurityToken jwtSecurityToken = CreateJwtToken(usuario);
         dataUserDto.Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
-/*         dataUserDto.Email = usuario.Email;
- */        dataUserDto.UserName = usuario.Username;
+        /*         dataUserDto.Email = usuario.Email;
+         */
+        dataUserDto.UserName = usuario.Username;
         dataUserDto.Roles = usuario.Rols
                                         .Select(u => u.Nombre)
                                         .ToList();
@@ -225,7 +228,7 @@ public class UserService : IUserService
             signingCredentials: signingCredentials);
         return jwtSecurityToken;
     }
-    public async Task<bool> ValidateCredentialsAsync(LoginDto model)
+   /*  public async Task<bool> ValidateCredentialsAsync(LoginDto model)
     {
         var user = await _unitOfWork.Users
                     .GetByUsernameAsync(model.Username);
@@ -244,6 +247,25 @@ public class UserService : IUserService
 
         return false; // Las credenciales son incorrectas.
     }
+     */
+        public async Task<User> ValidateCredentialsAsync(LoginDto model)
+        {
+            var user = await _unitOfWork.Users.GetByUsernameAsync(model.Username);
 
+            if (user == null)
+            {
+                return (null); // El usuario no existe en la base de datos.
+            }
 
+            var result = _passwordHasher.VerifyHashedPassword(user, user.Password, model.Password);
+
+            if (result == PasswordVerificationResult.Success)
+            {
+                return (user); // Las credenciales son válidas.
+            }
+
+            throw new InvalidOperationException("Las credenciales son incorrectas."); // Excepción en caso de credenciales incorrectas.
+        }
+
+    
 }

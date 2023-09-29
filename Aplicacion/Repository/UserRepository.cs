@@ -26,7 +26,7 @@ public class UserRepository : GenericRepository<User>, IUser
         return await _context.Users
             .Include(u => u.Rols)
             .Include(u => u.RefreshTokens)
-            .Include(u => u.Persona)
+            .Include(u => u.Persona).ThenInclude(u => u.Rol)
             .FirstOrDefaultAsync(u => u.Username.ToLower() == username.ToLower());
     }
     public override async Task<IEnumerable<User>> GetAllAsync()

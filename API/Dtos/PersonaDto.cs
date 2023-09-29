@@ -12,4 +12,5 @@ public class PersonaDto
     public RolDto Rol { get; set; } */
     public TipoDocumentoDto TipoDocumento { get; set; }
     public List<TipoDocumentoDto> TipoDocumentos{ get; set; }
+    public RolDto Rol { get; set; }
 }
