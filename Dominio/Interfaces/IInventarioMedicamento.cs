@@ -14,7 +14,7 @@ public interface IInventarioMedicamento  : IGenericRepo<InventarioMedicamento>
     Task<IEnumerable<object>> ObtenerMedicamentosSinVentaNuncaAsync();
 
     
-     Task<IEnumerable<object>> MedExpiranXAñoAsync(int year);
+    Task<IEnumerable<object>> MedExpiranXAñoAsync(int year);
     
     
 }

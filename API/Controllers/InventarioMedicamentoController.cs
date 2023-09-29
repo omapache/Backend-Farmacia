@@ -31,6 +31,7 @@ public class InventarioMedicamentoController : BaseApiController
         var entidad = await unitofwork.InventarioMedicamentos.GetMedicamentosConMenosDe50Unidades(50);
         return mapper.Map<List<InventarioMedicamentoDto>>(entidad);
     }
+
     [HttpGet("consulta3/{Nombre}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
