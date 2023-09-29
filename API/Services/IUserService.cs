@@ -1,4 +1,5 @@
 using API.Dtos;
+using Dominio.Entities;
 
 namespace API.Services;
 public interface IUserService
@@ -7,5 +8,5 @@ public interface IUserService
     Task<DataUserDto> GetTokenAsync(LoginDto model);
     Task<string> AddRoleAsync(AddRoleDto model);
     Task<DataUserDto> RefreshTokenAsync(string refreshToken);
-    Task<bool> ValidateCredentialsAsync(LoginDto model);
+    Task<User> ValidateCredentialsAsync(LoginDto model);
 }

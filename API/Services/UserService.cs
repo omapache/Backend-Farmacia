@@ -26,9 +26,10 @@ public class UserService : IUserService
     {
         var user = new User
         {
-/*              Email = registerDto.Email,
- */             Username = registerDto.Username,
-                PersonaIdFk = registerDto.PersonaIdFk
+            /*              Email = registerDto.Email,
+             */
+            Username = registerDto.Username,
+            PersonaIdFk = registerDto.PersonaIdFk
         };
 
         user.Password = _passwordHasher.HashPassword(user, registerDto.Password); //Encrypt password
@@ -44,8 +45,8 @@ public class UserService : IUserService
                                     .First();
             try
             {
-            user.Rols.Add(rolDefault);
-             _unitOfWork.Users.Add(user);
+                user.Rols.Add(rolDefault);
+                _unitOfWork.Users.Add(user);
                 await _unitOfWork.SaveAsync();
 
                 return $"User  {registerDto.Username} has been registered successfully";
@@ -81,8 +82,7 @@ public class UserService : IUserService
             dataUserDto.IsAuthenticated = true;
             JwtSecurityToken jwtSecurityToken = CreateJwtToken(user);
             dataUserDto.Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
-/*             dataUserDto.Email = user.Email;
- */            dataUserDto.UserName = user.Username;
+            dataUserDto.UserName = user.Username;
             dataUserDto.Roles = user.Rols
                                             .Select(u => u.Nombre)
                                             .ToList();
@@ -178,8 +178,9 @@ public class UserService : IUserService
         dataUserDto.IsAuthenticated = true;
         JwtSecurityToken jwtSecurityToken = CreateJwtToken(usuario);
         dataUserDto.Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
-/*         dataUserDto.Email = usuario.Email;
- */        dataUserDto.UserName = usuario.Username;
+        /*         dataUserDto.Email = usuario.Email;
+         */
+        dataUserDto.UserName = usuario.Username;
         dataUserDto.Roles = usuario.Rols
                                         .Select(u => u.Nombre)
                                         .ToList();
@@ -227,25 +228,44 @@ public class UserService : IUserService
             signingCredentials: signingCredentials);
         return jwtSecurityToken;
     }
-    public async Task<bool> ValidateCredentialsAsync(LoginDto model)
-{
-    var user = await _unitOfWork.Users
-                .GetByUsernameAsync(model.Username);
-
-    if (user == null)
+   /*  public async Task<bool> ValidateCredentialsAsync(LoginDto model)
     {
-        return false; // El usuario no existe en la base de datos.
+        var user = await _unitOfWork.Users
+                    .GetByUsernameAsync(model.Username);
+
+        if (user == null)
+        {
+            return false; // El usuario no existe en la base de datos.
+        }
+
+        var result = _passwordHasher.VerifyHashedPassword(user, user.Password, model.Password);
+
+        if (result == PasswordVerificationResult.Success)
+        {
+            return true; // Las credenciales son válidas.
+        }
+
+        return false; // Las credenciales son incorrectas.
     }
+     */
+        public async Task<User> ValidateCredentialsAsync(LoginDto model)
+        {
+            var user = await _unitOfWork.Users.GetByUsernameAsync(model.Username);
 
-    var result = _passwordHasher.VerifyHashedPassword(user, user.Password, model.Password);
+            if (user == null)
+            {
+                return (null); // El usuario no existe en la base de datos.
+            }
 
-    if (result == PasswordVerificationResult.Success)
-    {
-        return true; // Las credenciales son válidas.
-    }
+            var result = _passwordHasher.VerifyHashedPassword(user, user.Password, model.Password);
 
-    return false; // Las credenciales son incorrectas.
-}
+            if (result == PasswordVerificationResult.Success)
+            {
+                return (user); // Las credenciales son válidas.
+            }
 
+            throw new InvalidOperationException("Las credenciales son incorrectas."); // Excepción en caso de credenciales incorrectas.
+        }
 
+    
 }

@@ -10,7 +10,7 @@ public class UserController : BaseApiController
 {
     private readonly IUserService _userService;
     private readonly IUnitOfWork unitofwork;
-    private readonly  IMapper mapper;
+    private readonly IMapper mapper;
 
     public UserController(IUserService userService, IUnitOfWork unitofwork, IMapper mapper)
     {
@@ -34,7 +34,8 @@ public class UserController : BaseApiController
     public async Task<ActionResult<UserDto>> Get(int id)
     {
         var entidad = await unitofwork.Users.GetByIdAsync(id);
-        if (entidad == null){
+        if (entidad == null)
+        {
             return NotFound();
         }
         return this.mapper.Map<UserDto>(entidad);
@@ -54,8 +55,8 @@ public class UserController : BaseApiController
         SetRefreshTokenInCookie(result.RefreshToken);
         return Ok(result);
     }
-    
-    [HttpPost("validate-credentials")]
+
+    /* [HttpPost("validate-credentials")]
     public async Task<IActionResult> ValidateCredentials(LoginDto model)
     {
         var isValid = await _userService.ValidateCredentialsAsync(model);
@@ -70,7 +71,33 @@ public class UserController : BaseApiController
             // La autenticación falló, puedes devolver un código de error 401 Unauthorized.
             return Unauthorized(new { message = "Credenciales incorrectas" });
         }
+    } */
+    [HttpPost("validate-credentials")]
+    public async Task<IActionResult> ValidateCredentials(LoginDto model)
+    {
+        try
+        {
+            var result = await _userService.ValidateCredentialsAsync(model);
+
+            if (result.Id > 0)
+            {
+                // Las credenciales son válidas, puedes devolver un código 200 OK.
+                var userDto = mapper.Map<UserDto>(result);
+                return Ok(userDto.Persona.Rol.Nombre);
+            }
+            else
+            {
+                // La autenticación falló, puedes devolver un código de error 401 Unauthorized.
+                return Unauthorized(new { message = "Credenciales incorrectas" });
+            }
+        }
+        catch (InvalidOperationException)
+        {
+            // Manejar la excepción cuando las credenciales son incorrectas
+            return Unauthorized(new { message = "Credenciales incorrectas" });
+        }
     }
+
 
     [HttpPost("addrole")]
     public async Task<IActionResult> AddRoleAsync(AddRoleDto model)
@@ -89,14 +116,29 @@ public class UserController : BaseApiController
         return Ok(response);
     }
 
+    [HttpPost("validate-credentials")]
+    public async Task<IActionResult> ValidateCredentials(LoginDto model)
+    {
+        var isValid = await _userService.ValidateCredentialsAsync(model);
+
+        if (isValid)
+        {
+            return Ok(new { message = "Credenciales válidas" });
+        }
+        else
+        {
+            return Unauthorized(new { message = "Credenciales incorrectas" });
+        }
+    }
 
     [HttpPut("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
 
-    public async Task<ActionResult<UserDto>> Put(int id, [FromBody]UserDto entidadDto){
-        if(entidadDto == null)
+    public async Task<ActionResult<UserDto>> Put(int id, [FromBody] UserDto entidadDto)
+    {
+        if (entidadDto == null)
         {
             return NotFound();
         }
@@ -109,9 +151,10 @@ public class UserController : BaseApiController
     [HttpDelete("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Delete(int id){
+    public async Task<IActionResult> Delete(int id)
+    {
         var entidad = await unitofwork.Users.GetByIdAsync(id);
-        if(entidad == null)
+        if (entidad == null)
         {
             return NotFound();
         }
@@ -128,5 +171,5 @@ public class UserController : BaseApiController
         };
         Response.Cookies.Append("refreshToken", refreshToken, cookieOptions);
     }
-    
+
 }
