@@ -26,8 +26,6 @@ public class UserService : IUserService
     {
         var user = new User
         {
-            /*              Email = registerDto.Email,
-             */
             Username = registerDto.Username,
             PersonaIdFk = registerDto.PersonaIdFk
         };
