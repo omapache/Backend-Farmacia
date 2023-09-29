@@ -232,21 +232,24 @@ public class PersonaRepository : GenericRepository<Persona>, IPersona
 
     return totalMedicamentosVendidos;
 }
-    public async Task<IEnumerable<Object>> GananciaTotalPorProveedorEn2023()
-{
-    var year = 2023; // Año para el que deseas calcular la ganancia
+     public async Task<IEnumerable<Object>> GananciaTotalPorProveedorEn2023()
+    {
+        var year = 2023; // Año para el que deseas calcular la ganancia
 
-    return await (
-        from mi in _context.MovimientoInventarios
-        join i in _context.InventarioMedicamentos on mi.InventarioMedicamentoIdFk equals i.Id
-        join dm in _context.DescripcionMedicamentos on i.DescripcionMedicamentoIdFk equals dm.Id
-        where mi.TipoMovimientoIdFk == 2 && mi.FechaMovimiento.Year == year
-        select new
-        {
-            NombreProveedor = p.Nombre,
-            Ganancia = (i.PrecioVenta - i.PrecioCompra) * mi.Cantidad // Calcular la ganancia por compra
-        }
-    ).ToListAsync();
-}
+        return await (
+            from mi in _context.MovimientoInventarios
+            join d in _context.DetalleMovimientos on mi.Id equals d.MovInventarioIdFk
+            join per in _context.Personas on  mi.ResponsableIdFk equals  per.Id
+            join im in _context.InventarioMedicamentos on d.InventMedicamentoIdFk equals im.Id
+            join prod in _context.Productos on im.Id equals prod.InventMedicamentoIdFk
+            join dm in _context.DescripcionMedicamentos on im.DescripcionMedicamentoIdFk equals dm.Id
+            where mi.TipoMovInventIdFk == 2 && mi.FechaMovimiento.Year == year
+            select new
+            {
+                NombreProveedor = per.Nombre,
+                Ganancia = (d.Precio - prod.Precio) * d.Cantidad // Calcular la ganancia por compra
+            }
+        ).ToListAsync();
+    }
 
 }
