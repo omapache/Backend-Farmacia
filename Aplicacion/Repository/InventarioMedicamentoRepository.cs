@@ -155,7 +155,7 @@ public class InventarioMedicamentoRepository : GenericRepository<InventarioMedic
         }
         else
         {
-            return "No se encontraron ventas para el medicamento especificado en 2023.";
+            return "No se encontraron ventas para el medicamento especificado en "+ Año;
         }
     }
      public async Task<IEnumerable<Object>> ObtenerMedicamentosSinVentaNuncaAsync()
