@@ -9,6 +9,4 @@ public interface IProducto : IGenericRepo<Producto>
     Task<IEnumerable<object>> PromedioMedicamentosPorVenta();
     Task<int> TotalMedicamentosVendidosPorMes(int year, int mes);
     Task<Producto> ObtenerMedicamentoMasCaroAsync();
-
-
 }

@@ -60,7 +60,7 @@ public class PersonaController : BaseApiController
     public async Task<ActionResult<object>> EmpleadoMaxMedicamentosDistintos(int year)
     {
         var entidad = await unitofwork.Personas.EmpleadoMaxMedicamentosDistintos(year);
-        var dto = mapper.Map<object>(entidad);
+        var dto = mapper.Map<IEnumerable<object>>(entidad);
         return Ok(dto);
     }
 

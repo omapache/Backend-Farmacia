@@ -118,7 +118,4 @@ public class ProductoRepository : GenericRepository<Producto>, IProducto
 
         return totalVendidos;
     }
-
-
-
 }

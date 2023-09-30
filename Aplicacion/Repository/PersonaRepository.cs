@@ -39,7 +39,7 @@ public class PersonaRepository : GenericRepository<Persona>, IPersona
             from d in _context.MovimientoInventarios
             join p in _context.Personas on d.ResponsableIdFk equals p.Id 
             where d.TipoMovInventIdFk == 1 && p.RolIdFk == 2 
-            group d by new { p.Id, p.Nombre } into grupoVentas
+            group d.TipoMovInventIdFk by new { p.Id, p.Nombre } into grupoVentas
             where grupoVentas.Count() > 5
             select new
             {
@@ -108,7 +108,7 @@ public class PersonaRepository : GenericRepository<Persona>, IPersona
         ).Distinct().ToListAsync();
     }
 
-    public async Task<object> EmpleadoMaxMedicamentosDistintos(int year)
+    public async Task<IEnumerable<object>> EmpleadoMaxMedicamentosDistintos(int year)
     {
         var inicioAño = new DateOnly(year, 1, 1);
         var finAño = new DateOnly(year, 12, 31);
@@ -123,10 +123,11 @@ public class PersonaRepository : GenericRepository<Persona>, IPersona
                 EmpleadoId = grupoVentas.Key.ResponsableIdFk,
                 MedicamentosDistintos = grupoVentas.Select(x => x.InventMedicamentoIdFk).Distinct().Count()
             }
-        ).OrderByDescending(x => x.MedicamentosDistintos).FirstOrDefaultAsync();
+        ).OrderByDescending(x => x.MedicamentosDistintos).ToListAsync();
 
         return resultados;
     }
+
 
     public async Task<IEnumerable<object>> ProveedoresMedicamentosDiferentes(int year)
     {
