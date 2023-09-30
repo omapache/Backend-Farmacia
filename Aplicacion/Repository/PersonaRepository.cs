@@ -243,10 +243,13 @@ public class PersonaRepository : GenericRepository<Persona>, IPersona
             join im in _context.InventarioMedicamentos on d.InventMedicamentoIdFk equals im.Id
             join prod in _context.Productos on im.Id equals prod.InventMedicamentoIdFk
             join dm in _context.DescripcionMedicamentos on im.DescripcionMedicamentoIdFk equals dm.Id
-            where mi.TipoMovInventIdFk == 2 && mi.FechaMovimiento.Year == year
+            where mi.TipoMovInventIdFk == 1 && mi.FechaMovimiento.Year == year
             select new
             {
                 NombreProveedor = per.Nombre,
+                IdProducto = d.Id,
+                Producto = dm.Nombre,
+                Identificacion = per.NumeroDocumento,
                 Ganancia = (d.Precio - prod.Precio) * d.Cantidad // Calcular la ganancia por compra
             }
         ).ToListAsync();

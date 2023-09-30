@@ -51,7 +51,7 @@ public class ProductoController : BaseApiController
     public async Task<ActionResult<object>> ObtenerMedicamentoMasCaroAsync()
     {
         var entidad = await unitofwork.Productos.ObtenerMedicamentoMasCaroAsync();
-        var dto = mapper.Map<IEnumerable<Object>>(entidad);
+        var dto = mapper.Map<Object>(entidad);
         return Ok(dto);
     }
 
