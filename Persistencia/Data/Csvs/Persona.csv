@@ -1,7 +1,7 @@
 Id,Nombre,NumeroDocumento,TipoPersonaIdFk,TipoDocumentoIdFk,RolIdFk
-1,Juan Pérez,1032437354,1,1,4
-2,Maria,1032437352,2,2,4
-3,Carlos,1032437357,2,3,4
+1,Juan Pérez,1032437354,1,1,1
+2,Maria,1032437352,2,2,2
+3,Carlos,1032437357,2,3,3
 4,Ana,1234567890,1,1,4
-5,Pedro,0987654321,1,1,4
-6,Laura,9876543210,1,1,4
+5,Pedro,0987654321,1,1,5
+6,Laura,9876543210,1,1,6

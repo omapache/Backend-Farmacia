@@ -1,4 +1,4 @@
 Id,Stock,FechaExpiracion,PersonaIdFk,DescripcionMedicamentoIdFk
-1,1000,10/2023,1,1
-2,500,09/2023,2,2
-3,800,11/2023,3,3
+1,60,10/2023,1,1
+2,30,09/2023,2,2
+3,40,11/2023,3,3
