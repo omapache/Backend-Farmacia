@@ -11,11 +11,7 @@ using Persistencia;
 namespace Persistencia.Data.Migrations
 {
     [DbContext(typeof(ApiContext))]
-<<<<<<<< HEAD:Persistencia/Data/Migrations/20230929051438_InitialCreate.Designer.cs
-    [Migration("20230929051438_InitialCreate")]
-========
-    [Migration("20230929184845_InitialCreate")]
->>>>>>>> 2db9dcb5e2e045ab1bd175c452837046cf7aec93:Persistencia/Data/Migrations/20230929184845_InitialCreate.Designer.cs
+    [Migration("20231001041623_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
