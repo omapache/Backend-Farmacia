@@ -98,7 +98,7 @@ public class PersonaRepository : GenericRepository<Persona>, IPersona
         return await (
             from im in _context.InventarioMedicamentos
             join p in _context.Personas on im.PersonaIdFk equals p.Id
-            where p.RolIdFk == 2 
+            where p.RolIdFk == 3 
             where im.Stock < 50
             select new
             {
@@ -108,25 +108,31 @@ public class PersonaRepository : GenericRepository<Persona>, IPersona
         ).Distinct().ToListAsync();
     }
 
-    public async Task<object> EmpleadoMaxMedicamentosDistintos(int year)
-    {
-        var inicioAño = new DateOnly(year, 1, 1);
-        var finAño = new DateOnly(year, 12, 31);
+public async Task<object> EmpleadoMaxMedicamentosDistintos(int year)
+{
+    var inicioAño = new DateOnly(year, 1, 1);
+    var finAño = new DateOnly(year, 12, 31);
 
-        var resultados = await (
-            from d in _context.MovimientoInventarios
-            join dm in _context.DetalleMovimientos on d.Id equals dm.MovInventarioIdFk
-            where d.TipoMovInventIdFk == 1 && d.FechaMovimiento >= inicioAño && d.FechaMovimiento <= finAño
-            group dm by new { d.ResponsableIdFk } into grupoVentas
-            select new
-            {
-                EmpleadoId = grupoVentas.Key.ResponsableIdFk,
-                MedicamentosDistintos = grupoVentas.Select(x => x.InventMedicamentoIdFk).Distinct().Count()
-            }
-        ).OrderByDescending(x => x.MedicamentosDistintos).FirstOrDefaultAsync();
+    var resultados = await (
+        from d in _context.MovimientoInventarios
+        join dm in _context.DetalleMovimientos on d.Id equals dm.MovInventarioIdFk
+        join p in _context.Personas on d.ReceptorIdFk equals p.Id
+        where d.TipoMovInventIdFk == 1 && d.FechaMovimiento >= inicioAño && d.FechaMovimiento <= finAño
+        where p.RolIdFk == 2
+        group dm by new { p.Id, d.ResponsableIdFk } into grupoVentas
+        select new
+        {
+            EmpleadoId = grupoVentas.Key.ResponsableIdFk,
+            MedicamentosDistintos = grupoVentas.Select(x => x.InventMedicamentoIdFk).Distinct().Count()
+        }
+    ).OrderByDescending(x => x.MedicamentosDistintos).FirstOrDefaultAsync();
 
-        return resultados;
-    }
+    return resultados;
+}
+
+
+
+
 
     public async Task<IEnumerable<object>> ProveedoresMedicamentosDiferentes(int year)
     {
@@ -154,9 +160,10 @@ public class PersonaRepository : GenericRepository<Persona>, IPersona
         from mi in _context.MovimientoInventarios
         join e in _context.Personas on mi.ResponsableIdFk equals e.Id
         where mi.FechaMovimiento.Year == año
-        where mi.TipoMovInventIdFk == 2
+        where e.RolIdFk == 2
+        where mi.TipoMovInventIdFk == 1
         group mi by new { e.Nombre, e.Id } into grupoVentas
-        where grupoVentas.Count() < 5
+        where grupoVentas.Count() < 5 && grupoVentas.Count() == 0
         select grupoVentas.Key.Nombre
     ).ToListAsync();
 
@@ -183,7 +190,7 @@ public class PersonaRepository : GenericRepository<Persona>, IPersona
 
         var todosLosPacientes = await (
             from p in _context.Personas
-            where p.RolIdFk == 4
+            where p.RolIdFk == 5
             select p.Nombre
         ).ToListAsync();
 
@@ -198,25 +205,25 @@ public class PersonaRepository : GenericRepository<Persona>, IPersona
             return new List<string> { "Todos los pacientes han realizado compras en 2023" };
         }
     }
-    public async Task<IEnumerable<KeyValuePair<string, double>>> CalcularTotalGastadoPorPacienteEn2023Async()
-    {
-        var totalGastadoPorPaciente = await (
-            from dm in _context.DetalleMovimientos
-            join i in _context.InventarioMedicamentos on dm.InventMedicamentoIdFk equals i.Id
-            join p in _context.Personas on i.PersonaIdFk equals p.Id
-            join d in _context.MovimientoInventarios on dm.MovInventarioIdFk equals d.Id
-            where d.TipoMovInventIdFk == 1
-            where p.RolIdFk == 4
-            where d.FechaMovimiento.Year == 2023
-            group dm by p.Nombre into grupoCompras
-            select new KeyValuePair<string,double>(
-                grupoCompras.Key,
-                grupoCompras.Sum(dm => dm.Precio)
-            )
-        ).ToListAsync();
+    public async Task<IEnumerable<object>> PacientesConTotalGastadoPorAño()
+{
+    var pacientesConTotalGastado = await (
+        from m in _context.MovimientoInventarios
+        join persona in _context.Personas on m.ReceptorIdFk equals persona.Id
+        join detalle in _context.DetalleMovimientos on m.Id equals detalle.MovInventarioIdFk
+        where m.TipoMovInventIdFk == 2
+        where persona.RolIdFk == 5
+        where m.FechaMovimiento.Year == 2023 // Filtra por el año 2023
+        group new { detalle.Precio, detalle.Cantidad } by persona into g
+        select new
+        {
+            Paciente = g.Key.Nombre,
+            TotalGastado = g.Sum(x => x.Precio * x.Cantidad)
+        }).ToListAsync();
 
-        return totalGastadoPorPaciente;
-    }
+    return pacientesConTotalGastado;
+}
+
     public async Task<int> CalcularTotalMedicamentosVendidosPrimerTrimestre2023Async()
 {
     DateOnly fechaInicioPrimerTrimestre = new DateOnly(2023, 1, 1);
@@ -243,6 +250,7 @@ public class PersonaRepository : GenericRepository<Persona>, IPersona
             join im in _context.InventarioMedicamentos on d.InventMedicamentoIdFk equals im.Id
             join prod in _context.Productos on im.Id equals prod.InventMedicamentoIdFk
             join dm in _context.DescripcionMedicamentos on im.DescripcionMedicamentoIdFk equals dm.Id
+            where per.RolIdFk == 3
             where mi.TipoMovInventIdFk == 1 && mi.FechaMovimiento.Year == year
             select new
             {

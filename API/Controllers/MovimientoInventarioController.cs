@@ -182,7 +182,7 @@ public class MovimientoInventarioController : BaseApiController
     [HttpGet("consulta37/{year}/{mes}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<object>> EmpleadoSinVentasMesYAnio(int year, int mes)
+    public async Task<ActionResult<IEnumerable<object>>> EmpleadoSinVentasMesYAnio(int year, int mes)
     {
         var entidad = await unitofwork.MovimientoInventarios.EmpleadoSinVentasMesYAnio(year, mes);
         var dto = mapper.Map<IEnumerable<object>>(entidad);

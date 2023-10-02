@@ -71,25 +71,28 @@ public class InventarioMedicamentoRepository : GenericRepository<InventarioMedic
 
         return medicamentosCaducados;
     }
-    public async Task<IEnumerable<Object>> ObtenerMedicamentosSinVentaAñoAsync(int Año)
-    {
-        DateOnly fechaActual = new DateOnly(Año, 12, 31);
-        var medicamentosNoVendidos = await (
-            from dm in _context.DetalleMovimientos
-            join i in _context.InventarioMedicamentos on dm.InventMedicamentoIdFk equals i.Id
-            join d in _context.MovimientoInventarios on dm.MovInventarioIdFk equals d.Id
-            join de in _context.DescripcionMedicamentos on i.DescripcionMedicamentoIdFk equals de.Id
-            where d.TipoMovInventIdFk == 1
-            where i.FechaExpiracion < fechaActual
-            select new 
-            {
-                Nombre = de.Nombre,
-                Stock = i.Stock,
-                FechaExpiracion = i.FechaExpiracion
-            }).ToListAsync();
+    public async Task<IEnumerable<object>> ObtenerMedicamentosSinVentaAñoAsync(int Año)
+{
+    DateOnly fechaActual = new DateOnly(Año, 12, 31);
+    var medicamentosNoVendidos = await (
+        from dm in _context.DetalleMovimientos
+        join i in _context.InventarioMedicamentos on dm.InventMedicamentoIdFk equals i.Id
+        join d in _context.MovimientoInventarios on dm.MovInventarioIdFk equals d.Id
+        join de in _context.DescripcionMedicamentos on i.DescripcionMedicamentoIdFk equals de.Id
+        where d.TipoMovInventIdFk == 1
+        where i.FechaExpiracion < fechaActual
+        select new 
+        {
+            Nombre = de.Nombre,
+            Stock = i.Stock,
+            FechaExpiracion = i.FechaExpiracion
+        })
+        .Distinct() // Elimina duplicados basados en el nombre del medicamento
+        .ToListAsync();
 
-        return medicamentosNoVendidos;
-    }
+    return medicamentosNoVendidos;
+}
+
     public async Task<IEnumerable<Object>> ObtenerMedicamentosVendidoEspecificoAsync(string Nombre)
     {
         var medicamentosNoVendidos = await (
@@ -109,22 +112,32 @@ public class InventarioMedicamentoRepository : GenericRepository<InventarioMedic
         return medicamentosNoVendidos;
     }
     public async Task<IEnumerable<Object>> ObtenerPacienteCompradoEspecificoAsync(string medicina)
-    {
-        var medicamentosNoVendidos = await (
-            from dm in _context.DetalleMovimientos
-            join i in _context.InventarioMedicamentos on dm.InventMedicamentoIdFk equals i.Id
-            join p in _context.Personas on i.PersonaIdFk equals p.Id
-            join d in _context.MovimientoInventarios on dm.MovInventarioIdFk equals d.Id
-            join de in _context.DescripcionMedicamentos on i.DescripcionMedicamentoIdFk equals de.Id
-            where d.TipoMovInventIdFk == 2
-            where de.Nombre.ToLower() == medicina.ToLower() 
-            select new 
-            {
-                Nombre = p.Nombre,
-            }).ToListAsync();
+{
+    var medicamentosComprados = await (
+        from dm in _context.DetalleMovimientos
+        join i in _context.InventarioMedicamentos on dm.InventMedicamentoIdFk equals i.Id
+        join p in _context.Personas on i.PersonaIdFk equals p.Id
+        join d in _context.MovimientoInventarios on dm.MovInventarioIdFk equals d.Id
+        join de in _context.DescripcionMedicamentos on i.DescripcionMedicamentoIdFk equals de.Id
+        where p.RolIdFk == 5
+        where d.TipoMovInventIdFk == 2
+        where de.Nombre.ToLower() == medicina.ToLower() 
+        select new 
+        {
+            Nombre = p.Nombre,
+            Cantidad = 0 // Se asume que cada registro representa una compra, puedes ajustar esto si es necesario
+        })
+        .GroupBy(item => item.Nombre)
+        .Select(group => new 
+        {
+            Nombre = group.Key,
+            CantidadTotal = group.Sum(item => item.Cantidad)
+        })
+        .ToListAsync();
 
-        return medicamentosNoVendidos;
-    }
+    return medicamentosComprados;
+}
+
     public async Task<object> ObtenerMedicamentoMenosVendidoAsync(int Año)
     {
         var medicamentoMenosVendido = await (

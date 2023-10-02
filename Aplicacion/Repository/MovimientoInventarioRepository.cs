@@ -41,12 +41,13 @@ public class MovimientoInventarioRepository : GenericRepository<MovimientoInvent
             join i in _context.InventarioMedicamentos on dm.InventMedicamentoIdFk equals i.Id
             join p in _context.Personas on i.PersonaIdFk equals p.Id
             join d in _context.MovimientoInventarios on dm.MovInventarioIdFk equals d.Id
+            where p.RolIdFk == 2
             where d.TipoMovInventIdFk == 1 
             where d.FechaMovimiento.Year == Año
             select new
             {
                 Empleado = p.Nombre,
-                CantidadVentas = 1,  
+                CantidadVentas = 0,  
             }).ToListAsync();
 
         var ventasPorEmpleadoLista = ventasPorEmpleado
@@ -90,7 +91,8 @@ public class MovimientoInventarioRepository : GenericRepository<MovimientoInvent
             join detalle in _context.DetalleMovimientos on m.Id equals detalle.MovInventarioIdFk
             join invent in _context.InventarioMedicamentos on detalle.InventMedicamentoIdFk equals invent.Id
             join descMed in _context.DescripcionMedicamentos on invent.DescripcionMedicamentoIdFk equals descMed.Id
-            where m.TipoMovInventIdFk == 1
+            where persona.RolIdFk == 5
+            where m.TipoMovInventIdFk == 2
             where m.FechaMovimiento >= fechaInicio && m.FechaMovimiento <= fechaFin
             where descMed.Nombre.Contains(medicamento)
             select new{
@@ -111,7 +113,8 @@ public class MovimientoInventarioRepository : GenericRepository<MovimientoInvent
             from m in _context.MovimientoInventarios
             join persona in _context.Personas on m.ReceptorIdFk equals persona.Id
             join detalle in _context.DetalleMovimientos on m.Id equals detalle.MovInventarioIdFk
-            where m.TipoMovInventIdFk == 1
+            where m.TipoMovInventIdFk == 2
+            where persona.RolIdFk == 5
             where m.FechaMovimiento >= fechaInicio && m.FechaMovimiento <= fechaFin
             group new { detalle.Precio, detalle.Cantidad } by persona into g
             orderby g.Sum(x => x.Precio * x.Cantidad) descending
@@ -176,23 +179,29 @@ public class MovimientoInventarioRepository : GenericRepository<MovimientoInvent
 
     
     public async Task<IEnumerable<object>> EmpleadoSinVentasMesYAnio(int year, int mes)
+{
+    if (mes < 1 || mes > 12)
     {
-        DateOnly fechaInicio = DateOnly.FromDateTime(new DateTime(year, mes, 1));
-        DateOnly fechaFin = DateOnly.FromDateTime(new DateTime(year, mes, 31));
-
-        var query = from per in _context.Personas
-                    join t in _context.Rols on per.RolIdFk equals t.Id
-                    where t.Nombre == "Employee"
-                    where !(
-                        from p in _context.MovimientoInventarios
-                        where p.TipoMovInventIdFk == 1
-                        where p.FechaMovimiento >= fechaInicio && p.FechaMovimiento <= fechaFin
-                        select p.ResponsableIdFk
-                    ).Contains(per.Id)
-                    select per;
-
-        return await query.ToListAsync();
+        throw new ArgumentOutOfRangeException("mes", "El valor de mes debe estar en el rango de 1 a 12.");
     }
+
+    DateOnly fechaInicio = DateOnly.FromDateTime(new DateTime(year, mes, 1));
+    DateOnly fechaFin = DateOnly.FromDateTime(new DateTime(year, mes, DateTime.DaysInMonth(year, mes)));
+
+    var query = from per in _context.Personas
+                join t in _context.Rols on per.RolIdFk equals t.Id
+                where per.RolIdFk == 2
+                where !(
+                    from p in _context.MovimientoInventarios
+                    where p.TipoMovInventIdFk == 1
+                    where p.FechaMovimiento >= fechaInicio && p.FechaMovimiento <= fechaFin
+                    select p.ResponsableIdFk
+                ).Contains(per.Id)
+                select per;
+
+    return await query.ToListAsync();
+}
+
 
     public async Task<IEnumerable<object>> TotalProvSuministraMedicamentosxAnio(int year)
     {
@@ -229,6 +238,7 @@ public class MovimientoInventarioRepository : GenericRepository<MovimientoInvent
                     join e in _context.DetalleMovimientos on p.Id equals e.MovInventarioIdFk
                     join per in _context.Personas on p.ResponsableIdFk equals per.Id
                     join t in _context.Rols on per.RolIdFk equals t.Id
+                    where per.RolIdFk == 3
                     where p.TipoMovInventIdFk == 2
                     /* where t.Nombre == "Proveedor" */
                     group new {e, per} by per into g

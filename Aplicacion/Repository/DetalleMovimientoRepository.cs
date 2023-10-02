@@ -36,6 +36,7 @@ public class DetalleMovimientoRepository : GenericRepository<DetalleMovimiento>,
         join p in _context.Personas on i.PersonaIdFk equals p.Id
         join d in _context.MovimientoInventarios on dm.MovInventarioIdFk equals d.Id
         join de in _context.DescripcionMedicamentos on i.DescripcionMedicamentoIdFk equals de.Id
+        where p.RolIdFk == 3
         where d.TipoMovInventIdFk == 2
         where d.FechaMovimiento.Year == año
         select new

@@ -120,12 +120,13 @@ public class PersonaController : BaseApiController
     [HttpGet("consulta33")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<object>> CalcularTotalGastadoPorPacienteEn2023Async()
+    public async Task<ActionResult<IEnumerable<object>>> PacientesConTotalGastadoPorAño()
     {
-        var entidad = await unitofwork.Personas.CalcularTotalGastadoPorPacienteEn2023Async();
+        var entidad = await unitofwork.Personas.PacientesConTotalGastadoPorAño();
         var dto = mapper.Map<IEnumerable<object>>(entidad);
         return Ok(dto);
     }
+
     [HttpGet("consulta366")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
