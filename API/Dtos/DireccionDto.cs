@@ -8,5 +8,6 @@ public class DireccionDto
     public string Numero { get; set; }
     public string Descripcion { get; set; }
     public CiudadDto Ciudad { get; set; }
+    public int PersonaIdFk { get; set; }
     public PersonaDto Persona{ get; set; }
 }
