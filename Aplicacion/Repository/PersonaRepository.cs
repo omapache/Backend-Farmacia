@@ -232,4 +232,27 @@ public class PersonaRepository : GenericRepository<Persona>, IPersona
 
     return totalMedicamentosVendidos;
 }
+     public async Task<IEnumerable<Object>> GananciaTotalPorProveedorEn2023()
+    {
+        var year = 2023; // Año para el que deseas calcular la ganancia
+
+        return await (
+            from mi in _context.MovimientoInventarios
+            join d in _context.DetalleMovimientos on mi.Id equals d.MovInventarioIdFk
+            join per in _context.Personas on  mi.ResponsableIdFk equals  per.Id
+            join im in _context.InventarioMedicamentos on d.InventMedicamentoIdFk equals im.Id
+            join prod in _context.Productos on im.Id equals prod.InventMedicamentoIdFk
+            join dm in _context.DescripcionMedicamentos on im.DescripcionMedicamentoIdFk equals dm.Id
+            where mi.TipoMovInventIdFk == 1 && mi.FechaMovimiento.Year == year
+            select new
+            {
+                NombreProveedor = per.Nombre,
+                IdProducto = d.Id,
+                Producto = dm.Nombre,
+                Identificacion = per.NumeroDocumento,
+                Ganancia = (d.Precio - prod.Precio) * d.Cantidad // Calcular la ganancia por compra
+            }
+        ).ToListAsync();
+    }
+
 }

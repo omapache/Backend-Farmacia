@@ -93,7 +93,11 @@ public class MovimientoInventarioRepository : GenericRepository<MovimientoInvent
             where m.TipoMovInventIdFk == 1
             where m.FechaMovimiento >= fechaInicio && m.FechaMovimiento <= fechaFin
             where descMed.Nombre.Contains(medicamento)
-            select persona).ToListAsync();
+            select new{
+                nombre = persona.Nombre,
+                numeroDocumento = persona.NumeroDocumento
+            }).Distinct()
+            .ToListAsync();
 
         return medicamentosComprados;
     }
@@ -160,7 +164,12 @@ public class MovimientoInventarioRepository : GenericRepository<MovimientoInvent
                         where p.FechaMovimiento > fechaHace1Año
                         select p.ResponsableIdFk
                     ).Contains(per.Id)
-                    select per;
+                    select  new
+                    {
+                        Proveedor = per.Nombre,
+                        Documento = per.NumeroDocumento,
+                        Id = per.Id
+                    } ;
 
         return await query.ToListAsync();
     }
@@ -199,7 +208,10 @@ public class MovimientoInventarioRepository : GenericRepository<MovimientoInvent
                         where p.FechaMovimiento >= fechaInicio && p.FechaMovimiento <= fechaFin
                         select p.ResponsableIdFk
                     ).Contains(per.Id)
-                    select per;
+                    select new {
+                        Proveedor = per.Nombre,
+                        documento = per.NumeroDocumento
+                    };
 
         return await query.ToListAsync();
     }
@@ -218,12 +230,13 @@ public class MovimientoInventarioRepository : GenericRepository<MovimientoInvent
                     join per in _context.Personas on p.ResponsableIdFk equals per.Id
                     join t in _context.Rols on per.RolIdFk equals t.Id
                     where p.TipoMovInventIdFk == 2
-                    where t.Nombre == "Proveedor"
-                    group e.Cantidad by p into g
+                    /* where t.Nombre == "Proveedor" */
+                    group new {e, per} by per into g
                     select new
                     {
-                        Proveedor = g.Key,
-                        CantidadProductos = g.Sum()
+                        Proveedor = g.Key.Nombre,
+                        CantidadProductos = g.Sum(x => x.e.Cantidad),
+                        Documento = g.Key.NumeroDocumento 
                     };
 
         return await query.ToListAsync();

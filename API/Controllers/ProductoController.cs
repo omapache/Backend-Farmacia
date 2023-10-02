@@ -44,6 +44,17 @@ public class ProductoController : BaseApiController
         return Ok(dto);
     }
 
+    
+    [HttpGet("consulta10")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<object>> ObtenerMedicamentoMasCaroAsync()
+    {
+        var entidad = await unitofwork.Productos.ObtenerMedicamentoMasCaroAsync();
+        var dto = mapper.Map<Object>(entidad);
+        return Ok(dto);
+    }
+
     [HttpGet("consulta14/totalVendidos")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]

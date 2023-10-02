@@ -7,8 +7,8 @@ namespace Aplicacion.Repository;
 public class ProductoRepository : GenericRepository<Producto>, IProducto
 {
     protected readonly ApiContext _context;
-    
-    public ProductoRepository(ApiContext context) : base (context)
+
+    public ProductoRepository(ApiContext context) : base(context)
     {
         _context = context;
     }
@@ -26,7 +26,7 @@ public class ProductoRepository : GenericRepository<Producto>, IProducto
         return await _context.Productos
         .Include(p => p.InventarioMedicamento)
         .Include(p => p.Marca)
-        .FirstOrDefaultAsync(p =>  p.Id == id);
+        .FirstOrDefaultAsync(p => p.Id == id);
     }
     public async Task<IEnumerable<Object>> InformacionContacto()
     {
@@ -47,13 +47,31 @@ public class ProductoRepository : GenericRepository<Producto>, IProducto
             }).ToListAsync();
     }
 
-    public async Task<Producto> ObtenerMedicamentoMasCaroAsync()
+    public async Task<object> ObtenerMedicamentoMasCaroAsync()
     {
-        var productoMasCaro = await _context.Productos
-        .OrderByDescending(p => p.Precio)
-        .FirstOrDefaultAsync();
+        var query = await (from p in _context.Productos
+                    join e in _context.InventarioMedicamentos on p.InventMedicamentoIdFk equals e.Id
+                    join dm in _context.DescripcionMedicamentos on e.DescripcionMedicamentoIdFk equals dm.Id
+                    join m in _context.Marcas on p.MarcaIdFk equals m.Id
+                    /* where t.Nombre == "Proveedor" */
+                    /*  group new {e, p} by e into g */
+                    orderby p.Precio descending
+                    select new
+                    {
+                        Medicamento = dm.Nombre,
+                        CantidadProductos = p.Precio,
+                        CantidadMg = dm.CantidadMg,
+                        MarcaMedicamento = m.Nombre,
+                        Precio = p.Precio,
+                    }).FirstOrDefaultAsync();
 
-        return productoMasCaro;
+        /*  var productoMasCaro = await _context.Productos
+         .Include(p => p.InventarioMedicamento) // Cargar InventarioMedicamento
+         .ThenInclude(i => i.DescripcionMedicamento)
+         .OrderByDescending(p => p.Precio)
+         .FirstOrDefaultAsync();
+  */
+        return query;
     }
 
     public async Task<IEnumerable<Object>> NumeroMedicamentosPorProveedor()

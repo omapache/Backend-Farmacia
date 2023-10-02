@@ -67,7 +67,7 @@ public class MovimientoInventarioController : BaseApiController
         return Ok(dto);
     }
 
-    [HttpGet("consulta13/{medicina}")]
+    /* [HttpGet("consulta13/{medicina}")] */
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -83,6 +83,7 @@ public class MovimientoInventarioController : BaseApiController
         entidadDto.Id = entidad.Id;
         return CreatedAtAction(nameof(Post), new {id = entidadDto.Id}, entidadDto);
     }
+
     [HttpPut("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -123,7 +124,7 @@ public class MovimientoInventarioController : BaseApiController
     }
 
     
-    [HttpGet("consulta12")]
+    [HttpGet("consulta13")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<object>> ProvSinVentasUltAño()
@@ -140,7 +141,7 @@ public class MovimientoInventarioController : BaseApiController
     public async Task<ActionResult<object>> PacienteMasDineroXAño(int year)
     {
         var entidad = await unitofwork.MovimientoInventarios.PacienteMasDineroXAño(year);
-        var dto = mapper.Map<IEnumerable<object>>(entidad);
+        var dto = mapper.Map<object>(entidad);
         return Ok(dto);
     }
 

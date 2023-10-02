@@ -235,9 +235,18 @@ public class UserService : IUserService
         {
             return false; // El usuario no existe en la base de datos.
         }
+        if (user == null)
+        {
+            return false; // El usuario no existe en la base de datos.
+        }
 
         var result = _passwordHasher.VerifyHashedPassword(user, user.Password, model.Password);
+        var result = _passwordHasher.VerifyHashedPassword(user, user.Password, model.Password);
 
+        if (result == PasswordVerificationResult.Success)
+        {
+            return true; // Las credenciales son válidas.
+        }
         if (result == PasswordVerificationResult.Success)
         {
             return true; // Las credenciales son válidas.
