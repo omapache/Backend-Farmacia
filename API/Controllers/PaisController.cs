@@ -6,7 +6,8 @@ using Dominio.Entities;
 using API.Helpers.Errors;
 
 namespace API.Controllers;
-
+[ApiVersion("1.0")]
+[ApiVersion("1.1")]
 public class PaisController : BaseApiController
 { 
     private readonly IUnitOfWork unitofwork;
@@ -19,6 +20,7 @@ public class PaisController : BaseApiController
     }
 
     [HttpGet]
+    [MapToApiVersion("1.0")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
 
@@ -26,6 +28,18 @@ public class PaisController : BaseApiController
     {
         var pais = await unitofwork.Paises.GetAllAsync();
         return mapper.Map<List<PaisDto>>(pais);
+    }
+
+    [HttpGet]
+    [MapToApiVersion("1.1")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+
+    public async Task<ActionResult<Pager<PaisxDepDto>>> Get11([FromQuery] Params paisParams)
+    {
+        var pais = await unitofwork.Paises.GetAllAsync(paisParams.PageIndex, paisParams.PageSize, paisParams.Search);
+        var lstPaisesDto = mapper.Map<List<PaisxDepDto>>(pais.registros);
+        return new Pager<PaisxDepDto>(lstPaisesDto, pais.totalRegistros, paisParams.PageIndex, paisParams.PageSize, paisParams.Search);
     }
 
     [HttpGet("{id}")]

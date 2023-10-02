@@ -7,9 +7,7 @@ public class PersonaDto
     public int TipoDocumentoIdFk { get; set; }
     public int RolIdFk { get; set; }
     public string NumeroDocumento { get; set; }
-/*     public TipoPersonaDto TipoPersona { get; set; }
-    public TipoDocumentoDto TipoDocumento { get; set; }
-    public RolDto Rol { get; set; } */
+    public TipoPersonaDto TipoPersona { get; set; }
     public TipoDocumentoDto TipoDocumento { get; set; }
     public List<TipoDocumentoDto> TipoDocumentos{ get; set; }
     public RolDto Rol { get; set; }

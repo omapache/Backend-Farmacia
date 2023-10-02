@@ -30,15 +30,22 @@ public static class ApplicationServiceExtension
             services.AddScoped<IUnitOfWork, UnitOfWork>();
         }
 
-    public static void ConfigureApiVersioning(this IServiceCollection services)
+   public static void ConfigureApiVersioning(this IServiceCollection services)
+    {
+        services.AddApiVersioning(options =>
         {
-            services.AddApiVersioning(options =>
-            {
-                options.DefaultApiVersion = new ApiVersion(1, 0);
-                options.AssumeDefaultVersionWhenUnspecified = true;
-                options.ApiVersionReader = new QueryStringApiVersionReader("ver");
-            });
-        }
+            options.DefaultApiVersion = new ApiVersion(1, 0);
+            options.AssumeDefaultVersionWhenUnspecified = true;
+            //Para una versión 
+            //options.ApiVersionReader = new QueryStringApiVersionReader("ver");
+
+            //Para ambas versiones
+            options.ApiVersionReader = ApiVersionReader.Combine(
+                new QueryStringApiVersionReader("ver"),
+                new HeaderApiVersionReader ("X-Version")
+            );
+        });
+    }
 
      public static void ConfigureRateLimiting(this IServiceCollection services)
         {
@@ -57,7 +64,7 @@ public static class ApplicationServiceExtension
                     {
                         Endpoint = "*",
                         Period = "10s",
-                        Limit = 999999
+                        Limit = 15
                     }
                 };
             });

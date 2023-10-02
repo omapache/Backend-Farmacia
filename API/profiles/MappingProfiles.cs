@@ -34,5 +34,7 @@ public class MappingProfiles : Profile
         CreateMap<TipoPresentacion, TipoPresentacionDto>().ReverseMap();
         CreateMap<TipoTelefono, TipoTelefonoDto>().ReverseMap();
         CreateMap<User, UserDto>().ReverseMap();
+        CreateMap<Pais, PaisxDepDto>().ReverseMap();
+
     }
 }
