@@ -98,6 +98,7 @@ public class UserController : BaseApiController
         return Ok(response);
     }
 
+
     [HttpPut("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
