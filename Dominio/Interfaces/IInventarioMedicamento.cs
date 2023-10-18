@@ -1,7 +1,7 @@
 using Dominio.Entities;
 
 namespace Dominio.Interfaces;
-public interface IInventarioMedicamento  : IGenericRepo<InventarioMedicamento>
+public interface IInventarioMedicamento : IGenericRepo<InventarioMedicamento>
 {
     Task<IEnumerable<InventarioMedicamento>> GetMedicamentosConMenosDe50Unidades(int cantidad);
     Task<IEnumerable<object>> ObtenerMedicamentosCaducadosAsync(DateOnly fechaLimite);
@@ -13,7 +13,8 @@ public interface IInventarioMedicamento  : IGenericRepo<InventarioMedicamento>
     Task<object> ObtenerMedicamentoMenosVendidoAsync(int Año);
     Task<IEnumerable<object>> ObtenerMedicamentosSinVentaNuncaAsync();
 
-     Task<IEnumerable<object>> MedExpiranXAñoAsync(int year);
-    
-    
+    Task<IEnumerable<object>> MedExpiranXAñoAsync(int year);
+    Task<IEnumerable<Object>> Medicamentosquenohansidovendidosen2023();
+
+
 }

@@ -175,7 +175,7 @@ public class MovimientoInventarioRepository : GenericRepository<MovimientoInvent
     }
 
     
-    public async Task<IEnumerable<object>> EmpleadoSinVentasMesYAnio(int year, int mes)
+   /*  public async Task<IEnumerable<object>> EmpleadoSinVentasMesYAnio(int year, int mes)
     {
         DateOnly fechaInicio = DateOnly.FromDateTime(new DateTime(year, mes, 1));
         DateOnly fechaFin = DateOnly.FromDateTime(new DateTime(year, mes, 31));
@@ -192,7 +192,32 @@ public class MovimientoInventarioRepository : GenericRepository<MovimientoInvent
                     select per;
 
         return await query.ToListAsync();
+    } */
+    public async Task<IEnumerable<object>> EmpleadoSinVentasMesYAnio(int year, int mes)
+{
+    if (year < 1 || year > 9999 || mes < 1 || mes > 12)
+    {
+        // Valores de año o mes no válidos, manejar el error o retornar una lista vacía según tu lógica.
+        return new List<object>();
     }
+
+    DateOnly fechaInicio = new DateOnly(year, mes, 1);
+    DateOnly fechaFin = new DateOnly(year, mes, DateTime.DaysInMonth(year, mes));
+
+    var query = from per in _context.Personas
+                join t in _context.Rols on per.RolIdFk equals t.Id
+                where t.Nombre == "Employee"
+                where !(
+                    from p in _context.MovimientoInventarios
+                    where p.TipoMovInventIdFk == 1
+                    where p.FechaMovimiento >= fechaInicio && p.FechaMovimiento <= fechaFin
+                    select p.ResponsableIdFk
+                ).Contains(per.Id)
+                select per;
+
+    return await query.ToListAsync();
+}
+
 
     public async Task<IEnumerable<object>> TotalProvSuministraMedicamentosxAnio(int year)
     {

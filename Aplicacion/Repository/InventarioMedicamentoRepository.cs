@@ -6,8 +6,8 @@ namespace Aplicacion.Repository;
 public class InventarioMedicamentoRepository : GenericRepository<InventarioMedicamento>, IInventarioMedicamento
 {
     protected readonly ApiContext _context;
-    
-    public InventarioMedicamentoRepository(ApiContext context) : base (context)
+
+    public InventarioMedicamentoRepository(ApiContext context) : base(context)
     {
         _context = context;
     }
@@ -25,7 +25,7 @@ public class InventarioMedicamentoRepository : GenericRepository<InventarioMedic
         return await _context.InventarioMedicamentos
         .Include(p => p.Persona)
         .Include(p => p.DescripcionMedicamento)
-        .FirstOrDefaultAsync(p =>  p.Id == id);
+        .FirstOrDefaultAsync(p => p.Id == id);
     }
     public async Task<IEnumerable<InventarioMedicamento>> GetMedicamentosConMenosDe50Unidades(int cantidad)
     {
@@ -45,7 +45,7 @@ public class InventarioMedicamentoRepository : GenericRepository<InventarioMedic
             from i in _context.InventarioMedicamentos
             join d in _context.DescripcionMedicamentos on i.DescripcionMedicamentoIdFk equals d.Id
             where i.FechaExpiracion.Year == fecha2024.Year
-            select new 
+            select new
             {
                 Nombre = d.Nombre,
                 Stock = i.Stock,
@@ -62,7 +62,7 @@ public class InventarioMedicamentoRepository : GenericRepository<InventarioMedic
             from i in _context.InventarioMedicamentos
             join d in _context.DescripcionMedicamentos on i.DescripcionMedicamentoIdFk equals d.Id
             where i.FechaExpiracion < fechaLimite
-            select new 
+            select new
             {
                 Nombre = d.Nombre,
                 Stock = i.Stock,
@@ -81,7 +81,7 @@ public class InventarioMedicamentoRepository : GenericRepository<InventarioMedic
             join de in _context.DescripcionMedicamentos on i.DescripcionMedicamentoIdFk equals de.Id
             where d.TipoMovInventIdFk == 1
             where i.FechaExpiracion < fechaActual
-            select new 
+            select new
             {
                 Nombre = de.Nombre,
                 Stock = i.Stock,
@@ -99,8 +99,8 @@ public class InventarioMedicamentoRepository : GenericRepository<InventarioMedic
             join d in _context.MovimientoInventarios on dm.MovInventarioIdFk equals d.Id
             join de in _context.DescripcionMedicamentos on i.DescripcionMedicamentoIdFk equals de.Id
             where d.TipoMovInventIdFk == 2
-            where p.Nombre.ToLower() == Nombre.ToLower() 
-            select new 
+            where p.Nombre.ToLower() == Nombre.ToLower()
+            select new
             {
                 Nombre = de.Nombre,
                 cantidad = dm.Cantidad,
@@ -117,8 +117,8 @@ public class InventarioMedicamentoRepository : GenericRepository<InventarioMedic
             join d in _context.MovimientoInventarios on dm.MovInventarioIdFk equals d.Id
             join de in _context.DescripcionMedicamentos on i.DescripcionMedicamentoIdFk equals de.Id
             where d.TipoMovInventIdFk == 2
-            where de.Nombre.ToLower() == medicina.ToLower() 
-            select new 
+            where de.Nombre.ToLower() == medicina.ToLower()
+            select new
             {
                 Nombre = p.Nombre,
             }).ToListAsync();
@@ -149,7 +149,7 @@ public class InventarioMedicamentoRepository : GenericRepository<InventarioMedic
                     Medicamento = g.Key,
                     Ventas = g.Count(),
                 })
-                .OrderBy(x => x.Ventas)  
+                .OrderBy(x => x.Ventas)
                 .First();
             return medicamentoVentas.Medicamento;
         }
@@ -158,7 +158,7 @@ public class InventarioMedicamentoRepository : GenericRepository<InventarioMedic
             return "No se encontraron ventas para el medicamento especificado en 2023.";
         }
     }
-     public async Task<IEnumerable<Object>> ObtenerMedicamentosSinVentaNuncaAsync()
+    public async Task<IEnumerable<Object>> ObtenerMedicamentosSinVentaNuncaAsync()
     {
         DateOnly fechaActual = DateOnly.FromDateTime(DateTime.Now);
         var medicamentosNoVendidos = await (
@@ -168,7 +168,7 @@ public class InventarioMedicamentoRepository : GenericRepository<InventarioMedic
             join de in _context.DescripcionMedicamentos on i.DescripcionMedicamentoIdFk equals de.Id
             where d.TipoMovInventIdFk == 1
             where i.FechaExpiracion < fechaActual
-            select new 
+            select new
             {
                 Nombre = de.Nombre,
                 Stock = i.Stock,
@@ -201,7 +201,7 @@ public class InventarioMedicamentoRepository : GenericRepository<InventarioMedic
         var medicamentosEspecificos = await (
             from im in _context.InventarioMedicamentos
             join m in _context.Marcas on im.Id equals m.Id
-            join p in _context.Productos on im.Id equals p.InventMedicamentoIdFk 
+            join p in _context.Productos on im.Id equals p.InventMedicamentoIdFk
             where p.Precio > 50 && im.Stock < 100
             select new
             {
@@ -215,6 +215,37 @@ public class InventarioMedicamentoRepository : GenericRepository<InventarioMedic
 
         return medicamentosEspecificos;
     }
+
+    public async Task<IEnumerable<Object>> Medicamentosquenohansidovendidosen2023()
+{
+    int añoDeseado = 2023;
+    DateOnly fechaInicioAño = new DateOnly(añoDeseado, 1, 1);
+    DateOnly fechaFinAño = new DateOnly(añoDeseado, 12, 31);
+
+    var medicamentosNoVendidos = await(
+        from dm in _context.DetalleMovimientos
+        join i in _context.InventarioMedicamentos on dm.InventMedicamentoIdFk equals i.Id
+        join d in _context.MovimientoInventarios on dm.MovInventarioIdFk equals d.Id
+        join de in _context.DescripcionMedicamentos on i.DescripcionMedicamentoIdFk equals de.Id
+        where d.TipoMovInventIdFk == 1
+        where i.FechaExpiracion < fechaInicioAño
+        where !(
+            from mv in _context.MovimientoInventarios
+            where mv.TipoMovInventIdFk == 1
+            where mv.FechaMovimiento >= fechaInicioAño && mv.FechaMovimiento <= fechaFinAño
+            where mv.Id == d.Id
+            select mv
+        ).Any()
+        select new
+        {
+            Nombre = de.Nombre,
+            Stock = i.Stock,
+            FechaExpiracion = i.FechaExpiracion
+        }).ToListAsync();
+
+    return medicamentosNoVendidos;
+}
+
 
 
     

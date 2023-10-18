@@ -107,6 +107,16 @@ public class InventarioMedicamentoController : BaseApiController
         return Ok(dto);
     }
 
+    [HttpGet("consulta34")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<object>> Medicamentosquenohansidovendidosen2023()
+    {
+        var entidad = await unitofwork.InventarioMedicamentos.Medicamentosquenohansidovendidosen2023();
+        var dto = mapper.Map<IEnumerable<object>>(entidad);
+        return Ok(dto);
+    }
+
     [HttpGet("consulta38/medicamentos")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
